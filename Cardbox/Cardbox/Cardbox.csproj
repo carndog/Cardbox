@@ -35,6 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,20 +46,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Anagrammer.cs" />
-    <Compile Include="AnagramAnswerDto.cs" />
+    <Compile Include="AnswerDto.cs" />
     <Compile Include="CardboxDefintionDb.cs" />
-    <Compile Include="CardboxDb.cs" />
+    <Compile Include="CardboxData.cs" />
     <Compile Include="CardboxDefinitionDto.cs" />
     <Compile Include="CardboxDto.cs" />
+    <Compile Include="IAnagrammer.cs" />
+    <Compile Include="QuestionType.cs" />
     <Compile Include="ResultDto.cs" />
     <Compile Include="CardboxService.cs" />
-    <Compile Include="ICardboxDefinitionCardboxRepository.cs" />
+    <Compile Include="ICardboxDefinitionRepository.cs" />
     <Compile Include="ICardboxRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AnagramQuestionDto.cs" />
     <Compile Include="QuestionDto.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

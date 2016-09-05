@@ -2,19 +2,28 @@
 {
     public class CardboxService
     {
-        public CardboxService()
-        {
+        private readonly IAnagrammer _anagrammer;
+        private readonly ICardboxRepository _cardboxRepository;
 
+        public CardboxService(IAnagrammer anagrammer,
+             ICardboxRepository cardboxRepository)
+        {
+            _anagrammer = anagrammer;
+            _cardboxRepository = cardboxRepository;
         }
 
-        public AnagramAnswerDto Evaluate(AnagramQuestionDto dto)
+        public AnswerDto Evaluate(QuestionDto dto)
         {
-            return new AnagramAnswerDto();
+            AnswerDto answer = _anagrammer.Anagram(dto);
+
+            return answer;
         }
 
         public CardboxDto Add(CardboxDto dto)
         {
-            return new CardboxDto();
+            _cardboxRepository.Add(dto);
+
+            return dto;
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface ICardboxRepository
     {
-        void Add(CardboxDto dto);
+        ResultDto Add(CardboxDto dto);
     }
 }

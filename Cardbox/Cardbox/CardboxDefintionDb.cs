@@ -2,7 +2,7 @@
 
 namespace Cardbox
 {
-    public class CardboxDefintionDb : ICardboxDefinitionCardboxRepository
+    public class CardboxDefintionDb : ICardboxDefinitionRepository
     {
         private readonly string _filePath;
 

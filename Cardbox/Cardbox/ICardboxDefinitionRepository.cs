@@ -1,6 +1,6 @@
 ﻿namespace Cardbox
 {
-    public interface ICardboxDefinitionCardboxRepository
+    public interface ICardboxDefinitionRepository
     {
         void Add(CardboxDefinitionDto dto);
     }

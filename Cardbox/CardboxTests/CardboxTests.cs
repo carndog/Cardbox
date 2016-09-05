@@ -8,7 +8,11 @@ namespace CardboxTests
         [TestMethod]
         public void EvaluateText()
         {
+            //wire up
 
+            //perform add to cardbox
+
+            //query and persistence tests
         }
     }
 }

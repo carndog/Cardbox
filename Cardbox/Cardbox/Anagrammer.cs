@@ -1,8 +1,8 @@
 ﻿namespace Cardbox
 {
-    public class Anagrammer
+    public class Anagrammer : IAnagrammer
     {
-        public AnagramAnswerDto Anagram(AnagramQuestionDto question)
+        public AnswerDto Anagram(QuestionDto question)
         {
             throw new System.NotImplementedException();
         }

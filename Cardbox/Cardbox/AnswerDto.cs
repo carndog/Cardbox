@@ -2,7 +2,7 @@
 
 namespace Cardbox
 {
-    public class AnagramAnswerDto
+    public class AnswerDto
     {
         private IEnumerable<string> Words { get; set; }
     }

@@ -4,7 +4,7 @@ namespace Cardbox
 {
     public class CardboxDto
     {
-        public string Question { get; set; }
+        public QuestionDto Question { get; set; }
 
         public int CardboxNumber { get; set; }
 
