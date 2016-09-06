@@ -4,6 +4,6 @@ namespace Cardbox
 {
     public class AnswerDto
     {
-        private IEnumerable<string> Words { get; set; }
+        public IEnumerable<string> Words { get; set; }
     }
 }

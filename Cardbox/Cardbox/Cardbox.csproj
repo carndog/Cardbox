@@ -37,6 +37,8 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,13 +54,33 @@
     <Compile Include="CardboxDefinitionDto.cs" />
     <Compile Include="CardboxDto.cs" />
     <Compile Include="IAnagrammer.cs" />
+    <Compile Include="LexiconSearch\Anagram.cs" />
+    <Compile Include="LexiconSearch\Build.cs" />
+    <Compile Include="LexiconSearch\ConfigurationFilePath.cs" />
+    <Compile Include="LexiconSearch\Extensions.cs" />
+    <Compile Include="LexiconSearch\FilePathHelper.cs" />
+    <Compile Include="LexiconSearch\FileProcessor.cs" />
+    <Compile Include="LexiconSearch\IFilePath.cs" />
+    <Compile Include="LexiconSearch\IFileProcessor.cs" />
+    <Compile Include="LexiconSearch\ILazyTrie.cs" />
+    <Compile Include="LexiconSearch\ILexiconRepository.cs" />
+    <Compile Include="LexiconSearch\ILineProcessor.cs" />
+    <Compile Include="LexiconSearch\IResultsCache.cs" />
+    <Compile Include="LexiconSearch\ISearch.cs" />
+    <Compile Include="LexiconSearch\ITrieSearcher.cs" />
+    <Compile Include="LexiconSearch\LazyLoadingTrie.cs" />
+    <Compile Include="LexiconSearch\LexiconRepository.cs" />
+    <Compile Include="LexiconSearch\LineProcessor.cs" />
+    <Compile Include="LexiconSearch\Pattern.cs" />
+    <Compile Include="LexiconSearch\ResultsCache.cs" />
+    <Compile Include="LexiconSearch\TrieNode.cs" />
+    <Compile Include="LexiconSearch\TrieSearcher.cs" />
     <Compile Include="QuestionType.cs" />
     <Compile Include="ResultDto.cs" />
     <Compile Include="CardboxService.cs" />
     <Compile Include="ICardboxDefinitionRepository.cs" />
     <Compile Include="ICardboxRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuestionDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

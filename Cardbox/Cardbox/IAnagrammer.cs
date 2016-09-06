@@ -2,6 +2,6 @@
 {
     public interface IAnagrammer
     {
-        AnswerDto Anagram(QuestionDto question);
+        AnswerDto Anagram(string question);
     }
 }

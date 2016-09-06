@@ -2,7 +2,7 @@
 {
     public class Anagrammer : IAnagrammer
     {
-        public AnswerDto Anagram(QuestionDto question)
+        public AnswerDto Anagram(string question)
         {
             throw new System.NotImplementedException();
         }

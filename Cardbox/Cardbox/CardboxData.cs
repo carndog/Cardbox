@@ -10,10 +10,11 @@ namespace Cardbox
         public static readonly Lazy<CardboxData> CardboxDb = new Lazy<CardboxData>(() =>
         {
             string filePath = ConfigurationManager.AppSettings["cardbox"];
-            using (StreamReader reader = new StreamReader(filePath))
+
+            using (var reader = new StreamReader(filePath))
             {
                 string cardboxData = reader.ReadToEnd();
-                StringBuilder str = new StringBuilder(cardboxData);
+                var str = new StringBuilder(cardboxData);
                 return new CardboxData(str);
             };
         });
@@ -29,7 +30,7 @@ namespace Cardbox
 
         public ResultDto Add(CardboxDto dto)
         {
-            string newRow = $"{dto.DateAdded},{dto.CardboxNumber},{dto.Question.QuestionType},{dto.Question.Question}";
+            string newRow = $"{dto.DateAdded},{dto.CardboxNumber},{dto.QuestionType},{dto.Question}";
             _unsaved.AppendLine(newRow);
 
             return new ResultDto();

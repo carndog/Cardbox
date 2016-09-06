@@ -12,18 +12,18 @@
             _cardboxRepository = cardboxRepository;
         }
 
-        public AnswerDto Evaluate(QuestionDto dto)
+        public AnswerDto Evaluate(string query)
         {
-            AnswerDto answer = _anagrammer.Anagram(dto);
+            AnswerDto answer = _anagrammer.Anagram(query);
 
             return answer;
         }
 
-        public CardboxDto Add(CardboxDto dto)
+        public ResultDto Add(CardboxDto dto)
         {
-            _cardboxRepository.Add(dto);
+            ResultDto resultDto = _cardboxRepository.Add(dto);
 
-            return dto;
+            return resultDto;
         }
     }
 }

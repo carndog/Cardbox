@@ -1,0 +1,28 @@
+﻿using Cardbox;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+
+namespace CardboxTests
+{
+    [TestClass]
+    public class AnagrammerTests
+    {
+        private static IAnagrammer _anagrammer;
+
+        [ClassInitialize]
+        public static void Init(TestContext context)
+        {
+            _anagrammer = new Anagrammer();
+        }
+
+        [TestMethod]
+        public void Anagram()
+        {
+            AnswerDto answerDto = _anagrammer.Anagram("CAT");
+
+            answerDto.Words.Count().Should().Be(2);
+            answerDto.Words.Should().ContainInOrder("ACT", "CAT");
+        }
+    }
+}
