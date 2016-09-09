@@ -1,10 +1,39 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Cardbox.LexiconSearch
 {
-    public class LineProcessor : ILineProcessor<TrieNode>
+    public class AnagramTrieBuilder
     {
+        private readonly TrieNode _item;
+
+        public AnagramTrieBuilder(string filePath, TrieNode item)
+        {
+            Path = filePath;
+            _item = item;
+        }
+
+        public string Path { get; }
+
+        public TrieNode LoadLines()
+        {
+            if (!File.Exists(Path))
+            {
+                throw new FileNotFoundException(Path);
+            }
+
+            using (var reader = new StreamReader(Path))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    LoadLine(_item, line);
+                }
+            }
+            return _item;
+        }
+
         public void LoadLine(TrieNode root, string line)
         {
             TrieNode current = root;

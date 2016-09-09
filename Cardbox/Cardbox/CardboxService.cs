@@ -2,10 +2,10 @@
 {
     public class CardboxService
     {
-        private readonly IAnagrammer _anagrammer;
+        private readonly WordService _anagrammer;
         private readonly ICardboxRepository _cardboxRepository;
 
-        public CardboxService(IAnagrammer anagrammer,
+        public CardboxService(WordService anagrammer,
              ICardboxRepository cardboxRepository)
         {
             _anagrammer = anagrammer;

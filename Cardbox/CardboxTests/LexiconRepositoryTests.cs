@@ -1,4 +1,5 @@
 ﻿using Cardbox.LexiconSearch;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CardboxTests
@@ -8,7 +9,7 @@ namespace CardboxTests
     {
         private readonly Utils _utils = new Utils();
 
-        private ILexiconRepository<TrieNode> _lexiconRepository;
+        private TrieNode _trie;
 
         [TestInitialize]
         public void Init()
@@ -19,11 +20,10 @@ namespace CardboxTests
         [TestMethod]
         public void ConstructRepository()
         {
-            _lexiconRepository = new LexiconRepository<TrieNode>();
-            var fileProcessor = new FileProcessor<TrieNode>(new ExecutingAssemblyFilePath(), new TrieNode(), new LineProcessor());
-            _lexiconRepository.InitialiseRepository(new[] { fileProcessor });
+            var fileProcessor = new AnagramTrieBuilder(new ExecutingAssemblyFilePath().GetPath(), new TrieNode());
+            _trie = fileProcessor.LoadLines();
 
-            Assert.IsInstanceOfType(_lexiconRepository[fileProcessor.Path], typeof(TrieNode));
+            _trie.Should().NotBeNull();
         }
     }
 }

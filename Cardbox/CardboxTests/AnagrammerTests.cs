@@ -1,4 +1,5 @@
 ﻿using Cardbox;
+using Cardbox.LexiconSearch;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
@@ -8,12 +9,14 @@ namespace CardboxTests
     [TestClass]
     public class AnagrammerTests
     {
-        private static IAnagrammer _anagrammer;
+        private static WordService _anagrammer;
 
         [ClassInitialize]
         public static void Init(TestContext context)
         {
-            _anagrammer = new Anagrammer();
+            _anagrammer = new WordService(new TrieSearcher(
+                new LazyLoadingTrie(new AnagramTrieBuilder(
+                    new ExecutingAssemblyFilePath().GetPath(), new TrieNode()))));
         }
 
         [TestMethod]

@@ -7,34 +7,22 @@ namespace Cardbox.LexiconSearch
 {
     public class Pattern : ISearch
     {
-        private readonly ITrieSearcher _trieSearcher;
+        private readonly TrieSearcher _trieSearcher;
 
-        private readonly IResultsCache<string, IList<string>> _resultsCache;
-
-        public Pattern(ITrieSearcher trieSearcher, IResultsCache<string, IList<string>> resultsCache)
+        public Pattern(TrieSearcher trieSearcher)
         {
             _trieSearcher = trieSearcher;
-            _resultsCache = resultsCache;
         }
 
         public IList<string> Query(string searchTerm)
         {
-            IList<string> results = _resultsCache.Get(searchTerm);
+            Func<IEnumerable<string>, IEnumerable<string>> wordFilter =
+                filter => filter.Where(x => x.Length == searchTerm.Length && new Regex(searchTerm).IsMatch(x));
 
-            if (results == null)
-            {
-                Func<IEnumerable<string>, IEnumerable<string>> wordFilter =
-                    filter => filter.Where(x => x.Length == searchTerm.Length && new Regex(searchTerm).IsMatch(x));
-
-                results = _trieSearcher
-                    .Query(searchTerm, wordFilter)
-                    .OrderByDescending(x => x.Length)
-                    .ToList();
-
-                _resultsCache.Add(searchTerm, results);
-            }
-
-            return results;
+            return _trieSearcher
+                .Query(searchTerm, wordFilter)
+                .OrderByDescending(x => x.Length)
+                .ToList();
         }
     }
 }

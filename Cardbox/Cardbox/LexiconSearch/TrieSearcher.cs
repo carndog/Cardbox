@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Cardbox.LexiconSearch
 {
-    public class TrieSearcher : ITrieSearcher
+    public class TrieSearcher
     {
-        private readonly ILazyTrie _lazyTrie;
+        private readonly LazyLoadingTrie _lazyTrie;
         private readonly List<string> _resultsList;
 
-        public TrieSearcher(ILazyTrie lazyTrie)
+        public TrieSearcher(LazyLoadingTrie lazyTrie)
         {
             _lazyTrie = lazyTrie;
 

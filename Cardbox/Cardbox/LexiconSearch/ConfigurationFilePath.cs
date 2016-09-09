@@ -4,7 +4,7 @@ using System.Web;
 
 namespace Cardbox.LexiconSearch
 {
-    public class ConfigurationFilePath : IFilePath
+    public class ConfigurationFilePath
     {
         private readonly string _appSetting;
 

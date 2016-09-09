@@ -4,19 +4,15 @@ namespace CardboxTests
 {
     public class Utils
     {
-        public IFileProcessor<TrieNode> FileProcessor { get; set; }
+        public AnagramTrieBuilder AnagramTrieBuilder { get; set; }
 
-        public ILineProcessor<TrieNode> LineProcessor { get; set; }
-
-        public IFilePath FilePath { get; set; }
+        public string FilePath { get; set; }
 
         public void CreateTrieLoader()
         {
-            FilePath = new ExecutingAssemblyFilePath();
+            FilePath = new ExecutingAssemblyFilePath().GetPath();
 
-            LineProcessor = new LineProcessor();
-
-            FileProcessor = new FileProcessor<TrieNode>(FilePath, new TrieNode(), LineProcessor);
+            AnagramTrieBuilder = new AnagramTrieBuilder(FilePath, new TrieNode());
         }
     }
 }

@@ -2,19 +2,11 @@
 
 namespace Cardbox.LexiconSearch
 {
-    public class LazyLoadingTrie : ILazyTrie
+    public class LazyLoadingTrie
     {
-        private readonly ILexiconRepository<TrieNode> _lexiconRepository;
-
-        public LazyLoadingTrie(ILexiconRepository<TrieNode> lexiconRepository, IFileProcessor<TrieNode> fileProcessor)
+        public LazyLoadingTrie(AnagramTrieBuilder anagramTrieBuilder)
         {
-            _lexiconRepository = lexiconRepository;
-
-            LazyLexicon = new Lazy<TrieNode>(() =>
-            {
-                _lexiconRepository.InitialiseRepository(new[] { fileProcessor });
-                return _lexiconRepository[fileProcessor.Path];
-            });
+            LazyLexicon = new Lazy<TrieNode>(anagramTrieBuilder.LoadLines);
         }
 
         private Lazy<TrieNode> LazyLexicon { get; }

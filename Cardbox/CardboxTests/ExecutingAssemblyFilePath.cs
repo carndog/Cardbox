@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace CardboxTests
 {
-    public class ExecutingAssemblyFilePath : IFilePath
+    public class ExecutingAssemblyFilePath
     {
         public string GetPath()
         {

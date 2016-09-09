@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Cardbox.LexiconSearch;
+﻿using Cardbox.LexiconSearch;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace CardboxTests
 {
@@ -14,14 +14,11 @@ namespace CardboxTests
         [TestInitialize]
         public void Setup()
         {
-            _anagram = new Anagram(new TrieSearcher(new LazyLoadingTrie(new LexiconRepository<TrieNode>(),
-                new FileProcessor<TrieNode>(new ExecutingAssemblyFilePath(), new TrieNode(), new LineProcessor()))), new ResultsCache());
+            _anagram = new Anagram(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(new ExecutingAssemblyFilePath().GetPath(), new TrieNode()))));
 
-            _pattern = new Pattern(new TrieSearcher(new LazyLoadingTrie(new LexiconRepository<TrieNode>(),
-                new FileProcessor<TrieNode>(new ExecutingAssemblyFilePath(), new TrieNode(), new LineProcessor()))), new ResultsCache());
+            _pattern = new Pattern(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(new ExecutingAssemblyFilePath().GetPath(), new TrieNode()))));
 
-            _build = new Build(new TrieSearcher(new LazyLoadingTrie(new LexiconRepository<TrieNode>(),
-                new FileProcessor<TrieNode>(new ExecutingAssemblyFilePath(), new TrieNode(), new LineProcessor()))), new ResultsCache());
+            _build = new Build(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(new ExecutingAssemblyFilePath().GetPath(), new TrieNode()))));
         }
 
         [TestMethod]
@@ -52,11 +49,12 @@ namespace CardboxTests
         public void RunBuildWithWildcardSearch()
         {
             IList<string> results = _build.Query("ZEBR.AS.");
-            Assert.AreEqual(4, results.Count);
+            Assert.AreEqual(5, results.Count);
             Assert.IsTrue(results.Contains("ZEBRASS"));
             Assert.IsTrue(results.Contains("ZEBRA"));
             Assert.IsTrue(results.Contains("ZOO"));
             Assert.IsTrue(results.Contains("CAT"));
+            Assert.IsTrue(results.Contains("ACT"));
         }
 
 
