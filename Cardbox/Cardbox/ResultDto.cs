@@ -7,6 +7,8 @@
             Success = success;
         }
 
+        public string Data { get; set; } = string.Empty;
+
         public bool Success { get; set; }
     }
 }

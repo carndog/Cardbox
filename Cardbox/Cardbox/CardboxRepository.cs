@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Cardbox
 {
-    public sealed class CardboxData : ICardboxRepository
+    public sealed class CardboxRepository
     {
-        public static readonly Lazy<CardboxData> CardboxDb = new Lazy<CardboxData>(() =>
+        public static readonly Lazy<CardboxRepository> CardboxDb = new Lazy<CardboxRepository>(() =>
         {
             string filePath = ConfigurationManager.AppSettings["cardbox"];
 
@@ -15,25 +15,30 @@ namespace Cardbox
             {
                 string cardboxData = reader.ReadToEnd();
                 var str = new StringBuilder(cardboxData);
-                return new CardboxData(str);
+                return new CardboxRepository(str);
             };
         });
 
-        private readonly StringBuilder _unsaved;
+        public StringBuilder Unsaved { get; }
 
-        public static CardboxData Instance => CardboxDb.Value;
+        public static CardboxRepository Instance => CardboxDb.Value;
 
-        private CardboxData(StringBuilder unsaved)
+        private CardboxRepository(StringBuilder unsaved)
         {
-            _unsaved = unsaved;
+            Unsaved = unsaved;
         }
 
         public ResultDto Add(CardboxDto dto)
         {
             string newRow = $"{dto.DateAdded},{dto.CardboxNumber},{dto.QuestionType},{dto.Question}";
-            _unsaved.AppendLine(newRow);
+            Unsaved.AppendLine(newRow);
 
             return new ResultDto();
+        }
+
+        public ResultDto Commit()
+        {
+            throw new NotImplementedException();
         }
     }
 }

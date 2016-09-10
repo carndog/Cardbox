@@ -68,6 +68,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CardboxDefintionRepositoryTests.cs" />
     <Compile Include="AnagrammerTests.cs" />
     <Compile Include="CardboxTests.cs" />
     <Compile Include="ExecutingAssemblyFilePath.cs" />
@@ -89,6 +90,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

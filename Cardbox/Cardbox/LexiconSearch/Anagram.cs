@@ -12,7 +12,6 @@ namespace Cardbox.LexiconSearch
             _trieSearcher = trieSearcher;
         }
 
-
         public IList<string> Query(string searchTerm)
         {
             return _trieSearcher.Query(searchTerm, (enumerable => enumerable.Where(x => x.Length == searchTerm.Length)))

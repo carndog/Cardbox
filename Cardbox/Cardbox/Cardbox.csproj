@@ -47,10 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CardboxDefinitionService.cs" />
     <Compile Include="WordService.cs" />
     <Compile Include="AnswerDto.cs" />
-    <Compile Include="CardboxDefintionDb.cs" />
-    <Compile Include="CardboxData.cs" />
+    <Compile Include="CardboxDefinitionRepository.cs" />
+    <Compile Include="CardboxRepository.cs" />
     <Compile Include="CardboxDefinitionDto.cs" />
     <Compile Include="CardboxDto.cs" />
     <Compile Include="LexiconSearch\Anagram.cs" />
@@ -67,8 +68,6 @@
     <Compile Include="QuestionType.cs" />
     <Compile Include="ResultDto.cs" />
     <Compile Include="CardboxService.cs" />
-    <Compile Include="ICardboxDefinitionRepository.cs" />
-    <Compile Include="ICardboxRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

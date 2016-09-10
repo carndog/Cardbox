@@ -3,10 +3,10 @@
     public class CardboxService
     {
         private readonly WordService _anagrammer;
-        private readonly ICardboxRepository _cardboxRepository;
+        private readonly CardboxRepository _cardboxRepository;
 
         public CardboxService(WordService anagrammer,
-             ICardboxRepository cardboxRepository)
+             CardboxRepository cardboxRepository)
         {
             _anagrammer = anagrammer;
             _cardboxRepository = cardboxRepository;
