@@ -7,40 +7,39 @@ namespace Cardbox
 {
     public class CardboxDefinitionRepository
     {
+        private static readonly string FilePath;
+
         static CardboxDefinitionRepository()
         {
-            string filePath = ConfigurationManager.AppSettings["cardboxDefinition"];
+            FilePath = ConfigurationManager.AppSettings["cardboxDefinition"];
 
-            EnsureDirectoryExists(filePath);
-
-        }
-
-        public static readonly Lazy<CardboxDefinitionRepository> CardboxDefinitionDb = new Lazy<CardboxDefinitionRepository>(() =>
-        {
-            string filePath = ConfigurationManager.AppSettings["cardboxDefinition"];
-
-            using (var reader = new StreamReader(filePath))
-            {
-                string cardboxData = reader.ReadToEnd();
-                var str = new StringBuilder(cardboxData);
-                return new CardboxDefinitionRepository(str);
-            };
-        });
-
-        private static void EnsureDirectoryExists(string filePath)
-        {
-            string directoryName = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(directoryName))
+            string directoryName = Path.GetDirectoryName(FilePath);
+            if (directoryName != null && !Directory.Exists(directoryName))
             {
                 Directory.CreateDirectory(directoryName);
             }
         }
 
-        public StringBuilder Unsaved { get; }
+        private static readonly Lazy<CardboxDefinitionRepository> CardboxDefinitionDb = new Lazy<CardboxDefinitionRepository>(() =>
+        {
+            if (File.Exists(FilePath))
+            {
+                var str = new StringBuilder(File.ReadAllText(FilePath));
+                return new CardboxDefinitionRepository(str);
+            }
+            else
+            {
+                return new CardboxDefinitionRepository(new StringBuilder(string.Empty));
+            }
+        });
+
+        private StringBuilder Unsaved { get; }
 
         public static CardboxDefinitionRepository Instance => CardboxDefinitionDb.Value;
 
-        public CardboxDefinitionRepository(StringBuilder unsaved)
+        private CardboxDefinitionRepository() { }
+
+        private CardboxDefinitionRepository(StringBuilder unsaved)
         {
             Unsaved = unsaved;
         }
@@ -56,7 +55,8 @@ namespace Cardbox
         public ResultDto Commit()
         {
             string path = ConfigurationManager.AppSettings["cardboxDefinition"];
-            using (StreamWriter writer = File.AppendText(path))
+
+            using (StreamWriter writer = File.CreateText(path))
             {
                 writer.Write(Unsaved);
             }
