@@ -1,4 +1,4 @@
-﻿using Cardbox;
+﻿using Backup;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -13,13 +13,13 @@ namespace CardboxTests
         [TestMethod]
         public void GivenCardbox_WhenCommit_ThenDataIsCorrect()
         {
-            CardboxDefinitionRepository.Instance.Add(new CardboxDefinitionDto
+            CardboxDefinition cardboxDefinition = new CardboxDefinition
             {
                 Number = 1,
                 Duration = new TimeSpan(1, 1, 1)
-            });
+            };
 
-            CardboxDefinitionRepository.Instance.Commit();
+            CardboxDefinitionRepository.Instance.Add(cardboxDefinition);
 
             string cardboxDefinitionPath = ConfigurationManager.AppSettings["cardboxDefinition"];
 

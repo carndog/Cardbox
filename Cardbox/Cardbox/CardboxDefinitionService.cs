@@ -1,4 +1,6 @@
-﻿namespace Cardbox
+﻿using Backup;
+
+namespace Cardbox
 {
     public class CardboxDefinitionService
     {
@@ -9,7 +11,7 @@
             _cardboxDefinitionRepository = cardboxRepository;
         }
 
-        public ResultDto Add(CardboxDefinitionDto dto)
+        public ResultDto Add(CardboxDefinition dto)
         {
             ResultDto resultDto = _cardboxDefinitionRepository.Add(dto);
 
