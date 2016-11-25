@@ -63,11 +63,8 @@
     <Compile Include="CardboxDefinitionService.cs" />
     <Compile Include="WordService.cs" />
     <Compile Include="AnswerDto.cs" />
-    <Compile Include="CardboxRepository.cs" />
-    <Compile Include="CardboxDto.cs" />
     <Compile Include="LexiconSearch\Anagram.cs" />
     <Compile Include="LexiconSearch\Build.cs" />
-    <Compile Include="LexiconSearch\ConfigurationFilePath.cs" />
     <Compile Include="LexiconSearch\Extensions.cs" />
     <Compile Include="LexiconSearch\FilePathHelper.cs" />
     <Compile Include="LexiconSearch\AnagramTrieBuilder.cs" />
@@ -76,7 +73,6 @@
     <Compile Include="LexiconSearch\Pattern.cs" />
     <Compile Include="LexiconSearch\TrieNode.cs" />
     <Compile Include="LexiconSearch\TrieSearcher.cs" />
-    <Compile Include="QuestionType.cs" />
     <Compile Include="CardboxService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

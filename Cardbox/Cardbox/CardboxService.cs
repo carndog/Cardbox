@@ -21,7 +21,7 @@ namespace Cardbox
             return answer;
         }
 
-        public ResultDto Add(CardboxDto dto)
+        public ResultDto Add(Backup.Cardbox dto)
         {
             ResultDto resultDto = _cardboxRepository.Add(dto);
 
