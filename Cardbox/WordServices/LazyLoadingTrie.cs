@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cardbox.LexiconSearch
+namespace WordServices
 {
     public class LazyLoadingTrie
     {

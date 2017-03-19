@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Cardbox.LexiconSearch
+namespace WordServices
 {
     public static class StringExtensions
     {
@@ -21,6 +21,7 @@ namespace Cardbox.LexiconSearch
             char[] chars = word.Where(c => c != '.').ToArray();
             Array.Sort(chars);
             char[] result = new char[word.Length];
+
             if (blanksFirst)
             {
                 wildcards.CopyTo(result, 0);
@@ -31,6 +32,7 @@ namespace Cardbox.LexiconSearch
                 chars.CopyTo(result, 0);
                 wildcards.CopyTo(result, chars.Length);
             }
+
             return new string(result);
         }
 
@@ -38,6 +40,7 @@ namespace Cardbox.LexiconSearch
         {
             char[] chars = word.ToCharArray();
             Array.Sort(chars);
+
             return new string(chars);
         }
 

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Cardbox.LexiconSearch
+namespace CardboxTests
 {
     public static class FilePathHelper
     {

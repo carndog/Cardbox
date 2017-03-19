@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CardboxTests</RootNamespace>
     <AssemblyName>CardboxTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -86,6 +87,7 @@
     <Compile Include="CardboxDefinitionServiceTests.cs" />
     <Compile Include="CardboxTests.cs" />
     <Compile Include="ExecutingAssemblyFilePath.cs" />
+    <Compile Include="FilePathHelper.cs" />
     <Compile Include="LexiconRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -98,13 +100,17 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Backup\Backup.csproj">
-      <Project>{D63C0A0A-5503-4695-AE74-3C650EDC2E44}</Project>
-      <Name>Backup</Name>
+    <ProjectReference Include="..\CardboxDefinition\CardboxDefinition.csproj">
+      <Project>{E7A8A2F7-93BD-447E-87A3-548E0CED05A9}</Project>
+      <Name>CardboxDefinition</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cardbox\Cardbox.csproj">
       <Project>{CC1D7E6F-E105-4973-A428-0DFD775180F6}</Project>
       <Name>Cardbox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordServices\WordServices.csproj">
+      <Project>{20C231A5-030B-4D95-B958-37D5924DFA42}</Project>
+      <Name>WordServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

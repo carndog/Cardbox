@@ -1,6 +1,4 @@
-﻿using Backup;
-using Cardbox;
-using Cardbox.LexiconSearch;
+﻿using Cardbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NodaTime;
 using System;
@@ -10,19 +8,14 @@ namespace CardboxTests
     [TestClass]
     public class CardboxTests
     {
-        private readonly CardboxService _cardboxService = new CardboxService(
-            new WordService
-            (new TrieSearcher(
-                new LazyLoadingTrie(
-                    new AnagramTrieBuilder(
-                        new ExecutingAssemblyFilePath().GetPath(), new TrieNode())))), new CardboxRepository());
+        private readonly CardboxService _cardboxService = new CardboxService(new CardboxRepository());
 
         [TestMethod]
         public void AddCardbox()
         {
-            _cardboxService.Add(new Backup.Cardbox()
+            _cardboxService.Add(new Cardbox.Cardbox()
             {
-                CardboxDefinition = new CardboxDefinition
+                CardboxDefinition = new Cardbox.CardboxDefinition
                 {
                     Duration = new TimeSpan(20, 0, 0),
                     Number = 2

@@ -1,8 +1,7 @@
-﻿using Cardbox;
-using Cardbox.LexiconSearch;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using WordServices;
 
 namespace CardboxTests
 {

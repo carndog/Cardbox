@@ -1,6 +1,4 @@
-﻿using Backup;
-
-namespace Cardbox
+﻿namespace CardboxDefinition
 {
     public class CardboxDefinitionService
     {

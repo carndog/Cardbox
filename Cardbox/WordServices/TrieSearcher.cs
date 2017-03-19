@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cardbox.LexiconSearch
+namespace WordServices
 {
     public class TrieSearcher
     {

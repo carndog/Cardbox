@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Cardbox.LexiconSearch
+namespace WordServices
 {
     public class Pattern : ISearch
     {

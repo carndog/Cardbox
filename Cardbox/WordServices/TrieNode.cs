@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Cardbox.LexiconSearch
+namespace WordServices
 {
     public class TrieNode
     {

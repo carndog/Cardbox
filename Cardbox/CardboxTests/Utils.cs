@@ -1,4 +1,4 @@
-﻿using Cardbox.LexiconSearch;
+﻿using WordServices;
 
 namespace CardboxTests
 {

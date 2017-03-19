@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cardbox", "Cardbox\Cardbox.csproj", "{CC1D7E6F-E105-4973-A428-0DFD775180F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardboxTests", "CardboxTests\CardboxTests.csproj", "{FEDC9DEE-0C12-43AA-94BD-B1B1155A398E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backup", "Backup\Backup.csproj", "{D63C0A0A-5503-4695-AE74-3C650EDC2E44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordServices", "WordServices\WordServices.csproj", "{20C231A5-030B-4D95-B958-37D5924DFA42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardboxDefinition", "CardboxDefinition\CardboxDefinition.csproj", "{E7A8A2F7-93BD-447E-87A3-548E0CED05A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +25,14 @@ Global
 		{FEDC9DEE-0C12-43AA-94BD-B1B1155A398E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEDC9DEE-0C12-43AA-94BD-B1B1155A398E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEDC9DEE-0C12-43AA-94BD-B1B1155A398E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D63C0A0A-5503-4695-AE74-3C650EDC2E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D63C0A0A-5503-4695-AE74-3C650EDC2E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D63C0A0A-5503-4695-AE74-3C650EDC2E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D63C0A0A-5503-4695-AE74-3C650EDC2E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C231A5-030B-4D95-B958-37D5924DFA42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C231A5-030B-4D95-B958-37D5924DFA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C231A5-030B-4D95-B958-37D5924DFA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C231A5-030B-4D95-B958-37D5924DFA42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A8A2F7-93BD-447E-87A3-548E0CED05A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A8A2F7-93BD-447E-87A3-548E0CED05A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A8A2F7-93BD-447E-87A3-548E0CED05A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A8A2F7-93BD-447E-87A3-548E0CED05A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

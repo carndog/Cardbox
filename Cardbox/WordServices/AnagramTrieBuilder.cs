@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Cardbox.LexiconSearch
+namespace WordServices
 {
     public class AnagramTrieBuilder
     {
@@ -23,7 +23,8 @@ namespace Cardbox.LexiconSearch
                 throw new FileNotFoundException(Path);
             }
 
-            using (var reader = new StreamReader(Path))
+            using (var fileStream = new FileStream(Path, FileMode.Open))
+            using (var reader = new StreamReader(fileStream))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)

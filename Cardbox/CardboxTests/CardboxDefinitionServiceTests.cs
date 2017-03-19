@@ -1,7 +1,7 @@
-﻿using Backup;
-using Cardbox;
+﻿using Cardbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using CardboxDefinition;
 
 namespace CardboxTests
 {
@@ -13,7 +13,7 @@ namespace CardboxTests
         [TestMethod]
         public void AddCardboxDefinition()
         {
-            _cardboxDefinitionService.Add(new CardboxDefinition
+            _cardboxDefinitionService.Add(new CardboxDefinition.CardboxDefinition
             {
                 Duration = new TimeSpan(20, 0, 0),
                 Number = 1

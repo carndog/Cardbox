@@ -1,6 +1,6 @@
-﻿using Cardbox.LexiconSearch;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using WordServices;
 
 namespace CardboxTests
 {

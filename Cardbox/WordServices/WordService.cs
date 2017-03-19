@@ -1,8 +1,7 @@
-﻿using Cardbox.LexiconSearch;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Cardbox
+namespace WordServices
 {
     public class WordService
     {

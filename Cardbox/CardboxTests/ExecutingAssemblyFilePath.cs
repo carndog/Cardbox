@@ -1,5 +1,4 @@
-﻿using Cardbox.LexiconSearch;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace CardboxTests
 {
