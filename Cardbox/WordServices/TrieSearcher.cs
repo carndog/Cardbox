@@ -17,8 +17,10 @@ namespace WordServices
             _resultsList = new List<string>(defaultCapacity);
         }
 
-        public List<string> Query(string searchTerm, Func<IEnumerable<string>, IEnumerable<string>> wordFilter)
+        public IList<string> Query(string searchTerm, Func<IEnumerable<string>, IEnumerable<string>> wordFilter)
         {
+            _resultsList.Clear();
+
             List<string> query = QueryLexicon(searchTerm, _lazyTrie.Lexicon, wordFilter)
                 .OrderByDescending(x => x.Length).ToList();
 

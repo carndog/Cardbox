@@ -83,9 +83,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AnagrammerTests.cs" />
-    <Compile Include="CardboxDefinitionServiceTests.cs" />
-    <Compile Include="CardboxTests.cs" />
+    <Compile Include="ServiceTests.cs" />
+    <Compile Include="LeitnerTests.cs" />
     <Compile Include="ExecutingAssemblyFilePath.cs" />
     <Compile Include="FilePathHelper.cs" />
     <Compile Include="LexiconRepositoryTests.cs" />
@@ -100,13 +99,9 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CardboxDefinition\CardboxDefinition.csproj">
-      <Project>{E7A8A2F7-93BD-447E-87A3-548E0CED05A9}</Project>
-      <Name>CardboxDefinition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cardbox\Cardbox.csproj">
+    <ProjectReference Include="..\Cardbox\Leitner.csproj">
       <Project>{CC1D7E6F-E105-4973-A428-0DFD775180F6}</Project>
-      <Name>Cardbox</Name>
+      <Name>Leitner</Name>
     </ProjectReference>
     <ProjectReference Include="..\WordServices\WordServices.csproj">
       <Project>{20C231A5-030B-4D95-B958-37D5924DFA42}</Project>

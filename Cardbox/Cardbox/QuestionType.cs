@@ -1,4 +1,4 @@
-namespace Cardbox
+namespace Leitner
 {
     public enum QuestionType
     {

@@ -1,27 +1,27 @@
-﻿using Cardbox;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NodaTime;
 using System;
+using Leitner;
 
 namespace CardboxTests
 {
     [TestClass]
-    public class CardboxTests
+    public class LeitnerTests
     {
-        private readonly CardboxService _cardboxService = new CardboxService(new CardboxRepository());
+        private readonly LeitnerService _leitnerService = new LeitnerService(new LeitnerRepository());
 
         [TestMethod]
         public void AddCardbox()
         {
-            _cardboxService.Add(new Cardbox.Cardbox()
+            _leitnerService.Add(new Question()
             {
-                CardboxDefinition = new Cardbox.CardboxDefinition
+                Cardbox = new Cardbox
                 {
                     Duration = new TimeSpan(20, 0, 0),
                     Number = 2
                 },
                 DateAdded = SystemClock.Instance.Now.InUtc().LocalDateTime.Date,
-                Question = "ISX",
+                Text = "ISX",
                 QuestionType = QuestionType.Anagram
             });
         }

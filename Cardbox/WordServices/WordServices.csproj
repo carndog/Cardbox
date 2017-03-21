@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Anagram.cs" />
     <Compile Include="AnagramTrieBuilder.cs" />
-    <Compile Include="AnswerDto.cs" />
+    <Compile Include="Answer.cs" />
     <Compile Include="Build.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ISearch.cs" />

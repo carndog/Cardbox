@@ -12,25 +12,30 @@ namespace WordServices
             _searcher = searcher;
         }
 
-        public AnswerDto Anagram(string question)
+        public Answer Anagram(string question)
         {
             IList<string> words = _searcher.Query(question,
                 wordsAtTerminal => wordsAtTerminal.Where(x => x.Length == question.Length));
 
-            return new AnswerDto
+            return new Answer
             {
                 Words = words
             };
         }
 
-        //public AnswerDto Build(string question)
-        //{
+        public Answer Build(string question)
+        {
+            IList<string> words = _searcher.Query(question, x => x);
 
-        //}
+            return new Answer
+            {
+                Words = words
+            };
+        }
 
-        //public AnswerDto Pattern(string question)
-        //{
-
-        //}
+        public Answer Pattern(string question)
+        {
+            return null;
+        }
     }
 }

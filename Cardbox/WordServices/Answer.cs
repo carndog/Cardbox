@@ -2,7 +2,7 @@
 
 namespace WordServices
 {
-    public class AnswerDto
+    public class Answer
     {
         public IEnumerable<string> Words { get; set; }
     }

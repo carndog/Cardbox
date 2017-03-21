@@ -1,8 +1,8 @@
-﻿namespace Cardbox
+﻿namespace Leitner
 {
-    public class ResultDto
+    public class Result
     {
-        public ResultDto(bool success = true)
+        public Result(bool success = true)
         {
             Success = success;
         }
