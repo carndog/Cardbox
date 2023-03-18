@@ -7,23 +7,23 @@ public class Utils
 {
     public AnagramTrieBuilder AnagramTrieBuilder { get; set; }
 
-    public string FilePath { get; set; }
-
     public void CreateTrieLoader()
     {
-        FilePath = AssemblyDirectory;
-
-        AnagramTrieBuilder = new AnagramTrieBuilder(FilePath, new TrieNode());
+        AnagramTrieBuilder = new AnagramTrieBuilder(TestFilePath, new TrieNode());
     }
     
-    public static string AssemblyDirectory
+    public static string TestFilePath
     {
         get
         {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            string path = Uri.UnescapeDataString(uri.Path);
-            return Path.GetDirectoryName(path);
+            string location = Assembly.GetExecutingAssembly().Location;
+            string[] parts = Path.GetDirectoryName(Path.GetDirectoryName(location)).Split(Path.DirectorySeparatorChar).TakeWhile(x => x != "bin").ToArray();
+            string[] relativePath = { "Resources", "TestDictionary.txt" };
+            string[] allParts = new string[parts.Length + relativePath.Length];
+            parts.CopyTo(allParts, 0);
+            relativePath.CopyTo(allParts, parts.Length);
+            string fullPath = Path.Combine(allParts);
+            return fullPath;
         }
     }
 }

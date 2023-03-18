@@ -14,7 +14,7 @@ public class ServiceTests
     {
         _service = new WordService(new TrieSearcher(
             new LazyLoadingTrie(new AnagramTrieBuilder(
-                AssemblyDirectory, new TrieNode()))));
+                TestFilePath, new TrieNode()))));
     }
 
     [Test]

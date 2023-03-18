@@ -13,11 +13,11 @@ public class TrieSearcherTests
     [SetUp]
     public void SetUp()
     {
-        _anagram = new Anagram(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(AssemblyDirectory, new TrieNode()))));
+        _anagram = new Anagram(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(TestFilePath, new TrieNode()))));
 
-        _pattern = new Pattern(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(AssemblyDirectory, new TrieNode()))));
+        _pattern = new Pattern(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(TestFilePath, new TrieNode()))));
 
-        _build = new Build(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(AssemblyDirectory, new TrieNode()))));
+        _build = new Build(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(TestFilePath, new TrieNode()))));
     }
 
     [Test]
