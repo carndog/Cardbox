@@ -81,7 +81,7 @@ namespace WordServices
             TrieNode next;
             if (current.Edges.All(edge => edge.Label != c))
             {
-                next = new TrieNode() { Label = c, Edges = new List<TrieNode>() };
+                next = new TrieNode { Label = c, Edges = new List<TrieNode>() };
                 current.Edges.Add(next);
             }
             else

@@ -8,5 +8,5 @@ public class TrieNode
 
     public bool Terminal { get; set; }
 
-    public List<string> AnagramsAtTerminal { get; set; } = new();
+    public List<string> AnagramsAtTerminal { get; } = new();
 }

@@ -76,7 +76,7 @@ public class AnagramTrieBuilder
         TrieNode? next;
         if (current != null && current.Edges.All(edge => edge != null && edge.Label != c))
         {
-            next = new TrieNode() { Label = c, Edges = new List<TrieNode?>() };
+            next = new TrieNode { Label = c, Edges = new List<TrieNode?>() };
             current.Edges.Add(next);
         }
         else
