@@ -2,5 +2,5 @@
 
 public class Answer
 {
-    public IEnumerable<string> Words { get; set; } = new List<string>();
+    public IReadOnlyList<string> Words { get; init; } = new List<string>();
 }

@@ -1,4 +1,6 @@
-﻿namespace BonusAccumulator.WordServices;
+﻿using BonusAccumulator.WordServices.TrieSearching;
+
+namespace BonusAccumulator.WordServices.TrieLoading;
 
 public class AnagramTrieBuilder
 {

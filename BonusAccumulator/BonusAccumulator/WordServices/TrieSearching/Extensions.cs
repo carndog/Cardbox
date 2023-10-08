@@ -1,4 +1,4 @@
-﻿namespace BonusAccumulator.WordServices;
+﻿namespace BonusAccumulator.WordServices.TrieSearching;
 
 public static class StringExtensions
 {

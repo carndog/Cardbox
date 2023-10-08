@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using BonusAccumulator.WordServices;
+using BonusAccumulator.WordServices.TrieLoading;
 
 namespace WordServicesTests;
 

@@ -1,4 +1,4 @@
-﻿namespace BonusAccumulator.WordServices;
+﻿namespace BonusAccumulator.WordServices.TrieLoading;
 
 public class LazyLoadingTrie
 {

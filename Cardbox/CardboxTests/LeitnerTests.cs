@@ -11,7 +11,7 @@ namespace CardboxTests
         private readonly LeitnerService _leitnerService = new LeitnerService(new LeitnerRepository());
 
         [TestMethod]
-        public void AddCardbox()
+        public void AddCardBox()
         {
             _leitnerService.Add(new Question()
             {

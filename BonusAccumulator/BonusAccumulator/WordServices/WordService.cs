@@ -1,4 +1,8 @@
-﻿namespace BonusAccumulator.WordServices;
+﻿using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+using BonusAccumulator.WordServices.TrieSearching;
+
+namespace BonusAccumulator.WordServices;
 
 public class WordService
 {
@@ -16,7 +20,7 @@ public class WordService
 
         return new Answer
         {
-            Words = words
+            Words = new ReadOnlyCollection<string>(words)
         };
     }
 
@@ -26,7 +30,20 @@ public class WordService
 
         return new Answer
         {
-            Words = words
+            Words = new ReadOnlyCollection<string>(words)
+        };
+    }
+
+    public Answer Pattern(string question)
+    {
+        Func<IEnumerable<string>, IEnumerable<string>> wordFilter =
+            filter => filter.Where(x => x.Length == question.Length && new Regex(question.ToUpper()).IsMatch(x));
+        
+        IList<string> words = _searcher.Query(question, wordFilter);
+
+        return new Answer
+        {
+            Words = new ReadOnlyCollection<string>(words)
         };
     }
 }

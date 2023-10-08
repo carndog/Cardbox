@@ -1,4 +1,6 @@
-namespace BonusAccumulator.WordServices;
+using BonusAccumulator.WordServices.TrieLoading;
+
+namespace BonusAccumulator.WordServices.TrieSearching;
 
 public class TrieSearcher
 {
