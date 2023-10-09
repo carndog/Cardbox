@@ -11,7 +11,8 @@ const string ExitCommand = "x";
 const string AnagramCommand = "a";
 const string BuildCommand = "b";
 const string PatternCommand = "p";
-const string CommandsText = $"Please {AnagramCommand} for anagram or {BuildCommand} for build or {PatternCommand} for pattern OR {ExitCommand} for Exit: ";
+const string DistanceCommand = "d";
+const string CommandsText = $"Commands: Anagram: {AnagramCommand}, Build: {BuildCommand}, Pattern: {PatternCommand}, Distance: {DistanceCommand}, Exit: {ExitCommand}:   ";
 
 
 while (!command.Equals(ExitCommand, StringComparison.CurrentCultureIgnoreCase))
@@ -40,6 +41,12 @@ while (!command.Equals(ExitCommand, StringComparison.CurrentCultureIgnoreCase))
             command = Console.ReadLine();
             Answer pattern = wordService.Pattern(command);
             Console.WriteLine(string.Join(",", pattern.Words));
+            break;
+        case DistanceCommand:
+            Console.Write($"Enter the characters: ");
+            command = Console.ReadLine();
+            Answer distance = wordService.Distance(command);
+            Console.WriteLine(string.Join(",", distance.Words));
             break;
     }
 }
