@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text;
 using System.Text.RegularExpressions;
+using BonusAccumulator.WordServices.Helpers;
 using BonusAccumulator.WordServices.TrieSearching;
 
 namespace BonusAccumulator.WordServices;
@@ -38,7 +39,7 @@ public class WordService
     public Answer Pattern(string question)
     {
         Func<IEnumerable<string>, IEnumerable<string>> wordFilter =
-            filter => filter.Where(x => x.Length == question.Length && new Regex(question.ToUpper()).IsMatch(x));
+            filter => filter.Where(x => x.Length == question.Length && Regex.IsMatch(x, question.ToUpper()));
         
         IList<string> words = _searcher.Query(question, wordFilter);
 
@@ -48,20 +49,30 @@ public class WordService
         };
     }
 
-    public Answer Distance(string question)
+    public Answer Distance(string? question)
     {
-        const char wildcard = '.';
+        if (question == null)
+            return new Answer();
 
-        StringBuilder modifiedQuestion = new StringBuilder(question.ToUpper());
+        return RunWildCardCharacterQuestion(() => question, Pattern);
+    }
+    
+    public Answer AlphagramDistance(string? question)
+    {
+        if (question == null)
+            return new Answer();
+
+        return RunWildCardCharacterQuestion(question.ToAlphagram, Anagram);
+    }
+
+    private Answer RunWildCardCharacterQuestion(Func<string> getQuestion, Func<string, Answer> getAnswer)
+    {
         HashSet<string> words = new HashSet<string>();
 
-        for (int i = 0; i < question.Length; i++)
+        foreach (string modifiedQuestion in getQuestion().ToWildCardCharacterQuestions())
         {
-            char c = question[i];
-            modifiedQuestion[i] = wildcard;
-            Answer pattern = Pattern(modifiedQuestion.ToString());
-            modifiedQuestion[i] = c;
-            words.UnionWith(pattern.Words);
+            Answer anagram = getAnswer(modifiedQuestion);
+            words.UnionWith(anagram.Words);
         }
 
         return new Answer

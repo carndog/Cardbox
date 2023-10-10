@@ -44,12 +44,13 @@ public class TrieSearcherTests
     public void RunBuildWithWildcardSearch()
     {
         Answer results = _wordService.Build("ZEBR.AS.");
-        Assert.AreEqual(5, results.Words.Count);
+        Assert.AreEqual(6, results.Words.Count);
         Assert.IsTrue(results.Words.Contains("ZEBRASS"));
         Assert.IsTrue(results.Words.Contains("ZEBRA"));
         Assert.IsTrue(results.Words.Contains("ZOO"));
         Assert.IsTrue(results.Words.Contains("CAT"));
         Assert.IsTrue(results.Words.Contains("ACT"));
+        Assert.IsTrue(results.Words.Contains("TWA"));
     }
 
 
@@ -61,7 +62,6 @@ public class TrieSearcherTests
         Assert.IsTrue(results.Words.Contains("ZEBRASS"));
     }
 
-
     [Test]
     public void RunAnagramWithWildcardSearch()
     {
@@ -72,7 +72,7 @@ public class TrieSearcherTests
     
     [TestCase("tipula", "TIPUNA")]
     [TestCase("tupuna", "TIPUNA")]
-    public void RunAlphagramDistanceSearch(string search, string match)
+    public void RunDistanceSearch(string search, string match)
     {
         Answer results = _wordService.Distance(search);
         Assert.AreEqual(2, results.Words.Count);
@@ -81,12 +81,22 @@ public class TrieSearcherTests
     }
 
     [Test]
-    public void RunAlphagramDistanceWildcardSearch()
+    public void RunDistanceWildcardSearch()
     {
         Answer results = _wordService.Distance("TIPU.A");
         Assert.AreEqual(3, results.Words.Count);
         Assert.IsTrue(results.Words.Contains("TIPULA"));
         Assert.IsTrue(results.Words.Contains("TIPUNA"));
         Assert.IsTrue(results.Words.Contains("TUPUNA"));
+    }
+
+    [Test]
+    public void RunWithAlphagramDistance()
+    {
+        Answer results = _wordService.AlphagramDistance("act");
+        Assert.AreEqual(3, results.Words.Count);
+        Assert.IsTrue(results.Words.Contains("ACT"));
+        Assert.IsTrue(results.Words.Contains("CAT"));
+        Assert.IsTrue(results.Words.Contains("TWA"));
     }
 }

@@ -1,4 +1,4 @@
-﻿using BonusAccumulator.WordServices.TrieSearching;
+﻿using BonusAccumulator.WordServices.Helpers;
 
 namespace BonusAccumulator.WordServices.TrieLoading;
 
