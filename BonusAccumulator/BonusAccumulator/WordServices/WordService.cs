@@ -17,7 +17,7 @@ public class WordService
         Added
     }
 
-    private readonly SessionState _state = new ();
+    private readonly SessionState _state = new (new SettingsProvider());
 
     private readonly HashSet<string> _unasked = new();
 

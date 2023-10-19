@@ -7,7 +7,7 @@ public static class WordServiceFactory
 {
     public static WordService Create()
     {
-        string? lexiconListTxt = Configuration.GetSetting("DictionaryPath");
+        string? lexiconListTxt = new SettingsProvider().GetSetting("DictionaryPath");
         return new WordService(new TrieSearcher(
             new LazyLoadingTrie(new AnagramTrieBuilder(
                 lexiconListTxt, new TrieNode()))));

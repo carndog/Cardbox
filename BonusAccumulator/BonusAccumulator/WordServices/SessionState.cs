@@ -2,11 +2,18 @@ namespace BonusAccumulator.WordServices;
 
 public class SessionState
 {
+    private readonly ISettingsProvider _settingsProvider;
+    
     public HashSet<string> SessionWords { get; } = new();
     
     public HashSet<string> AddedWords { get; } = new();
     
     public List<string> LastResult { get; } = new();
+
+    public SessionState(ISettingsProvider settingsProvider)
+    {
+        _settingsProvider = settingsProvider;
+    }
 
     public void Update(IList<string> words)
     {
@@ -23,9 +30,9 @@ public class SessionState
     public string SaveAdded()
     {
         string name = DateTime.Now.ToString("s").Replace(":", "");
-        string filePath = string.Format(Configuration.GetSetting("SessionOutputPath") ?? string.Empty, name);
-        using (StreamWriter writer = new(filePath))
-            writer.WriteLine(string.Join(Environment.NewLine, AddedWords));
+        string filePath = string.Format(_settingsProvider.GetSetting("SessionOutputPath") ?? string.Empty, name);
+        using StreamWriter writer = new(filePath);
+        writer.WriteLine(string.Join(Environment.NewLine, AddedWords));
         return filePath;
     }
 }
