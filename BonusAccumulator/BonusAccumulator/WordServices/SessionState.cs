@@ -19,12 +19,6 @@ public class SessionState
     {
         AddedWords.UnionWith(words);
     }
-    
-    public void AddLastWords()
-    {
-        AddedWords.UnionWith(LastResult);
-        LastResult.Clear();
-    }
 
     public string SaveAdded()
     {
