@@ -2,9 +2,9 @@
 
 public class TrieNode
 {
-    public List<TrieNode?> Edges { get; set; } = new();
+    public List<TrieNode?> Edges { get; init; } = new();
 
-    public char Label { get; set; }
+    public char Label { get; init; }
 
     public bool Terminal { get; set; }
 

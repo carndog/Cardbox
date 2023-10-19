@@ -137,8 +137,7 @@ public class WordService
                 if (_unasked.Contains(answer))
                 {
                     write($"{question} {sessionQuiz.Words.Count}");
-                    s = read();
-                    string[] answers = s.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                    string[] answers = read()?.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
                     List<string> list = answers.Union(sessionQuiz.Words).ToList();
                     write(string.Empty);
                     write(list.Count == sessionQuiz.Words.Count ? "Correct" : "Wrong");

@@ -6,7 +6,6 @@ using BonusAccumulator.WordServices.Factories;
 WordService wordService = WordServiceFactory.Create();
 
 string? command = "";
-string? reply = null;
 
 const string ExitCommand = "x";
 const string AnagramCommand = "a";
