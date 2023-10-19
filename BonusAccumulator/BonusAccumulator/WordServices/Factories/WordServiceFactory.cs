@@ -7,7 +7,7 @@ public static class WordServiceFactory
 {
     public static WordService Create()
     {
-        const string lexiconListTxt = @"C:\Lexicon\list.txt";
+        string? lexiconListTxt = Configuration.GetSetting("DictionaryPath");
         return new WordService(new TrieSearcher(
             new LazyLoadingTrie(new AnagramTrieBuilder(
                 lexiconListTxt, new TrieNode()))));

@@ -2,5 +2,5 @@
 
 public class Answer
 {
-    public IReadOnlyList<string> Words { get; init; } = new List<string>();
+    public IList<string> Words { get; init; } = new List<string>();
 }

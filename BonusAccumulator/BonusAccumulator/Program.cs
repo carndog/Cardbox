@@ -1,17 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using BonusAccumulator;
 using BonusAccumulator.WordServices;
 using BonusAccumulator.WordServices.Factories;
 
 WordService wordService = WordServiceFactory.Create();
-QuizService quizService = new();
 
 string? command = "";
-HashSet<string> sessionWords = new HashSet<string>();
-HashSet<string> addedWords = new HashSet<string>();
-List<string> lastResult = new List<string>();
-Random random = new Random((int)DateTime.Now.Ticks);
 string? reply = null;
 
 const string ExitCommand = "x";
@@ -53,9 +47,6 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
         case AnagramCommand:
             command = Console.ReadLine();
             Answer anagram = wordService.Anagram(command);
-            sessionWords.UnionWith(anagram.Words);
-            lastResult.Clear();
-            lastResult.AddRange(anagram.Words);
             Console.WriteLine(string.Join(",", anagram.Words));
             break;
         case BuildCommand:
@@ -66,53 +57,35 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
         case PatternCommand:
             command = Console.ReadLine();
             Answer pattern = wordService.Pattern(command);
-            sessionWords.UnionWith(pattern.Words);
-            lastResult.Clear();
-            lastResult.AddRange(pattern.Words);
             Console.WriteLine(string.Join(",", pattern.Words));
             break;
         case DistanceCommand:
             command = Console.ReadLine();
             Answer distance = wordService.Distance(command);
-            sessionWords.UnionWith(distance.Words);
-            lastResult.Clear();
-            lastResult.AddRange(distance.Words);
             Console.WriteLine(string.Join(",", distance.Words));
             break;
         case AlphagramDistanceCommand:
             command = Console.ReadLine();
             Answer alphagramDistance = wordService.AlphagramDistance(command);
-            sessionWords.UnionWith(alphagramDistance.Words);
-            lastResult.Clear();
-            lastResult.AddRange(alphagramDistance.Words);
             Console.WriteLine(string.Join(",", alphagramDistance.Words));
             break;
         case QuizSessionCommand:
-            quizService.RunQuiz(sessionWords, EndQuizSessionCommand, random, wordService, Console.WriteLine, Console.ReadLine);
+            wordService.RunQuiz(WordService.Options.Session, EndQuizSessionCommand, Console.WriteLine, Console.ReadLine);
             break;
         case QuizWordsCommand:
-            quizService.RunQuiz(addedWords, EndQuizSessionCommand, random, wordService, Console.WriteLine, Console.ReadLine);
+            wordService.RunQuiz(WordService.Options.Added, EndQuizSessionCommand, Console.WriteLine, Console.ReadLine);
             break;
         case StoreAndClearAdded:
-            string name = DateTime.Now.ToString("s").Replace(":", "");
-            using (StreamWriter writer = new($@"C:\\WordFromBonusAccumulator\session{name}.txt"))
-                writer.WriteLine(string.Join(Environment.NewLine, addedWords));
-            addedWords.Clear();
+            string name = wordService.StoreAndClearAdded();
             Console.WriteLine($"saved at {name}");
             break;
         case AddWordCommand:
             string readLine = Console.ReadLine() ?? string.Empty;
             string[] words = readLine.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            List<string> filtered = words.Where(x => wordService.Pattern(x).Words.Count > 0).ToList();
-            if (filtered.Count == 0)
-                Console.WriteLine("No valid words to add");
-            else
-                addedWords.UnionWith(filtered);
-
+            wordService.AddWords(words, Console.WriteLine);
             break;
         case AddLastWordsCommand:
-            addedWords.UnionWith(lastResult);
-            lastResult.Clear();
+            wordService.AddLastWords();
             break;
     }
 }

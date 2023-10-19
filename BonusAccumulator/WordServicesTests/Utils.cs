@@ -13,7 +13,7 @@ public class Utils
         AnagramTrieBuilder = new AnagramTrieBuilder(TestFilePath, new TrieNode());
     }
     
-    public static string TestFilePath
+    public static string? TestFilePath
     {
         get
         {
@@ -23,7 +23,7 @@ public class Utils
             string[] allParts = new string[parts.Length + relativePath.Length];
             parts.CopyTo(allParts, 0);
             relativePath.CopyTo(allParts, parts.Length);
-            string fullPath = Path.Combine(allParts);
+            string? fullPath = Path.Combine(allParts);
             return fullPath;
         }
     }

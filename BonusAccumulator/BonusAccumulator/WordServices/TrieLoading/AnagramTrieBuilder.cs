@@ -6,13 +6,13 @@ public class AnagramTrieBuilder
 {
     private readonly TrieNode? _item;
 
-    public AnagramTrieBuilder(string filePath, TrieNode? item)
+    public AnagramTrieBuilder(string? filePath, TrieNode? item)
     {
         Path = filePath;
         _item = item;
     }
 
-    public string Path { get; }
+    public string? Path { get; }
 
     public TrieNode? LoadLines()
     {
