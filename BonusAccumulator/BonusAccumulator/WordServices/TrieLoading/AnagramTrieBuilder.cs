@@ -20,14 +20,13 @@ public class AnagramTrieBuilder : IAnagramTrieBuilder
             throw new FileNotFoundException(_path);
         }
 
-        using (var fileStream = new FileStream(_path, FileMode.Open))
-        using (var reader = new StreamReader(fileStream))
+        using FileStream fileStream = new(_path, FileMode.Open);
+        using StreamReader reader = new(fileStream);
+        while (reader.ReadLine() is { } line)
         {
-            while (reader.ReadLine() is { } line)
-            {
-                LoadLine(_item, line);
-            }
+            LoadLine(_item, line);
         }
+
         return _item;
     }
 
