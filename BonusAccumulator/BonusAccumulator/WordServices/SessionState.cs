@@ -1,6 +1,6 @@
 namespace BonusAccumulator.WordServices;
 
-public class SessionState
+public class SessionState : ISessionState
 {
     private readonly ISettingsProvider _settingsProvider;
     

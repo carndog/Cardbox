@@ -10,6 +10,6 @@ public static class WordServiceFactory
         string? lexiconListTxt = new SettingsProvider().GetSetting("DictionaryPath");
         return new WordService(new TrieSearcher(
             new LazyLoadingTrie(new AnagramTrieBuilder(
-                lexiconListTxt, new TrieNode()))));
+                lexiconListTxt, new TrieNode()))), new SessionState(new SettingsProvider()));
     }
 }

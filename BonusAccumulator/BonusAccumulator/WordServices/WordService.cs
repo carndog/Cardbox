@@ -7,23 +7,24 @@ namespace BonusAccumulator.WordServices;
 
 public class WordService
 {
-    private static readonly Random Random = new((int)DateTime.Now.Ticks);
-    
-    private readonly TrieSearcher _searcher;
-
     public enum Options 
     {
         Session,
         Added
     }
-
-    private readonly SessionState _state = new (new SettingsProvider());
+    
+    private static readonly Random Random = new((int)DateTime.Now.Ticks);
+    
+    private readonly ITrieSearcher _searcher;
+    
+    private readonly ISessionState _sessionState;
 
     private readonly HashSet<string> _unasked = new();
 
-    public WordService(TrieSearcher searcher)
+    public WordService(ITrieSearcher searcher, ISessionState sessionState)
     {
         _searcher = searcher;
+        _sessionState = sessionState;
     }
 
     public Answer Anagram(string question)
@@ -31,7 +32,7 @@ public class WordService
         IList<string> words = _searcher.Query(question,
             wordsAtTerminal => wordsAtTerminal.Where(x => x.Length == question.Length));
 
-        _state.Update(words);
+        _sessionState.Update(words);
         
         return new Answer
         {
@@ -56,7 +57,7 @@ public class WordService
         
         IList<string> words = _searcher.Query(question, wordFilter);
         
-        _state.Update(words);
+        _sessionState.Update(words);
 
         return new Answer
         {
@@ -71,7 +72,7 @@ public class WordService
 
         Answer answer = RunWildCardCharacterQuestion(() => question, Pattern);
         
-        _state.Update(answer.Words);
+        _sessionState.Update(answer.Words);
         
         return answer;
     }
@@ -83,7 +84,7 @@ public class WordService
 
         Answer answer = RunWildCardCharacterQuestion(question.ToAlphagram, Anagram);
         
-        _state.Update(answer.Words);
+        _sessionState.Update(answer.Words);
         
         return answer;
     }
@@ -94,19 +95,19 @@ public class WordService
         if (filtered.Count == 0)
             write("No valid words to add");
         else
-            _state.Add(filtered);
+            _sessionState.Add(filtered);
     }
     
     public void AddLastWords()
     {
-        _state.AddedWords.UnionWith(_state.LastResult);
-        _state.LastResult.Clear();
+        _sessionState.AddedWords.UnionWith(_sessionState.LastResult);
+        _sessionState.LastResult.Clear();
     }
 
     public string StoreAndClearAdded()
     {
-        string filePath = _state.SaveAdded();
-        _state.AddedWords.Clear();
+        string filePath = _sessionState.SaveAdded();
+        _sessionState.AddedWords.Clear();
         return filePath;
     }
 
@@ -116,7 +117,7 @@ public class WordService
         Action<string?> write,
         Func<string?> read)
     {
-        HashSet<string> storedWords = options == Options.Session ? _state.SessionWords : _state.AddedWords;
+        HashSet<string> storedWords = options == Options.Session ? _sessionState.SessionWords : _sessionState.AddedWords;
 
         if (storedWords.Count != 0)
         {

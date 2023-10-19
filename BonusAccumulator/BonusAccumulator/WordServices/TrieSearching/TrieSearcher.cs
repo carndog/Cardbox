@@ -3,7 +3,7 @@ using BonusAccumulator.WordServices.TrieLoading;
 
 namespace BonusAccumulator.WordServices.TrieSearching;
 
-public class TrieSearcher
+public class TrieSearcher : ITrieSearcher
 {
     private readonly LazyLoadingTrie _lazyTrie;
     private readonly List<string> _resultsList;
