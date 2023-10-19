@@ -1,8 +1,8 @@
 ﻿namespace BonusAccumulator.WordServices.TrieLoading;
 
-public class LazyLoadingTrie
+public class LazyLoadingTrie : ILazyLoadingTrie
 {
-    public LazyLoadingTrie(AnagramTrieBuilder anagramTrieBuilder)
+    public LazyLoadingTrie(IAnagramTrieBuilder anagramTrieBuilder)
     {
         LazyLexicon = new Lazy<TrieNode?>(anagramTrieBuilder.LoadLines);
     }

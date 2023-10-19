@@ -5,10 +5,10 @@ namespace BonusAccumulator.WordServices.TrieSearching;
 
 public class TrieSearcher : ITrieSearcher
 {
-    private readonly LazyLoadingTrie _lazyTrie;
+    private readonly ILazyLoadingTrie _lazyTrie;
     private readonly List<string> _resultsList;
 
-    public TrieSearcher(LazyLoadingTrie lazyTrie)
+    public TrieSearcher(ILazyLoadingTrie lazyTrie)
     {
         _lazyTrie = lazyTrie;
 

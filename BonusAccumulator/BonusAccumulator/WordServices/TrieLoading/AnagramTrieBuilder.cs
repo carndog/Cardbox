@@ -2,26 +2,25 @@
 
 namespace BonusAccumulator.WordServices.TrieLoading;
 
-public class AnagramTrieBuilder
+public class AnagramTrieBuilder : IAnagramTrieBuilder
 {
     private readonly TrieNode? _item;
-
+    private readonly string? _path;
+    
     public AnagramTrieBuilder(string? filePath, TrieNode? item)
     {
-        Path = filePath;
+        _path = filePath;
         _item = item;
     }
 
-    public string? Path { get; }
-
     public TrieNode? LoadLines()
     {
-        if (!File.Exists(Path))
+        if (!File.Exists(_path))
         {
-            throw new FileNotFoundException(Path);
+            throw new FileNotFoundException(_path);
         }
 
-        using (var fileStream = new FileStream(Path, FileMode.Open))
+        using (var fileStream = new FileStream(_path, FileMode.Open))
         using (var reader = new StreamReader(fileStream))
         {
             while (reader.ReadLine() is { } line)
@@ -32,7 +31,7 @@ public class AnagramTrieBuilder
         return _item;
     }
 
-    public void LoadLine(TrieNode? root, string? line)
+    private void LoadLine(TrieNode? root, string? line)
     {
         TrieNode? current = root;
         string? word = line?.Trim();
