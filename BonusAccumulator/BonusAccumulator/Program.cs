@@ -3,6 +3,7 @@
 using BonusAccumulator.WordServices;
 using BonusAccumulator.WordServices.Factories;
 using BonusAccumulator.WordServices.Helpers;
+using static System.Console;
 
 WordService wordService = WordServiceFactory.Create();
 
@@ -30,11 +31,11 @@ const string CommandsText = $"Commands: Anagram: {AnagramCommand}, Build: {Build
                             $"Store and clear added: {StoreAndClearAdded}, " +
                             $"End Exit: {ExitCommand}:";
 
-Console.Write(CommandsText);
+Write(CommandsText);
 
 while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentCultureIgnoreCase))
 {
-    command = Console.ReadLine();
+    command = ReadLine();
 
     if (command == null)
         continue;
@@ -44,54 +45,75 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
         case ExitCommand:
             break;
         case HelpCommand:
-            Console.Write(CommandsText);
+            Write(CommandsText);
             break;
         case AnagramCommand:
-            command = Console.ReadLine();
+            command = ReadLine();
             Answer anagram = wordService.Anagram(command);
-            Console.WriteLine(string.Join(",", anagram.Words));
+            WriteLine(string.Join(",", anagram.Words));
             break;
         case BuildCommand:
-            command = Console.ReadLine();
+            command = ReadLine();
             Answer build = wordService.Build(command);
-            Console.WriteLine(string.Join(",", build.Words));
+            WriteLine(string.Join(",", build.Words));
             break;
         case PatternCommand:
-            command = Console.ReadLine();
+            command = ReadLine();
             Answer pattern = wordService.Pattern(command);
-            Console.WriteLine(string.Join(",", pattern.Words));
+            WriteLine(string.Join(",", pattern.Words));
             break;
         case DistanceCommand:
-            command = Console.ReadLine();
+            command = ReadLine();
             Answer distance = wordService.Distance(command);
-            Console.WriteLine(string.Join(",", distance.Words));
+            WriteLine(string.Join(",", distance.Words));
             break;
         case AlphagramDistanceCommand:
-            command = Console.ReadLine();
+            command = ReadLine();
             Answer alphagramDistance = wordService.AlphagramDistance(command);
-            Console.WriteLine(string.Join(",", alphagramDistance.Words));
+            WriteLine(string.Join(",", alphagramDistance.Words));
             break;
         case QuizSessionCommand:
-            wordService.RunQuiz(WordService.Options.Session, EndQuizSessionCommand, Console.WriteLine, Console.ReadLine);
+            wordService.RunQuiz(WordService.Options.Session, EndQuizSessionCommand, WriteLine, ReadLine);
             break;
         case QuizWordsCommand:
-            wordService.RunQuiz(WordService.Options.Added, EndQuizSessionCommand, Console.WriteLine, Console.ReadLine);
+            wordService.RunQuiz(WordService.Options.Added, EndQuizSessionCommand, WriteLine, ReadLine);
             break;
         case StoreAndClearAdded:
             string name = wordService.StoreAndClearAdded();
-            Console.WriteLine($"saved at {name}");
+            WriteLine($"saved at {name}");
             break;
         case AddWordCommand:
-            string readLine = Console.ReadLine() ?? string.Empty;
+            string readLine = ReadLine() ?? string.Empty;
             string[] words = readLine.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            wordService.AddWords(words, Console.WriteLine);
+            wordService.AddWords(words, WriteLine);
             break;
         case ChainsCommand:
             while (command != EndChainsCommand)
             {
-                command = Console.ReadLine();
+                command = ReadLine();
+                if(command == null)
+                    continue;
                 Answer chainAnswer = wordService.Anagram(command);
-                Console.WriteLine(chainAnswer.Words.Count == 0 ? "No chains found" : string.Join(",", chainAnswer.Words) + " - " + string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
+                bool noResults = chainAnswer.Words.Count == 0;
+                WriteLine(noResults ? "No chains found" : string.Join(",", chainAnswer.Words) + " - " + string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
+                if (noResults is false)
+                {
+                    Answer chainAlphagramDistanceAnswers = wordService.AlphagramDistance(command);
+                    string next = string.Join(" , ", chainAlphagramDistanceAnswers.Words.Select(x => x.ToAlphagram())
+                        .Distinct().Select(x =>
+                        {
+                            foreach (char c in x)
+                            {
+                                if (command.Contains(c, StringComparison.OrdinalIgnoreCase) is false)
+                                {
+                                    return c.ToString();
+                                }
+                            }
+
+                            return string.Empty;
+                        }).Where(x => string.IsNullOrEmpty(x) is false).OrderBy(x => x).Distinct());
+                    WriteLine(next);
+                }
             }
             break;
         case AddLastWordsCommand:
@@ -100,4 +122,4 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
     }
 }
 
-Console.WriteLine("Goodbye!");
+WriteLine("Goodbye!");
