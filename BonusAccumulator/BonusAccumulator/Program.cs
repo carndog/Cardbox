@@ -2,6 +2,7 @@
 
 using BonusAccumulator.WordServices;
 using BonusAccumulator.WordServices.Factories;
+using BonusAccumulator.WordServices.Helpers;
 
 WordService wordService = WordServiceFactory.Create();
 
@@ -19,6 +20,8 @@ const string EndQuizSessionCommand = "eqs";
 const string AddWordCommand = "add";
 const string AddLastWordsCommand = "addlast";
 const string StoreAndClearAdded = "sca";
+const string ChainsCommand = "ch";
+const string EndChainsCommand = "xch";
 const string HelpCommand = "help";
 const string CommandsText = $"Commands: Anagram: {AnagramCommand}, Build: {BuildCommand}, Pattern: {PatternCommand}, " +
                             $"Distance: {DistanceCommand}, Alphagram Distance: {AlphagramDistanceCommand}, " +
@@ -82,6 +85,14 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             string readLine = Console.ReadLine() ?? string.Empty;
             string[] words = readLine.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries);
             wordService.AddWords(words, Console.WriteLine);
+            break;
+        case ChainsCommand:
+            while (command != EndChainsCommand)
+            {
+                command = Console.ReadLine();
+                Answer chainAnswer = wordService.Anagram(command);
+                Console.WriteLine(chainAnswer.Words.Count == 0 ? "No chains found" : string.Join(",", chainAnswer.Words) + " - " + string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
+            }
             break;
         case AddLastWordsCommand:
             wordService.AddLastWords();
