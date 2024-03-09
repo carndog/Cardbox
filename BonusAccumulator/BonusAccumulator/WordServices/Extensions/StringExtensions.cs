@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace BonusAccumulator.WordServices.Helpers;
+namespace BonusAccumulator.WordServices.Extensions;
 
 public static class StringExtensions
 {

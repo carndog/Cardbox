@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
-using BonusAccumulator.WordServices.Helpers;
+using BonusAccumulator.WordServices.Extensions;
 using BonusAccumulator.WordServices.TrieSearching;
 
 namespace BonusAccumulator.WordServices;
@@ -148,6 +148,61 @@ public class WordService
             }
 
             Console.WriteLine("Quiz over");
+        }
+    }
+
+    public void RunChainQuiz(string endCommand, Action<string?> write, Func<string?> read)
+    {
+        string? command = null;
+        while (command != endCommand)
+        {
+            command = read();
+            if (command == null)
+                continue;
+            Answer chainAnswer = Anagram(command);
+            bool noResults = chainAnswer.Words.Count == 0;
+            write(noResults
+                ? "No chains found"
+                : string.Join(",", chainAnswer.Words) + " - " +
+                  string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
+            if (noResults is false)
+            {
+                Answer chainAlphagramDistanceAnswers = AlphagramDistance(command);
+                string next = string.Join(" , ", chainAlphagramDistanceAnswers.Words.Select(x => x.ToAlphagram())
+                    .Distinct().Select(x =>
+                    {
+                        foreach (char c in x)
+                        {
+                            if (command.Contains(c, StringComparison.OrdinalIgnoreCase) is false)
+                            {
+                                return c.ToString();
+                            }
+                        }
+
+                        return string.Empty;
+                    }).Where(x => string.IsNullOrEmpty(x) is false).OrderBy(x => x).Distinct());
+                write(next);
+            }
+        }
+    }
+
+    public static void ConvertToAlphagrams(Action<string> writeLine, Func<string?> readLine)
+    {
+        string? line = readLine();
+        if (line != null)
+        {
+            ILookup<string, string> lookup = line.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .ToLookup(x => x.ToAlphagram(), x => x);
+            foreach (IGrouping<string, string> group in lookup)
+            {
+                writeLine(group.Count() != 1 ? $"{group.Key}-{group.Count()}" : $"{group.Key}");
+            }
+
+            writeLine("Answers");
+            foreach (IGrouping<string, string> group in lookup)
+            {
+                writeLine(group.Key + "- " + string.Join(", ", group));
+            }
         }
     }
 

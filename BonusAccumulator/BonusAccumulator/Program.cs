@@ -2,7 +2,6 @@
 
 using BonusAccumulator.WordServices;
 using BonusAccumulator.WordServices.Factories;
-using BonusAccumulator.WordServices.Helpers;
 using static System.Console;
 
 WordService wordService = WordServiceFactory.Create();
@@ -22,6 +21,7 @@ const string AddWordCommand = "add";
 const string AddLastWordsCommand = "addlast";
 const string StoreAndClearAdded = "sca";
 const string ChainsCommand = "ch";
+const string AlphagramConversionCommand = "ac";
 const string EndChainsCommand = "xch";
 const string HelpCommand = "help";
 const string CommandsText = $"Commands: Anagram: {AnagramCommand}, Build: {BuildCommand}, Pattern: {PatternCommand}, " +
@@ -88,33 +88,10 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             wordService.AddWords(words, WriteLine);
             break;
         case ChainsCommand:
-            while (command != EndChainsCommand)
-            {
-                command = ReadLine();
-                if(command == null)
-                    continue;
-                Answer chainAnswer = wordService.Anagram(command);
-                bool noResults = chainAnswer.Words.Count == 0;
-                WriteLine(noResults ? "No chains found" : string.Join(",", chainAnswer.Words) + " - " + string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
-                if (noResults is false)
-                {
-                    Answer chainAlphagramDistanceAnswers = wordService.AlphagramDistance(command);
-                    string next = string.Join(" , ", chainAlphagramDistanceAnswers.Words.Select(x => x.ToAlphagram())
-                        .Distinct().Select(x =>
-                        {
-                            foreach (char c in x)
-                            {
-                                if (command.Contains(c, StringComparison.OrdinalIgnoreCase) is false)
-                                {
-                                    return c.ToString();
-                                }
-                            }
-
-                            return string.Empty;
-                        }).Where(x => string.IsNullOrEmpty(x) is false).OrderBy(x => x).Distinct());
-                    WriteLine(next);
-                }
-            }
+            wordService.RunChainQuiz(EndChainsCommand, WriteLine, ReadLine);
+            break;
+        case AlphagramConversionCommand:
+            WordService.ConvertToAlphagrams(WriteLine, ReadLine);
             break;
         case AddLastWordsCommand:
             wordService.AddLastWords();

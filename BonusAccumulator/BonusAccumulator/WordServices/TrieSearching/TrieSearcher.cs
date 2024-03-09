@@ -1,4 +1,4 @@
-using BonusAccumulator.WordServices.Helpers;
+using BonusAccumulator.WordServices.Extensions;
 using BonusAccumulator.WordServices.TrieLoading;
 
 namespace BonusAccumulator.WordServices.TrieSearching;
@@ -12,8 +12,8 @@ public class TrieSearcher : ITrieSearcher
     {
         _lazyTrie = lazyTrie;
 
-        const int defaultCapacity = 20;
-        _resultsList = new List<string>(defaultCapacity);
+        const int DefaultCapacity = 20;
+        _resultsList = new List<string>(DefaultCapacity);
     }
 
     public IList<string> Query(string searchTerm, Func<IEnumerable<string>, IEnumerable<string>> wordFilter)
