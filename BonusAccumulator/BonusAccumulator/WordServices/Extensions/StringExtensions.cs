@@ -1,4 +1,5 @@
-﻿using System.Text;
+using System.Text;
+using static BonusAccumulator.WordServices.Constants;
 
 namespace BonusAccumulator.WordServices.Extensions;
 
@@ -14,8 +15,8 @@ public static class StringExtensions
 
     private static string CopyTo(string word, bool blanksFirst)
     {
-        char[] wildcards = word.Where(c => c == '.').ToArray();
-        char[] chars = word.Where(c => c != '.').ToArray();
+        char[] wildcards = word.Where(c => c == Wildcard).ToArray();
+        char[] chars = word.Where(c => c != Wildcard).ToArray();
         Array.Sort(chars);
         char[] result = new char[word.Length];
 
@@ -49,13 +50,12 @@ public static class StringExtensions
         if(word == null) 
             yield break;
         
-        const char wildcard = '.';
         StringBuilder modifiedQuestion = new StringBuilder(word.ToUpper());
         
         for (int i = 0; i < word.Length; i++)
         {
             char c = word[i];
-            modifiedQuestion[i] = wildcard;
+            modifiedQuestion[i] = Wildcard;
             yield return modifiedQuestion.ToString();
             modifiedQuestion[i] = c;
         }

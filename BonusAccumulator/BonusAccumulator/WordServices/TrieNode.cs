@@ -8,9 +8,9 @@ public class TrieNode
     
     public bool Terminal { get; set; }
     
-    public List<string> AnagramsAtTerminal { get; init; } = new(capacity: 4);
+    public List<string> AnagramsAtTerminal { get; } = new(capacity: 4);
 
-    public TrieNode(char label = default)
+    public TrieNode(char label = '\0')
     {
         Label = label;
     }

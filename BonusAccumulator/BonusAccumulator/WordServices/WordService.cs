@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using BonusAccumulator.WordServices.Extensions;
 using BonusAccumulator.WordServices.TrieSearching;
@@ -7,12 +7,6 @@ namespace BonusAccumulator.WordServices;
 
 public class WordService
 {
-    public enum Options 
-    {
-        Session,
-        Added
-    }
-    
     private static readonly Random Random = new((int)DateTime.Now.Ticks);
     
     private readonly ITrieSearcher _searcher;
@@ -112,12 +106,12 @@ public class WordService
     }
 
     public void RunQuiz(
-        Options options,
+        QuizOptions options,
         string endQuizSessionCommand,
         Action<string?> write,
         Func<string?> read)
     {
-        HashSet<string> storedWords = options == Options.Session ? _sessionState.SessionWords : _sessionState.AddedWords;
+        HashSet<string> storedWords = options == QuizOptions.Session ? _sessionState.SessionWords : _sessionState.AddedWords;
 
         if (storedWords.Count != 0)
         {

@@ -1,5 +1,6 @@
 using BonusAccumulator.WordServices.Extensions;
 using BonusAccumulator.WordServices.TrieLoading;
+using static BonusAccumulator.WordServices.Constants;
 
 namespace BonusAccumulator.WordServices.TrieSearching;
 
@@ -28,7 +29,6 @@ public class TrieSearcher : ITrieSearcher
 
     private IList<string> QueryLexicon(string search, TrieNode? current, Func<IEnumerable<string>, IEnumerable<string>> filter)
     {
-        const char Wildcard = '.';
         search = search.WildcardsFirst().ToUpper();
 
         int index = 0;
@@ -40,7 +40,7 @@ public class TrieSearcher : ITrieSearcher
                 {
                     foreach (TrieNode? node in current.Edges)
                     {
-                        if (node != null && search.IndexOf(node.Label) == -1)
+                        if (search.IndexOf(node.Label) == -1)
                         {
                             if (node.Terminal)
                             {

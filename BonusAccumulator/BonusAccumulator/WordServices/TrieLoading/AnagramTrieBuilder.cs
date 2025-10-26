@@ -72,14 +72,14 @@ public class AnagramTrieBuilder : IAnagramTrieBuilder
     private static TrieNode? AddCurrentCharacterToTrie(TrieNode? current, char c)
     {
         TrieNode? next;
-        if (current != null && current.Edges.All(edge => edge != null && edge.Label != c))
+        if (current != null && current.Edges.All(edge => edge.Label != c))
         {
-            next = new TrieNode { Label = c, Edges = new List<TrieNode?>() };
+            next = new TrieNode { Label = c, Edges = new List<TrieNode>() };
             current.Edges.Add(next);
         }
         else
         {
-            next = current?.Edges.First(edge => edge != null && edge.Label == c);
+            next = current?.Edges.First(edge => edge.Label == c);
         }
 
         return next;
