@@ -13,7 +13,7 @@ public class TrieSearcher : ITrieSearcher
         _lazyTrie = lazyTrie;
 
         const int DefaultCapacity = 20;
-        _resultsList = new List<string>(DefaultCapacity);
+        _resultsList = new(DefaultCapacity);
     }
 
     public IList<string> Query(string searchTerm, Func<IEnumerable<string>, IEnumerable<string>> wordFilter)
@@ -28,12 +28,13 @@ public class TrieSearcher : ITrieSearcher
 
     private IList<string> QueryLexicon(string search, TrieNode? current, Func<IEnumerable<string>, IEnumerable<string>> filter)
     {
+        const char Wildcard = '.';
         search = search.WildcardsFirst().ToUpper();
 
         int index = 0;
         foreach (char c in search)
         {
-            if (c == '.' && index == 0)
+            if (c == Wildcard && index == 0)
             {
                 if (current?.Edges != null)
                 {
@@ -53,7 +54,7 @@ public class TrieSearcher : ITrieSearcher
             }
             else if (search.IndexOf(c, 0, index) == -1)
             {
-                TrieNode? node = current?.Edges.Find(edge => edge?.Label == c);
+                TrieNode? node = current?.Edges.FirstOrDefault(edge => edge.Label == c);
                 if (node != null)
                 {
                     if (node.Terminal)
