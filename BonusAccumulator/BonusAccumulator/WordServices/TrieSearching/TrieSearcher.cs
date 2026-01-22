@@ -6,28 +6,24 @@ namespace BonusAccumulator.WordServices.TrieSearching;
 
 public class TrieSearcher : ITrieSearcher
 {
+    private const int DefaultResultsCapacity = 20;
     private readonly ILazyLoadingTrie _lazyTrie;
-    private readonly List<string> _resultsList;
 
     public TrieSearcher(ILazyLoadingTrie lazyTrie)
     {
         _lazyTrie = lazyTrie;
-
-        const int DefaultCapacity = 20;
-        _resultsList = new(DefaultCapacity);
     }
 
     public IList<string> Query(string searchTerm, Func<IEnumerable<string>, IEnumerable<string>> wordFilter)
     {
-        _resultsList.Clear();
+        List<string> resultsList = new(DefaultResultsCapacity);
 
-        List<string> query = QueryLexicon(searchTerm, _lazyTrie.Lexicon, wordFilter)
-            .OrderByDescending(x => x.Length).ToList();
+        QueryLexicon(searchTerm, _lazyTrie.Lexicon, wordFilter, resultsList);
 
-        return query;
+        return resultsList.OrderByDescending(x => x.Length).ToList();
     }
 
-    private IList<string> QueryLexicon(string search, TrieNode? current, Func<IEnumerable<string>, IEnumerable<string>> filter)
+    private void QueryLexicon(string search, TrieNode? current, Func<IEnumerable<string>, IEnumerable<string>> filter, List<string> resultsList)
     {
         search = search.WildcardsFirst().ToUpper();
 
@@ -44,10 +40,10 @@ public class TrieSearcher : ITrieSearcher
                         {
                             if (node.Terminal)
                             {
-                                _resultsList.AddRange(filter(node.AnagramsAtTerminal));
+                                resultsList.AddRange(filter(node.AnagramsAtTerminal));
                             }
 
-                            QueryLexicon(search.Remove(index, 1), node, filter);
+                            QueryLexicon(search.Remove(index, 1), node, filter, resultsList);
                         }
                     }
                 }
@@ -59,13 +55,12 @@ public class TrieSearcher : ITrieSearcher
                 {
                     if (node.Terminal)
                     {
-                        _resultsList.AddRange(filter(node.AnagramsAtTerminal));
+                        resultsList.AddRange(filter(node.AnagramsAtTerminal));
                     }
-                    QueryLexicon(search.Remove(index, 1), node, filter);
+                    QueryLexicon(search.Remove(index, 1), node, filter, resultsList);
                 }
             }
             index++;
         }
-        return _resultsList;
     }
 }

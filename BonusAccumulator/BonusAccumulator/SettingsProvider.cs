@@ -8,7 +8,7 @@ public class SettingsProvider : ISettingsProvider
 
     public SettingsProvider(string appSettingsPath = "appsettings.json")
     {
-        var builder = new ConfigurationBuilder()
+        IConfigurationBuilder builder = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile(appSettingsPath, optional: false, reloadOnChange: true);
 
