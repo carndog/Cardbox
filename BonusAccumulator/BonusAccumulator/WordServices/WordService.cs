@@ -141,7 +141,7 @@ public class WordService
                 }
             }
 
-            Console.WriteLine("Quiz over");
+            write("Quiz over");
         }
     }
 

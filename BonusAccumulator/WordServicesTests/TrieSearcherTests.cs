@@ -1,4 +1,4 @@
-﻿using BonusAccumulator;
+using BonusAccumulator;
 using BonusAccumulator.WordServices;
 using BonusAccumulator.WordServices.TrieLoading;
 using BonusAccumulator.WordServices.TrieSearching;
@@ -9,7 +9,7 @@ namespace WordServicesTests;
 [TestFixture]
 public class TrieSearcherTests
 {
-    private WordService _wordService;
+    private WordService _wordService = null!;
 
     [SetUp]
     public void SetUp()

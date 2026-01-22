@@ -57,7 +57,7 @@ public static class StringExtensions
             char c = word[i];
             modifiedQuestion[i] = Wildcard;
             yield return modifiedQuestion.ToString();
-            modifiedQuestion[i] = c;
+            modifiedQuestion[i] = char.ToUpper(c);
         }
     }
 }

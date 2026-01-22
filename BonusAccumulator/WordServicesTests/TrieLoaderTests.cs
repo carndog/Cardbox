@@ -16,10 +16,10 @@ public class TrieLoaderTests
     [Test]
     public void LoadTrie_IndividualWordsOnSeparateLinesInAFile_ProducesAnagramNodeStructure()
     {
-        TrieNode? rootNode = _utils.AnagramTrieBuilder.LoadLines();
+        TrieNode? rootNode = _utils.AnagramTrieBuilder?.LoadLines();
 
         Assert.IsNotNull(rootNode);
-        Assert.AreEqual(7, rootNode.Edges.Count);
+        Assert.AreEqual(7, rootNode!.Edges.Count);
         Assert.IsFalse(rootNode.Edges[1].Terminal);
         Assert.AreEqual('A', rootNode.Edges[0].Label);
         Assert.IsTrue(rootNode.Edges[0].Edges[0].Edges[0].Terminal);

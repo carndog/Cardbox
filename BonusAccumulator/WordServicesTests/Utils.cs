@@ -6,7 +6,7 @@ namespace WordServicesTests;
 
 public class Utils
 {
-    public AnagramTrieBuilder AnagramTrieBuilder { get; set; }
+    public AnagramTrieBuilder? AnagramTrieBuilder { get; private set; }
 
     public void CreateTrieLoader()
     {
@@ -18,13 +18,17 @@ public class Utils
         get
         {
             string location = Assembly.GetExecutingAssembly().Location;
-            string[] parts = Path.GetDirectoryName(Path.GetDirectoryName(location)).Split(Path.DirectorySeparatorChar).TakeWhile(x => x != "bin").ToArray();
+            string[]? parts = Path.GetDirectoryName(Path.GetDirectoryName(location))?.Split(Path.DirectorySeparatorChar).TakeWhile(x => x != "bin").ToArray();
             string[] relativePath = { "Resources", "TestDictionary.txt" };
-            string[] allParts = new string[parts.Length + relativePath.Length];
-            parts.CopyTo(allParts, 0);
-            relativePath.CopyTo(allParts, parts.Length);
-            string? fullPath = Path.Combine(allParts);
-            return fullPath;
+            if (parts != null)
+            {
+                string[] allParts = new string[parts.Length + relativePath.Length];
+                parts.CopyTo(allParts, 0);
+                relativePath.CopyTo(allParts, parts.Length);
+                string? fullPath = Path.Combine(allParts);
+                return fullPath;
+            }
+            return null;
         }
     }
 }
