@@ -1,7 +1,5 @@
-using BonusAccumulator;
 using BonusAccumulator.WordServices;
 using FluentAssertions;
-using static WordServicesTests.Utils;
 
 namespace WordServicesTests;
 
@@ -34,6 +32,6 @@ public class SessionStateTests
         
         Action act = () => sessionState.SaveAdded();
         
-        act.Should().Throw<ArgumentException>();
+        act.Should().Throw<InvalidOperationException>();
     }
 }

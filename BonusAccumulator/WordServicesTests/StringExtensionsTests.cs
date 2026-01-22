@@ -1,6 +1,5 @@
 using BonusAccumulator.WordServices.Extensions;
 using FluentAssertions;
-using NUnit.Framework;
 
 namespace WordServicesTests;
 

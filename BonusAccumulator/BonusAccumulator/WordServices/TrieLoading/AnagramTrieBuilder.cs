@@ -1,4 +1,4 @@
-﻿using BonusAccumulator.WordServices.Extensions;
+using BonusAccumulator.WordServices.Extensions;
 
 namespace BonusAccumulator.WordServices.TrieLoading;
 
@@ -17,7 +17,7 @@ public class AnagramTrieBuilder : IAnagramTrieBuilder
     {
         if (!File.Exists(_path))
         {
-            throw new FileNotFoundException(_path);
+            throw new FileNotFoundException("Dictionary file not found.", _path);
         }
 
         using FileStream fileStream = new(_path, FileMode.Open);

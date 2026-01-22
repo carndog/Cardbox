@@ -1,6 +1,4 @@
 using BonusAccumulator;
-using BonusAccumulator.WordServices;
-using FluentAssertions;
 using static WordServicesTests.Utils;
 
 namespace WordServicesTests;

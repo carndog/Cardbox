@@ -7,9 +7,10 @@ public static class WordServiceFactory
 {
     public static WordService Create()
     {
-        string? lexiconListTxt = new SettingsProvider().GetSetting("DictionaryPath");
+        SettingsProvider settingsProvider = new SettingsProvider();
+        string? lexiconListTxt = settingsProvider.GetSetting("DictionaryPath");
         return new WordService(new TrieSearcher(
             new LazyLoadingTrie(new AnagramTrieBuilder(
-                lexiconListTxt, new TrieNode()))), new SessionState(new SettingsProvider()));
+                lexiconListTxt, new TrieNode()))), new SessionState(settingsProvider));
     }
 }

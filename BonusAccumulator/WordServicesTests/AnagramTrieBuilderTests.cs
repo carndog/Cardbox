@@ -15,6 +15,6 @@ public class AnagramTrieBuilderTests
         Action act = () => builder.LoadLines();
         
         act.Should().Throw<FileNotFoundException>()
-           .WithMessage("*nonexistent.txt*");
+           .WithMessage("*Dictionary file not found.*");
     }
 }

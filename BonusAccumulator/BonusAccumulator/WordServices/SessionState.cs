@@ -30,9 +30,14 @@ public class SessionState : ISessionState
     public string SaveAdded()
     {
         string name = DateTime.Now.ToString("s").Replace(":", "");
-        string filePath = string.Format(_settingsProvider.GetSetting("SessionOutputPath") ?? string.Empty, name);
+        string? outputPath = _settingsProvider.GetSetting("SessionOutputPath");
+        if (string.IsNullOrEmpty(outputPath))
+        {
+            throw new InvalidOperationException("SessionOutputPath setting is not configured.");
+        }
+        string filePath = string.Format(outputPath, name);
         using StreamWriter writer = new(filePath);
-        writer.WriteLine(string.Join(Environment.NewLine, AddedWords));
+        writer.Write(string.Join(Environment.NewLine, AddedWords));
         return filePath;
     }
 }

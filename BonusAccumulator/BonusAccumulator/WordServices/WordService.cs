@@ -7,7 +7,7 @@ namespace BonusAccumulator.WordServices;
 
 public class WordService
 {
-    private static readonly Random Random = new((int)DateTime.Now.Ticks);
+    private static readonly Random Random = Random.Shared;
     
     private readonly ITrieSearcher _searcher;
     
