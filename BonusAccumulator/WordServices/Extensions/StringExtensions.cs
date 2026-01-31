@@ -1,7 +1,7 @@
 using System.Text;
-using static BonusAccumulator.WordServices.Constants;
+using static WordServices.Constants;
 
-namespace BonusAccumulator.WordServices.Extensions;
+namespace WordServices.Extensions;
 
 public static class StringExtensions
 {

@@ -1,6 +1,6 @@
-using BonusAccumulator.WordServices.Extensions;
+using WordServices.Extensions;
 
-namespace BonusAccumulator.WordServices.Output;
+namespace WordServices.Output;
 
 public class DefaultWordOutputService : IWordOutputService
 {

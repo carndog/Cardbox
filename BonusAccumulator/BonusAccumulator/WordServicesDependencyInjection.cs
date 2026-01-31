@@ -1,18 +1,19 @@
-using BonusAccumulator.WordServices.Output;
-using BonusAccumulator.WordServices.TrieLoading;
-using BonusAccumulator.WordServices.TrieSearching;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WordServices;
+using WordServices.Output;
+using WordServices.TrieLoading;
+using WordServices.TrieSearching;
 
-namespace BonusAccumulator.WordServices;
+namespace BonusAccumulator;
 
-public static class DependencyInjection
+public static class WordServicesDependencyInjection
 {
     public static IServiceCollection AddWordServices(
         this IServiceCollection services, 
         IConfiguration configuration)
     {
-        services.AddSingleton<ISettingsProvider, SettingsProvider>();
+        services.AddSingleton<ISettingsProvider, ConfigurationSettingsProvider>();
         services.AddSingleton<IWordOutputService, DefaultWordOutputService>();
         services.AddSingleton<TrieNode>();
         services.AddSingleton<IAnagramTrieBuilder>(provider => 

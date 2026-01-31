@@ -1,8 +1,8 @@
-using BonusAccumulator.WordServices.Extensions;
-using BonusAccumulator.WordServices.TrieLoading;
-using static BonusAccumulator.WordServices.Constants;
+using WordServices.Extensions;
+using WordServices.TrieLoading;
+using static WordServices.Constants;
 
-namespace BonusAccumulator.WordServices.TrieSearching;
+namespace WordServices.TrieSearching;
 
 public class TrieSearcher : ITrieSearcher
 {

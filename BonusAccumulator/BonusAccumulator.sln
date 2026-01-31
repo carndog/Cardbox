@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardboxDataLayer", "Cardbox
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardboxDataLayerTests", "CardboxDataLayerTests\CardboxDataLayerTests.csproj", "{C7197906-7708-45DF-A96A-9F42236A46BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordServices", "WordServices\WordServices.csproj", "{54367B08-F89E-46C8-AEE2-28D98AE23200}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,18 @@ Global
 		{C7197906-7708-45DF-A96A-9F42236A46BE}.Release|x64.Build.0 = Release|Any CPU
 		{C7197906-7708-45DF-A96A-9F42236A46BE}.Release|x86.ActiveCfg = Release|Any CPU
 		{C7197906-7708-45DF-A96A-9F42236A46BE}.Release|x86.Build.0 = Release|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Debug|x64.Build.0 = Debug|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Debug|x86.Build.0 = Debug|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Release|x64.ActiveCfg = Release|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Release|x64.Build.0 = Release|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Release|x86.ActiveCfg = Release|Any CPU
+		{54367B08-F89E-46C8-AEE2-28D98AE23200}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

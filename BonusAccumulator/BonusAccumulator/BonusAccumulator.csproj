@@ -24,14 +24,10 @@
       </None>
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="WordServices\TrieNode.cs">
-        <DependentUpon>WordService.cs</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
+    
     <ItemGroup>
       <ProjectReference Include="..\CardboxDataLayer\CardboxDataLayer.csproj" />
+      <ProjectReference Include="..\WordServices\WordServices.csproj" />
     </ItemGroup>
 
 </Project>

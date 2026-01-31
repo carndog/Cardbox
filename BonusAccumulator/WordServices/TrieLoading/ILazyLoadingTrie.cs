@@ -1,4 +1,4 @@
-namespace BonusAccumulator.WordServices.TrieLoading;
+namespace WordServices.TrieLoading;
 
 public interface ILazyLoadingTrie
 {

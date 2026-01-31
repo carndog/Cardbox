@@ -1,4 +1,4 @@
-namespace BonusAccumulator.WordServices.TrieSearching;
+namespace WordServices.TrieSearching;
 
 public interface ITrieSearcher
 {

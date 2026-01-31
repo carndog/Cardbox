@@ -1,5 +1,5 @@
-using BonusAccumulator.WordServices;
-using BonusAccumulator.WordServices.TrieLoading;
+using WordServices;
+using WordServices.TrieLoading;
 using FluentAssertions;
 
 namespace WordServicesTests;

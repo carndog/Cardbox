@@ -1,5 +1,6 @@
-using BonusAccumulator.WordServices;
-using BonusAccumulator.WordServices.Output;
+using BonusAccumulator;
+using WordServices;
+using WordServices.Output;
 using CardboxDataLayer;
 using CardboxDataLayer.Repositories;
 using Microsoft.Extensions.DependencyInjection;

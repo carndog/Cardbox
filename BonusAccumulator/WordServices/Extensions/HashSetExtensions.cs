@@ -1,4 +1,4 @@
-namespace BonusAccumulator.WordServices.Extensions;
+namespace WordServices.Extensions;
 
 public static class HashSetExtensions
 {

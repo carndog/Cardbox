@@ -1,10 +1,10 @@
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
-using BonusAccumulator.WordServices.Extensions;
-using BonusAccumulator.WordServices.Output;
-using BonusAccumulator.WordServices.TrieSearching;
+using WordServices.Extensions;
+using WordServices.Output;
+using WordServices.TrieSearching;
 
-namespace BonusAccumulator.WordServices;
+namespace WordServices;
 
 public class WordService : IWordService
 {

@@ -1,4 +1,4 @@
-﻿using BonusAccumulator.WordServices;
+using WordServices;
 
 namespace WordServicesTests;
 
@@ -18,12 +18,12 @@ public class TrieLoaderTests
     {
         TrieNode? rootNode = _utils.AnagramTrieBuilder?.LoadLines();
 
-        Assert.IsNotNull(rootNode);
-        Assert.AreEqual(7, rootNode!.Edges.Count);
-        Assert.IsFalse(rootNode.Edges[1].Terminal);
-        Assert.AreEqual('A', rootNode.Edges[0].Label);
-        Assert.IsTrue(rootNode.Edges[0].Edges[0].Edges[0].Terminal);
-        Assert.AreEqual(2, rootNode.Edges[0].Edges[0].Edges[0].AnagramsAtTerminal.Count);
-        Assert.IsTrue(rootNode.Edges[0].Edges[0].Edges[0].AnagramsAtTerminal.Contains("CAT"));
+        Assert.That(rootNode, Is.Not.Null);
+        Assert.That(rootNode!.Edges.Count, Is.EqualTo(7));
+        Assert.That(rootNode.Edges[1].Terminal, Is.False);
+        Assert.That(rootNode.Edges[0].Label, Is.EqualTo('A'));
+        Assert.That(rootNode.Edges[0].Edges[0].Edges[0].Terminal, Is.True);
+        Assert.That(rootNode.Edges[0].Edges[0].Edges[0].AnagramsAtTerminal.Count, Is.EqualTo(2));
+        Assert.That(rootNode.Edges[0].Edges[0].Edges[0].AnagramsAtTerminal.Contains("CAT"), Is.True);
     }
 }

@@ -1,6 +1,6 @@
-using BonusAccumulator.WordServices.Extensions;
+using WordServices.Extensions;
 
-namespace BonusAccumulator.WordServices.TrieLoading;
+namespace WordServices.TrieLoading;
 
 public class AnagramTrieBuilder : IAnagramTrieBuilder
 {

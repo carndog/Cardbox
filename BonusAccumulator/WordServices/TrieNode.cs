@@ -1,4 +1,4 @@
-﻿namespace BonusAccumulator.WordServices;
+namespace WordServices;
 
 public class TrieNode
 {

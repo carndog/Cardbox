@@ -1,4 +1,4 @@
-namespace BonusAccumulator.WordServices.Output;
+namespace WordServices.Output;
 
 public interface IWordOutputService
 {

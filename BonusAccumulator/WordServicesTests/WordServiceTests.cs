@@ -1,8 +1,7 @@
-using BonusAccumulator;
-using BonusAccumulator.WordServices;
-using BonusAccumulator.WordServices.Output;
-using BonusAccumulator.WordServices.TrieLoading;
-using BonusAccumulator.WordServices.TrieSearching;
+using WordServices;
+using WordServices.Output;
+using WordServices.TrieLoading;
+using WordServices.TrieSearching;
 using FluentAssertions;
 using static WordServicesTests.Utils;
 

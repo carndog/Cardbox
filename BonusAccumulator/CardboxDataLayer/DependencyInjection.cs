@@ -12,11 +12,12 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("CardboxDatabase") 
-                                  ?? configuration["CardboxDatabase:ConnectionString"];
+                                  ?? configuration["CardboxDatabase:ConnectionString"]
+                                  ?? configuration["ConnectionStrings:CardboxDatabase"];
         
         if (string.IsNullOrEmpty(connectionString))
         {
-            throw new InvalidOperationException("CardboxDatabase connection string not found in configuration.");
+            connectionString = "Data Source=C:\\AnagramsTestArea\\Anagrams.db";
         }
 
         services.AddDbContext<CardboxDbContext>(options =>

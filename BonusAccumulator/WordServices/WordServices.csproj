@@ -5,11 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latestmajor</LangVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>WordServices Domain</Authors>
+    <Description>Core word services domain logic with minimal dependencies</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.2" />
-  </ItemGroup>
 
 </Project>

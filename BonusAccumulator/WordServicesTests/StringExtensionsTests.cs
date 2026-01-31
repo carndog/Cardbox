@@ -1,4 +1,4 @@
-using BonusAccumulator.WordServices.Extensions;
+using WordServices.Extensions;
 using FluentAssertions;
 
 namespace WordServicesTests;

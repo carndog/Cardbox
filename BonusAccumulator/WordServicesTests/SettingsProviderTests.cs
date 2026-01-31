@@ -1,4 +1,4 @@
-using BonusAccumulator;
+using WordServices;
 using FluentAssertions;
 
 namespace WordServicesTests;
@@ -38,7 +38,7 @@ public class SettingsProviderTests
             ""TestKey"": ""TestValue""
         }");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         provider.Should().NotBeNull();
     }
@@ -51,7 +51,7 @@ public class SettingsProviderTests
             ""OtherSetting"": ""otherValue""
         }");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         string? result = provider.GetSetting("DictionaryPath");
 
@@ -65,7 +65,7 @@ public class SettingsProviderTests
             ""ExistingKey"": ""SomeValue""
         }");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         string? result = provider.GetSetting("NonExistingKey");
 
@@ -79,7 +79,7 @@ public class SettingsProviderTests
             ""SomeKey"": ""SomeValue""
         }");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         string? result = provider.GetSetting("");
 
@@ -93,7 +93,7 @@ public class SettingsProviderTests
             ""SomeKey"": ""SomeValue""
         }");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         Action act = () => provider.GetSetting(null!);
 
@@ -110,7 +110,7 @@ public class SettingsProviderTests
             }
         }");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         string? result = provider.GetSetting("Settings:DictionaryPath");
 
@@ -124,7 +124,7 @@ public class SettingsProviderTests
             ""PortNumber"": 8080
         }");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         string? result = provider.GetSetting("PortNumber");
 
@@ -138,7 +138,7 @@ public class SettingsProviderTests
             ""FeatureEnabled"": true
         }");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         string? result = provider.GetSetting("FeatureEnabled");
 
@@ -150,7 +150,7 @@ public class SettingsProviderTests
     {
         File.WriteAllText(_tempConfigPath, "{}");
 
-        SettingsProvider provider = new SettingsProvider(_tempConfigPath);
+        TestSettingsProvider provider = new TestSettingsProvider(_tempConfigPath, true);
 
         string? result = provider.GetSetting("AnyKey");
 
@@ -160,7 +160,7 @@ public class SettingsProviderTests
     [Test]
     public void GetSetting_NonExistentFile_ThrowsFileNotFoundException()
     {
-        Action act = () => new SettingsProvider("non_existent_file.json");
+        Action act = () => new TestSettingsProvider("non_existent_file.json", true);
 
         act.Should().Throw<FileNotFoundException>();
     }
