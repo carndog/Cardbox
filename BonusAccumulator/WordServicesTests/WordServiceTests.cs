@@ -17,7 +17,7 @@ public class WordServiceTests
     {
         _service = new WordService(new TrieSearcher(
             new LazyLoadingTrie(new AnagramTrieBuilder(
-                TestFilePath, new TrieNode()))), new SessionState(new SettingsProvider()), new DefaultWordOutputService());
+                TestFilePath, new TrieNode()))), new SessionState(new TestSettingsProvider(Path.GetTempPath())), new DefaultWordOutputService());
     }
 
     [Test]

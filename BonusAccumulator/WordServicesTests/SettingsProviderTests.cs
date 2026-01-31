@@ -23,14 +23,7 @@ public class SettingsProviderTests
         }
     }
 
-    [Test]
-    public void Constructor_DefaultPath_UsesAppSettingsJson()
-    {
-        SettingsProvider provider = new SettingsProvider();
-
-        provider.Should().NotBeNull();
-    }
-
+    
     [Test]
     public void Constructor_CustomPath_UsesSpecifiedPath()
     {

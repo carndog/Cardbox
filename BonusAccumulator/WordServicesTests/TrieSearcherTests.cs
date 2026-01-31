@@ -14,7 +14,7 @@ public class TrieSearcherTests
     [SetUp]
     public void SetUp()
     {
-        _wordService = new WordService(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(TestFilePath, new TrieNode()))), new SessionState(new SettingsProvider()), new DefaultWordOutputService());
+        _wordService = new WordService(new TrieSearcher(new LazyLoadingTrie(new AnagramTrieBuilder(TestFilePath, new TrieNode()))), new SessionState(new TestSettingsProvider(Path.GetTempPath())), new DefaultWordOutputService());
     }
 
     [Test]

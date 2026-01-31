@@ -29,12 +29,10 @@ public class TestSettingsProvider : ISettingsProvider
             throw new ArgumentNullException(nameof(key));
         }
 
-        // For testing purposes, simulate configuration reading
         if (!string.IsNullOrEmpty(_configPath) && File.Exists(_configPath))
         {
             string json = File.ReadAllText(_configPath);
             
-            // Simple JSON parsing for test cases
             if (json.Contains("\"DictionaryPath\""))
             {
                 if (key == "DictionaryPath") return "test/dictionary.txt";
