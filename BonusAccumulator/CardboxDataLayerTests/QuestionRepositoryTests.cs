@@ -14,14 +14,7 @@ public class QuestionRepositoryTests
     [SetUp]
     public void Setup()
     {
-        // Use the actual database file path from your specification
-        var connectionString = "Data Source=C:\\AnagramsTestArea\\Anagrams.db";
-        
-        var options = new DbContextOptionsBuilder<CardboxDbContext>()
-            .UseSqlite(connectionString)
-            .Options;
-
-        _context = new CardboxDbContext(options);
+        _context = TestDatabaseSetup.CreateTestContext();
         _repository = new QuestionRepository(_context);
     }
 
@@ -29,6 +22,7 @@ public class QuestionRepositoryTests
     public void Cleanup()
     {
         _context?.Dispose();
+        TestDatabaseSetup.CleanupTestDatabase();
     }
 
     [Test]
