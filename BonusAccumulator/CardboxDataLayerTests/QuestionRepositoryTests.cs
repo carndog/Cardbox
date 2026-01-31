@@ -27,7 +27,7 @@ public class QuestionRepositoryTests
     [Test]
     public async Task GetAllAsync_ShouldReturnQuestions()
     {
-        IEnumerable<Question> questions = await _repository.GetAllAsync();
+        List<Question> questions = (await _repository.GetAllAsync()).ToList();
 
         Assert.That(questions, Is.Not.Null);
     }
@@ -35,7 +35,7 @@ public class QuestionRepositoryTests
     [Test]
     public async Task GetByQuestionAsync_WithValidQuestion_ShouldReturnQuestion()
     {
-        IEnumerable<Question> allQuestions = await _repository.GetAllAsync();
+        List<Question> allQuestions = (await _repository.GetAllAsync()).ToList();
         Question? firstQuestion = allQuestions.FirstOrDefault();
         
         if (firstQuestion == null)
@@ -62,7 +62,7 @@ public class QuestionRepositoryTests
     [Test]
     public async Task GetByCardboxAsync_ShouldReturnQuestionsInCardbox()
     {
-        IEnumerable<Question> questions = await _repository.GetByCardboxAsync(1);
+        List<Question> questions = (await _repository.GetByCardboxAsync(1)).ToList();
 
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
@@ -74,7 +74,7 @@ public class QuestionRepositoryTests
     [Test]
     public async Task GetByDifficultyAsync_ShouldReturnQuestionsWithSpecifiedDifficulty()
     {
-        IEnumerable<Question> questions = await _repository.GetByDifficultyAsync(1);
+        List<Question> questions = (await _repository.GetByDifficultyAsync(1)).ToList();
 
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
@@ -86,7 +86,7 @@ public class QuestionRepositoryTests
     [Test]
     public async Task GetByDifficultyRangeAsync_ShouldReturnQuestionsInRange()
     {
-        IEnumerable<Question> questions = await _repository.GetByDifficultyRangeAsync(1, 3);
+        List<Question> questions = (await _repository.GetByDifficultyRangeAsync(1, 3)).ToList();
 
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
@@ -98,7 +98,7 @@ public class QuestionRepositoryTests
     [Test]
     public async Task GetByStreakAsync_ShouldReturnQuestionsWithMinimumStreak()
     {
-        IEnumerable<Question> questions = await _repository.GetByStreakAsync(0);
+        List<Question> questions = (await _repository.GetByStreakAsync(0)).ToList();
 
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
@@ -112,7 +112,7 @@ public class QuestionRepositoryTests
     {
         int maxScheduled = int.MaxValue;
 
-        IEnumerable<Question> questions = await _repository.GetScheduledAsync(maxScheduled);
+        List<Question> questions = (await _repository.GetScheduledAsync(maxScheduled)).ToList();
 
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
@@ -124,7 +124,7 @@ public class QuestionRepositoryTests
     [Test]
     public async Task GetIncorrectAnswersAsync_ShouldReturnQuestionsWithMinimumIncorrect()
     {
-        IEnumerable<Question> questions = await _repository.GetIncorrectAnswersAsync(0);
+        List<Question> questions = (await _repository.GetIncorrectAnswersAsync(0)).ToList();
 
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
@@ -160,7 +160,7 @@ public class QuestionRepositoryTests
     [Test]
     public async Task GetQuestionHistoryAsync_ShouldReturnHistoryForQuestion()
     {
-        IEnumerable<Question> allQuestions = await _repository.GetAllAsync();
+        List<Question> allQuestions = (await _repository.GetAllAsync()).ToList();
         Question? firstQuestion = allQuestions.FirstOrDefault();
         
         if (firstQuestion == null)
@@ -169,7 +169,7 @@ public class QuestionRepositoryTests
             return;
         }
 
-        IEnumerable<QuestionHistory> history = await _repository.GetQuestionHistoryAsync(firstQuestion!.question);
+        List<QuestionHistory> history = (await _repository.GetQuestionHistoryAsync(firstQuestion!.question)).ToList();
 
         Assert.That(history, Is.Not.Null);
         foreach (QuestionHistory entry in history)
