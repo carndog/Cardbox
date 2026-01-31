@@ -70,25 +70,50 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
         case HelpCommand:
             Write(CommandsText);
             break;
-        case AnagramCommand when ReadLine() is { } input:
-            Answer anagram = wordService.Anagram(input);
-            WriteLine(wordOutputService.FormatWords(anagram.Words));
+        case AnagramCommand:
+            Write("Enter letters for anagram: ");
+            string? anagramInput = ReadLine();
+            if (anagramInput != null)
+            {
+                Answer anagram = wordService.Anagram(anagramInput);
+                WriteLine(wordOutputService.FormatWords(anagram.Words));
+            }
             break;
-        case BuildCommand when ReadLine() is { } input:
-            Answer build = wordService.Build(input);
-            WriteLine(wordOutputService.FormatWords(build.Words));
+        case BuildCommand:
+            Write("Enter letters to build from: ");
+            string? buildInput = ReadLine();
+            if (buildInput != null)
+            {
+                Answer build = wordService.Build(buildInput);
+                WriteLine(wordOutputService.FormatWords(build.Words));
+            }
             break;
-        case PatternCommand when ReadLine() is { } input:
-            Answer pattern = wordService.Pattern(input);
-            WriteLine(wordOutputService.FormatWords(pattern.Words));
+        case PatternCommand:
+            Write("Enter pattern: ");
+            string? patternInput = ReadLine();
+            if (patternInput != null)
+            {
+                Answer pattern = wordService.Pattern(patternInput);
+                WriteLine(wordOutputService.FormatWords(pattern.Words));
+            }
             break;
-        case DistanceCommand when ReadLine() is { } input:
-            Answer distance = wordService.Distance(input);
-            WriteLine(wordOutputService.FormatWords(distance.Words));
+        case DistanceCommand:
+            Write("Enter word for distance search: ");
+            string? distanceInput = ReadLine();
+            if (distanceInput != null)
+            {
+                Answer distance = wordService.Distance(distanceInput);
+                WriteLine(wordOutputService.FormatWords(distance.Words));
+            }
             break;
-        case AlphagramDistanceCommand when ReadLine() is { } input:
-            Answer alphagramDistance = wordService.AlphagramDistance(input);
-            WriteLine(wordOutputService.FormatWords(alphagramDistance.Words));
+        case AlphagramDistanceCommand:
+            Write("Enter word for alphagram distance: ");
+            string? alphagramDistanceInput = ReadLine();
+            if (alphagramDistanceInput != null)
+            {
+                Answer alphagramDistance = wordService.AlphagramDistance(alphagramDistanceInput);
+                WriteLine(wordOutputService.FormatWords(alphagramDistance.Words));
+            }
             break;
         case QuizSessionCommand:
             wordService.RunQuiz(QuizOptions.Session, EndQuizSessionCommand, WriteLine, ReadLine);
@@ -101,9 +126,13 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             WriteLine($"saved at {name}");
             break;
         case AddWordCommand:
-            string readLine = ReadLine() ?? string.Empty;
-            string[] words = readLine.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            wordService.AddWords(words, WriteLine);
+            Write("Enter words to add (space separated): ");
+            string? addWordsInput = ReadLine();
+            if (addWordsInput != null)
+            {
+                string[] words = addWordsInput.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                wordService.AddWords(words, WriteLine);
+            }
             break;
         case ChainsCommand:
             wordService.RunChainQuiz(EndChainsCommand, WriteLine, ReadLine);
