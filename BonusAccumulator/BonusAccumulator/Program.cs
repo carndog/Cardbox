@@ -1,8 +1,10 @@
 using BonusAccumulator.WordServices;
 using BonusAccumulator.WordServices.Factories;
+using BonusAccumulator.WordServices.Output;
 using static System.Console;
 
 WordService wordService = WordServiceFactory.Create();
+IWordOutputService wordOutputService = WordOutputServiceFactory.Create();
 
 string? command = string.Empty;
 
@@ -49,6 +51,7 @@ const string CommandsText = $"""
       {HelpCommand} - Help: Show this menu
       {ExitCommand}   - Exit: Quit the program
     -------------------
+    
     """;
 
 Write(CommandsText);
@@ -69,23 +72,23 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             break;
         case AnagramCommand when ReadLine() is { } input:
             Answer anagram = wordService.Anagram(input);
-            WriteLine(string.Join(",", anagram.Words));
+            WriteLine(wordOutputService.FormatWords(anagram.Words));
             break;
         case BuildCommand when ReadLine() is { } input:
             Answer build = wordService.Build(input);
-            WriteLine(string.Join(",", build.Words));
+            WriteLine(wordOutputService.FormatWords(build.Words));
             break;
         case PatternCommand when ReadLine() is { } input:
             Answer pattern = wordService.Pattern(input);
-            WriteLine(string.Join(",", pattern.Words));
+            WriteLine(wordOutputService.FormatWords(pattern.Words));
             break;
         case DistanceCommand when ReadLine() is { } input:
             Answer distance = wordService.Distance(input);
-            WriteLine(string.Join(",", distance.Words));
+            WriteLine(wordOutputService.FormatWords(distance.Words));
             break;
         case AlphagramDistanceCommand when ReadLine() is { } input:
             Answer alphagramDistance = wordService.AlphagramDistance(input);
-            WriteLine(string.Join(",", alphagramDistance.Words));
+            WriteLine(wordOutputService.FormatWords(alphagramDistance.Words));
             break;
         case QuizSessionCommand:
             wordService.RunQuiz(QuizOptions.Session, EndQuizSessionCommand, WriteLine, ReadLine);

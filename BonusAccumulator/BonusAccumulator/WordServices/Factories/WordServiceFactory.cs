@@ -1,3 +1,4 @@
+using BonusAccumulator.WordServices.Output;
 using BonusAccumulator.WordServices.TrieLoading;
 using BonusAccumulator.WordServices.TrieSearching;
 
@@ -9,8 +10,9 @@ public static class WordServiceFactory
     {
         SettingsProvider settingsProvider = new SettingsProvider();
         string? lexiconListTxt = settingsProvider.GetSetting("DictionaryPath");
+        IWordOutputService wordOutputService = WordOutputServiceFactory.Create();
         return new WordService(new TrieSearcher(
             new LazyLoadingTrie(new AnagramTrieBuilder(
-                lexiconListTxt, new TrieNode()))), new SessionState(settingsProvider));
+                lexiconListTxt, new TrieNode()))), new SessionState(settingsProvider), wordOutputService);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using BonusAccumulator.WordServices.Extensions;
+using BonusAccumulator.WordServices.Output;
 using BonusAccumulator.WordServices.TrieSearching;
 
 namespace BonusAccumulator.WordServices;
@@ -13,12 +14,15 @@ public class WordService
     
     private readonly ISessionState _sessionState;
 
+    private readonly IWordOutputService _wordOutputService;
+
     private readonly HashSet<string> _unasked = new();
 
-    public WordService(ITrieSearcher searcher, ISessionState sessionState)
+    public WordService(ITrieSearcher searcher, ISessionState sessionState, IWordOutputService wordOutputService)
     {
         _searcher = searcher;
         _sessionState = sessionState;
+        _wordOutputService = wordOutputService;
     }
 
     public Answer Anagram(string question)
@@ -135,7 +139,7 @@ public class WordService
                     List<string> list = answers.Union(sessionQuiz.Words).ToList();
                     write(string.Empty);
                     write(list.Count == sessionQuiz.Words.Count ? "Correct" : "Wrong");
-                    write(string.Join(",", sessionQuiz.Words));
+                    write(_wordOutputService.FormatWords(sessionQuiz.Words));
                     write(string.Empty);
                     _unasked.Remove(answer);
                 }
@@ -157,7 +161,7 @@ public class WordService
             bool noResults = chainAnswer.Words.Count == 0;
             write(noResults
                 ? "No chains found"
-                : string.Join(",", chainAnswer.Words) + " - " +
+                : _wordOutputService.FormatWords(chainAnswer.Words) + " - " +
                   string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
             if (noResults is false)
             {

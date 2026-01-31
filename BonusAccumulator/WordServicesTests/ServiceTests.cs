@@ -1,6 +1,7 @@
 using BonusAccumulator;
 using BonusAccumulator.WordServices;
 using BonusAccumulator.WordServices.TrieLoading;
+using BonusAccumulator.WordServices.Output;
 using BonusAccumulator.WordServices.TrieSearching;
 using FluentAssertions;
 using static WordServicesTests.Utils;
@@ -17,7 +18,7 @@ public class ServiceTests
     {
         _service = new WordService(new TrieSearcher(
             new LazyLoadingTrie(new AnagramTrieBuilder(
-                TestFilePath, new TrieNode()))), new SessionState(new SettingsProvider()));
+                TestFilePath, new TrieNode()))), new SessionState(new SettingsProvider()), new DefaultWordOutputService());
     }
 
     [Test]
