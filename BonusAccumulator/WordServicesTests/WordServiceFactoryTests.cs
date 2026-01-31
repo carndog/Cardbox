@@ -1,5 +1,4 @@
 using System.Reflection;
-using BonusAccumulator.WordServices.Factories;
 using FluentAssertions;
 
 namespace WordServicesTests;

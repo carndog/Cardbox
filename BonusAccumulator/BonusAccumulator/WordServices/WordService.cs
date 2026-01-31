@@ -6,7 +6,7 @@ using BonusAccumulator.WordServices.TrieSearching;
 
 namespace BonusAccumulator.WordServices;
 
-public class WordService
+public class WordService : IWordService
 {
     private static readonly Random Random = Random.Shared;
     
@@ -184,7 +184,7 @@ public class WordService
         }
     }
 
-    public static void ConvertToAlphagrams(Action<string> writeLine, Func<string?> readLine)
+    public void ConvertToAlphagrams(Action<string> writeLine, Func<string?> readLine)
     {
         string? line = readLine();
         if (line != null)

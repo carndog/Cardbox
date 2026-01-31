@@ -1,10 +1,22 @@
 using BonusAccumulator.WordServices;
-using BonusAccumulator.WordServices.Factories;
 using BonusAccumulator.WordServices.Output;
+using CardboxDataLayer;
+using CardboxDataLayer.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using static System.Console;
 
-WordService wordService = WordServiceFactory.Create();
-IWordOutputService wordOutputService = WordOutputServiceFactory.Create();
+IHost host = Host.CreateDefaultBuilder()
+    .ConfigureServices((context, services) =>
+    {
+        services.AddWordServices(context.Configuration);
+        services.AddCardboxDataLayer(context.Configuration);
+    })
+    .Build();
+
+IWordService wordService = host.Services.GetRequiredService<IWordService>();
+IWordOutputService wordOutputService = host.Services.GetRequiredService<IWordOutputService>();
+IQuestionRepository questionRepository = host.Services.GetRequiredService<IQuestionRepository>();
 
 string? command = string.Empty;
 
@@ -23,6 +35,7 @@ const string StoreAndClearAdded = "sca";
 const string ChainsCommand = "ch";
 const string AlphagramConversionCommand = "ac";
 const string EndChainsCommand = "xch";
+const string CardboxAnalysisCommand = "ca";
 const string HelpCommand = "help";
 const string CommandsText = $"""
     Available Commands:
@@ -46,8 +59,10 @@ const string CommandsText = $"""
       {AddLastWordsCommand} - Add Last Words: Add previous results
       {StoreAndClearAdded} - Store and Clear Added: Save and clear your word list
     
+    Cardbox Analysis:
+      {CardboxAnalysisCommand} - Cardbox Analysis: Analyze cardbox data
+    
     Utilities:
-      {AlphagramConversionCommand}  - Alphagram Conversion
       {HelpCommand} - Help: Show this menu
       {ExitCommand}   - Exit: Quit the program
     -------------------
@@ -138,12 +153,115 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             wordService.RunChainQuiz(EndChainsCommand, WriteLine, ReadLine);
             break;
         case AlphagramConversionCommand:
-            WordService.ConvertToAlphagrams(WriteLine, ReadLine);
+            wordService.ConvertToAlphagrams(WriteLine, ReadLine);
             break;
         case AddLastWordsCommand:
             wordService.AddLastWords();
+            break;
+        case CardboxAnalysisCommand:
+            await RunCardboxAnalysis(questionRepository);
             break;
     }
 }
 
 WriteLine("Goodbye!");
+
+async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
+{
+    WriteLine("Cardbox Analysis Options:");
+    WriteLine("1. Total questions count");
+    WriteLine("2. Questions by cardbox");
+    WriteLine("3. Average difficulty");
+    WriteLine("4. Questions with incorrect answers");
+    WriteLine("5. Questions by difficulty range");
+    WriteLine("6. Recent additions (next_Added table)");
+    WriteLine("Enter your choice (1-6): ");
+    
+    string? choice = ReadLine();
+    if (choice == null) return;
+    
+    switch (choice)
+    {
+        case "1":
+            int totalCount = await questionRepository.GetTotalCountAsync();
+            WriteLine($"Total questions: {totalCount}");
+            break;
+        case "2":
+            WriteLine("Enter cardbox number: ");
+            string? cardboxInput = ReadLine();
+            if (int.TryParse(cardboxInput, out int cardbox))
+            {
+                IEnumerable<CardboxDataLayer.Entities.Question> questions = await questionRepository.GetByCardboxAsync(cardbox);
+                WriteLine($"Questions in cardbox {cardbox}: {questions.Count()}");
+                foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
+                {
+                    WriteLine($"  {question.question} - Correct: {question.correct ?? 0}, Incorrect: {question.incorrect ?? 0}, Streak: {question.streak ?? 0}");
+                }
+                if (questions.Count() > 10)
+                {
+                    WriteLine($"  ... and {questions.Count() - 10} more");
+                }
+            }
+            break;
+        case "3":
+            double avgDifficulty = await questionRepository.GetAverageDifficultyAsync();
+            WriteLine($"Average difficulty: {avgDifficulty:F2}");
+            break;
+        case "4":
+            WriteLine("Enter minimum incorrect answers: ");
+            string? minIncorrectInput = ReadLine();
+            if (int.TryParse(minIncorrectInput, out int minIncorrect))
+            {
+                IEnumerable<CardboxDataLayer.Entities.Question> questions = await questionRepository.GetIncorrectAnswersAsync(minIncorrect);
+                WriteLine($"Questions with {minIncorrect}+ incorrect answers: {questions.Count()}");
+                foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
+                {
+                    WriteLine($"  {question.question} - Incorrect: {question.incorrect}");
+                }
+                if (questions.Count() > 10)
+                {
+                    WriteLine($"  ... and {questions.Count() - 10} more");
+                }
+            }
+            break;
+        case "5":
+            WriteLine("Enter minimum difficulty: ");
+            string? minDiffInput = ReadLine();
+            WriteLine("Enter maximum difficulty: ");
+            string? maxDiffInput = ReadLine();
+            if (int.TryParse(minDiffInput, out int minDiff) && int.TryParse(maxDiffInput, out int maxDiff))
+            {
+                IEnumerable<CardboxDataLayer.Entities.Question> questions = await questionRepository.GetByDifficultyRangeAsync(minDiff, maxDiff);
+                WriteLine($"Questions with difficulty {minDiff}-{maxDiff}: {questions.Count()}");
+                foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
+                {
+                    WriteLine($"  {question.question} - Difficulty: {question.difficulty}");
+                }
+                if (questions.Count() > 10)
+                {
+                    WriteLine($"  ... and {questions.Count() - 10} more");
+                }
+            }
+            break;
+        case "6":
+            WriteLine("Enter question to check additions (or leave empty for all): ");
+            string? questionInput = ReadLine();
+            if (!string.IsNullOrEmpty(questionInput))
+            {
+                IEnumerable<CardboxDataLayer.Entities.QuestionHistory> history = await questionRepository.GetQuestionHistoryAsync(questionInput);
+                WriteLine($"Addition history for {questionInput}: {history.Count()} entries");
+                foreach (CardboxDataLayer.Entities.QuestionHistory entry in history)
+                {
+                    WriteLine($"  Added at: {entry.timeStamp}");
+                }
+            }
+            else
+            {
+                WriteLine("Enter a specific question to see its addition history.");
+            }
+            break;
+        default:
+            WriteLine("Invalid choice.");
+            break;
+    }
+}

@@ -39,16 +39,16 @@ Avoid adding message strings / descriptions in assertions. Assertions must be se
 - arranged data
 - assertion itself
 
-Good (xUnit / NUnit):
+Good (NUnit):
 ```csharp
-Assert.Equal(expected, actual);
-Assert.True(result);
+Assert.That(expected, Is.EqualTo(actual));
+Assert.That(result, Is.True);
 ```
 
 Bad (message strings):
 ```csharp
-Assert.True(result, "result should be true");
-Assert.Equal(expected, actual, "values should match");
+Assert.That(result, Is.True, "result should be true");
+Assert.That(expected, Is.EqualTo(actual), "values should match");
 ```
 
 Good (FluentAssertions):
@@ -75,7 +75,7 @@ Use code structure, naming, and small focused methods to make intent obvious.
 If something needs explaining, prefer:
 - clearer names (types, methods, variables)
 - extracting a method to name the concept
-- extracting constants to name “magic values”
+- extracting constants to name "magic values"
 
 ✅ Good (self-explanatory code)
 ```csharp
@@ -128,22 +128,24 @@ Rationale:
 
 ### Act-Assert pattern (no Arrange section)
 
-Test methods must follow the **Arrange-Act-Assert** pattern:
+Test methods must follow the **Arrange-Act-Assert** pattern using NUnit:
 - Arrange should be done via the test name and the minimal setup required.
-- If setup grows, extract helpers/builders rather than adding “Arrange” comments.
+- If setup grows, extract helpers/builders rather than adding "Arrange" comments.
 - Do not add `// Arrange`, `// Act`, `// Assert` comments.
+- Use `[Test]` attribute for test methods and `[SetUp]` for test initialization.
 
-✅ Good (Arrange-Act-Assert, no comments)
+✅ Good (Arrange-Act-Assert, no comments, NUnit)
 ```csharp
-[Fact]
+[Test]
 public void Build_WhenRackContainsBlank_ReturnsWordsUsingBlank()
 {
     WordBuilder builder = new WordBuilder(_lexicon);
-	
+    
     IReadOnlyList<string> result = builder.Build("A?EINRST");
 
-    result.Should().Contain("ANESTRI"); // example
+    Assert.That(result, Does.Contain("ANESTRI"));
 }
+```
 
 ---
 
@@ -159,3 +161,5 @@ public void Build_WhenRackContainsBlank_ReturnsWordsUsingBlank()
 
 - Use 3 part test names - methodName_Condition_Result.
 - Avoid time-dependent tests unless properly controlled (clock abstraction / deterministic time).
+- All tests must use NUnit framework with `[Test]`, `[SetUp]`, `[TearDown]`, and `[TestFixture]` attributes.
+- Use NUnit assertions: `Assert.That(actual, Is.EqualTo(expected))` instead of MSTest assertions.
