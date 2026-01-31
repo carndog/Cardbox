@@ -1,6 +1,6 @@
-using CardboxDataLayer.Entities;
 using CardboxDataLayer;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 
 namespace CardboxDataLayerTests;
 
@@ -10,11 +10,12 @@ public static class TestDatabaseSetup
 
     public static CardboxDbContext CreateTestContext()
     {
-        var connectionString = $"Data Source={TestDatabasePath}";
-        var options = new DbContextOptionsBuilder<CardboxDbContext>()
+        string connectionString = $"Data Source={TestDatabasePath}";
+        DbContextOptionsBuilder<CardboxDbContext> optionsBuilder = new DbContextOptionsBuilder<CardboxDbContext>()
             .UseSqlite(connectionString)
-            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-            .Options;
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
+        DbContextOptions<CardboxDbContext> options = optionsBuilder.Options;
 
         CardboxDbContext context = new CardboxDbContext(options);
         
@@ -50,10 +51,10 @@ public static class TestDatabaseSetup
             return;
         }
 
-        using var connection = context.Database.GetDbConnection();
+        using DbConnection connection = context.Database.GetDbConnection();
         connection.Open();
 
-        using var transaction = connection.BeginTransaction();
+        using DbTransaction transaction = connection.BeginTransaction();
 
         try
         {
@@ -67,7 +68,7 @@ public static class TestDatabaseSetup
                     ('DATA', 8, 0, 8, 12349, 4, 3, 12350),
                     ('LAYER', 2, 6, 1, 12351, 5, 4, 12352)";
 
-            using var command = connection.CreateCommand();
+            using DbCommand command = connection.CreateCommand();
             command.CommandText = insertQuestionsSql;
             command.Transaction = transaction;
             command.ExecuteNonQuery();
