@@ -1,7 +1,6 @@
 using CardboxDataLayer;
 using CardboxDataLayer.Entities;
 using CardboxDataLayer.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace CardboxDataLayerTests;
 
@@ -37,7 +36,7 @@ public class QuestionRepositoryTests
     public async Task GetByQuestionAsync_WithValidQuestion_ShouldReturnQuestion()
     {
         IEnumerable<Question> allQuestions = await _repository.GetAllAsync();
-        Question firstQuestion = allQuestions.FirstOrDefault();
+        Question? firstQuestion = allQuestions.FirstOrDefault();
         
         if (firstQuestion == null)
         {
@@ -45,17 +44,17 @@ public class QuestionRepositoryTests
             return;
         }
 
-        Question result = await _repository.GetByQuestionAsync(firstQuestion.question);
+        Question? result = await _repository.GetByQuestionAsync(firstQuestion!.question);
 
         Assert.That(result, Is.Not.Null);
 
-        Assert.That(firstQuestion.question, Is.EqualTo(result.question));
+        Assert.That(firstQuestion!.question, Is.EqualTo(result!.question));
     }
 
     [Test]
     public async Task GetByQuestionAsync_WithInvalidQuestion_ShouldReturnNull()
     {
-        Question result = await _repository.GetByQuestionAsync("NONEXISTENT_QUESTION");
+        Question? result = await _repository.GetByQuestionAsync("NONEXISTENT_QUESTION");
 
         Assert.That(result, Is.Null);
     }
@@ -162,7 +161,7 @@ public class QuestionRepositoryTests
     public async Task GetQuestionHistoryAsync_ShouldReturnHistoryForQuestion()
     {
         IEnumerable<Question> allQuestions = await _repository.GetAllAsync();
-        Question firstQuestion = allQuestions.FirstOrDefault();
+        Question? firstQuestion = allQuestions.FirstOrDefault();
         
         if (firstQuestion == null)
         {
@@ -170,7 +169,7 @@ public class QuestionRepositoryTests
             return;
         }
 
-        IEnumerable<QuestionHistory> history = await _repository.GetQuestionHistoryAsync(firstQuestion.question);
+        IEnumerable<QuestionHistory> history = await _repository.GetQuestionHistoryAsync(firstQuestion!.question);
 
         Assert.That(history, Is.Not.Null);
         foreach (QuestionHistory entry in history)
