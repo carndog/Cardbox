@@ -58,7 +58,6 @@ public static class TestDatabaseSetup
 
         try
         {
-            // Insert test questions
             string insertQuestionsSql = @"
                 INSERT INTO questions (question, correct, incorrect, streak, last_correct, difficulty, cardbox, next_scheduled)
                 VALUES 
@@ -73,7 +72,6 @@ public static class TestDatabaseSetup
             command.Transaction = transaction;
             command.ExecuteNonQuery();
 
-            // Try to insert test history (may fail if table doesn't exist)
             try
             {
                 string insertHistorySql = @"
