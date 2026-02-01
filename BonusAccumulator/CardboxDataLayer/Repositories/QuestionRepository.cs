@@ -107,7 +107,7 @@ public class QuestionRepository : IQuestionRepository
         }
         catch (SqliteException)
         {
-            return Enumerable.Empty<QuestionHistory>();
+            return [];
         }
     }
 }

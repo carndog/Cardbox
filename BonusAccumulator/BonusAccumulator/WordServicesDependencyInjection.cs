@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WordServices;
 using WordServices.Output;
@@ -9,22 +8,18 @@ namespace BonusAccumulator;
 
 public static class WordServicesDependencyInjection
 {
-    public static IServiceCollection AddWordServices(
-        this IServiceCollection services, 
-        IConfiguration configuration)
+    public static void AddWordServices(this IServiceCollection services)
     {
         services.AddSingleton<ISettingsProvider, ConfigurationSettingsProvider>();
         services.AddSingleton<IWordOutputService, DefaultWordOutputService>();
         services.AddSingleton<TrieNode>();
         services.AddSingleton<IAnagramTrieBuilder>(provider => 
             new AnagramTrieBuilder(
-                provider.GetRequiredService<ISettingsProvider>().GetSetting("DictionaryPath") ?? string.Empty,
+                provider.GetRequiredService<ISettingsProvider>().GetSetting("DictionaryPath"),
                 provider.GetRequiredService<TrieNode>()));
         services.AddSingleton<ILazyLoadingTrie, LazyLoadingTrie>();
         services.AddSingleton<ITrieSearcher, TrieSearcher>();
         services.AddSingleton<ISessionState, SessionState>();
         services.AddSingleton<IWordService, WordService>();
-
-        return services;
     }
 }

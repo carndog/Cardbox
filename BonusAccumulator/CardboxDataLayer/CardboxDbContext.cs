@@ -11,6 +11,7 @@ public class CardboxDbContext : DbContext
     }
 
     public DbSet<Question> Questions { get; set; }
+    
     public DbSet<QuestionHistory> QuestionHistories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -64,7 +65,7 @@ public class CardboxDbContext : DbContext
         });
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         throw new InvalidOperationException("Cardbox database is read-only. SaveChangesAsync is not allowed.");
     }

@@ -10,7 +10,7 @@ using static System.Console;
 IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices((context, services) =>
     {
-        services.AddWordServices(context.Configuration);
+        services.AddWordServices();
         services.AddCardboxDataLayer(context.Configuration);
     })
     .Build();

@@ -14,7 +14,7 @@ public class ConfigurationSettingsProvider : ISettingsProvider
 
     public string GetSetting(string key)
     {
-        if (key == null) throw new ArgumentNullException(nameof(key));
+        ArgumentNullException.ThrowIfNull(key);
         return _configuration[key] ?? string.Empty;
     }
 }

@@ -7,8 +7,7 @@ namespace CardboxDataLayer;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddCardboxDataLayer(
-        this IServiceCollection services, 
+    public static void AddCardboxDataLayer(this IServiceCollection services,
         IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("CardboxDatabase") 
@@ -25,7 +24,5 @@ public static class DependencyInjection
            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
         services.AddScoped<IQuestionRepository, QuestionRepository>();
-
-        return services;
     }
 }

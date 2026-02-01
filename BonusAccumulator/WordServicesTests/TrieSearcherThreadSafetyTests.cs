@@ -16,7 +16,7 @@ public class TrieSearcherThreadSafetyTests
             new LazyLoadingTrie(new AnagramTrieBuilder(TestFilePath, new TrieNode())));
 
         int iterations = 100;
-        List<Task<IList<string>>> tasks = new();
+        List<Task<IList<string>>> tasks = [];
 
         for (int i = 0; i < iterations; i++)
         {

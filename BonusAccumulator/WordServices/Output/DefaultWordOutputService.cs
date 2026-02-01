@@ -13,7 +13,7 @@ public class DefaultWordOutputService : IWordOutputService
             .GroupBy(word => word.ToAlphagram())
             .OrderBy(group => group.Key);
 
-        List<string> formattedWords = new List<string>();
+        List<string> formattedWords = [];
 
         foreach (IGrouping<string, string> group in anagramGroups)
         {

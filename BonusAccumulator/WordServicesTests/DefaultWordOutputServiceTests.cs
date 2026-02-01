@@ -17,7 +17,7 @@ public class DefaultWordOutputServiceTests
     [Test]
     public void FormatWords_EmptyList_ReturnsEmptyString()
     {
-        List<string> words = new List<string>();
+        List<string> words = [];
 
         string result = _service.FormatWords(words);
 
@@ -27,7 +27,7 @@ public class DefaultWordOutputServiceTests
     [Test]
     public void FormatWords_SingleWord_ReturnsWord()
     {
-        List<string> words = new List<string> { "CAT" };
+        List<string> words = ["CAT"];
 
         string result = _service.FormatWords(words);
 
@@ -37,7 +37,7 @@ public class DefaultWordOutputServiceTests
     [Test]
     public void FormatWords_MultipleNonAnagrams_ReturnsAlphabeticalWords()
     {
-        List<string> words = new List<string> { "DOG", "CAT", "BIRD" };
+        List<string> words = ["DOG", "CAT", "BIRD"];
 
         string result = _service.FormatWords(words);
 
@@ -47,7 +47,7 @@ public class DefaultWordOutputServiceTests
     [Test]
     public void FormatWords_AnagramGroup_ReturnsBracedGroup()
     {
-        List<string> words = new List<string> { "CAT", "ACT", "TAC" };
+        List<string> words = ["CAT", "ACT", "TAC"];
 
         string result = _service.FormatWords(words);
 
@@ -57,7 +57,7 @@ public class DefaultWordOutputServiceTests
     [Test]
     public void FormatWords_MixedWordsAndAnagrams_ReturnsCorrectFormat()
     {
-        List<string> words = new List<string> { "DOG", "CAT", "ACT", "BIRD", "GOD" };
+        List<string> words = ["DOG", "CAT", "ACT", "BIRD", "GOD"];
 
         string result = _service.FormatWords(words);
 
@@ -67,7 +67,7 @@ public class DefaultWordOutputServiceTests
     [Test]
     public void FormatWords_MultipleAnagramGroups_ReturnsCorrectFormat()
     {
-        List<string> words = new List<string> { "CAT", "ACT", "DOG", "GOD", "TAC", "MAN", "NAM" };
+        List<string> words = ["CAT", "ACT", "DOG", "GOD", "TAC", "MAN", "NAM"];
 
         string result = _service.FormatWords(words);
 
@@ -77,7 +77,7 @@ public class DefaultWordOutputServiceTests
     [Test]
     public void FormatWords_AnagramGroupWithSingleWord_ReturnsUnbracedWord()
     {
-        List<string> words = new List<string> { "CAT", "DOG", "ACT" };
+        List<string> words = ["CAT", "DOG", "ACT"];
 
         string result = _service.FormatWords(words);
 
@@ -87,7 +87,7 @@ public class DefaultWordOutputServiceTests
     [Test]
     public void FormatWords_PreservesAlphagramOrdering()
     {
-        List<string> words = new List<string> { "MAN", "CAT", "DOG", "ACT", "NAM", "GOD" };
+        List<string> words = ["MAN", "CAT", "DOG", "ACT", "NAM", "GOD"];
 
         string result = _service.FormatWords(words);
 

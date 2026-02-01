@@ -16,7 +16,7 @@ public class WordService : IWordService
 
     private readonly IWordOutputService _wordOutputService;
 
-    private readonly HashSet<string> _unasked = new();
+    private readonly HashSet<string> _unasked = [];
 
     public WordService(ITrieSearcher searcher, ISessionState sessionState, IWordOutputService wordOutputService)
     {
@@ -87,7 +87,7 @@ public class WordService : IWordService
         return answer;
     }
 
-    public void AddWords(string[] words, Action<string?> write)
+    public void AddWords(string[] words, Action<string> write)
     {
         List<string> filtered = words.Where(x => Pattern(x).Words.Count > 0).ToList();
         if (filtered.Count == 0)
@@ -112,7 +112,7 @@ public class WordService : IWordService
     public void RunQuiz(
         QuizOptions options,
         string endQuizSessionCommand,
-        Action<string?> write,
+        Action<string> write,
         Func<string?> read)
     {
         HashSet<string> storedWords = options == QuizOptions.Session ? _sessionState.SessionWords : _sessionState.AddedWords;
@@ -135,7 +135,7 @@ public class WordService : IWordService
                 if (_unasked.Contains(answer))
                 {
                     write($"{question} {sessionQuiz.Words.Count}");
-                    string[] answers = read()?.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
+                    string[] answers = read()?.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries) ?? [];
                     List<string> list = answers.Union(sessionQuiz.Words).ToList();
                     write(string.Empty);
                     write(list.Count == sessionQuiz.Words.Count ? "Correct" : "Wrong");
@@ -206,7 +206,7 @@ public class WordService : IWordService
 
     private Answer RunWildCardCharacterQuestion(Func<string> getQuestion, Func<string, Answer> getAnswer)
     {
-        HashSet<string> words = new HashSet<string>();
+        HashSet<string> words = [];
 
         foreach (string modifiedQuestion in getQuestion().ToWildCardCharacterQuestions())
         {

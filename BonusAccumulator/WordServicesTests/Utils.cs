@@ -19,7 +19,7 @@ public class Utils
         {
             string location = Assembly.GetExecutingAssembly().Location;
             string[]? parts = Path.GetDirectoryName(Path.GetDirectoryName(location))?.Split(Path.DirectorySeparatorChar).TakeWhile(x => x != "bin").ToArray();
-            string[] relativePath = { "Resources", "TestDictionary.txt" };
+            string[] relativePath = ["Resources", "TestDictionary.txt"];
             if (parts != null)
             {
                 string[] allParts = new string[parts.Length + relativePath.Length];

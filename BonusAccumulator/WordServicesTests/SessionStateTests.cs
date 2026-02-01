@@ -13,7 +13,7 @@ public class SessionStateTests
         TestSettingsProvider settingsProvider = new TestSettingsProvider(tempPath);
         SessionState sessionState = new SessionState(settingsProvider);
         
-        sessionState.Add(new[] { "WORD1", "WORD2" });
+        sessionState.Add(["WORD1", "WORD2"]);
         string savedPath = sessionState.SaveAdded();
         
         string content = File.ReadAllText(savedPath);
@@ -28,7 +28,7 @@ public class SessionStateTests
         TestSettingsProvider settingsProvider = new TestSettingsProvider("");
         SessionState sessionState = new SessionState(settingsProvider);
         
-        sessionState.Add(new[] { "WORD1" });
+        sessionState.Add(["WORD1"]);
         
         Action act = () => sessionState.SaveAdded();
         

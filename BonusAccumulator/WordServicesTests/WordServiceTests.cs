@@ -43,8 +43,8 @@ public class WordServiceTests
     {
         _service.Anagram("CAT");
         
-        List<string> output = new();
-        Queue<string?> inputQueue = new(new[] { "ACT", "eqs" });
+        List<string> output = [];
+        Queue<string?> inputQueue = new(["ACT", "eqs"]);
         
         Action<string?> write = s => output.Add(s ?? string.Empty);
         Func<string?> read = () => inputQueue.Count > 0 ? inputQueue.Dequeue() : "eqs";
@@ -60,8 +60,8 @@ public class WordServiceTests
         _service.Anagram("CAT");
         _service.Anagram("DOG");
         
-        List<string> output = new();
-        Queue<string?> inputQueue = new(new[] { "eqs" });
+        List<string> output = [];
+        Queue<string?> inputQueue = new(["eqs"]);
         
         Action<string?> write = s => output.Add(s ?? string.Empty);
         Func<string?> read = () => inputQueue.Count > 0 ? inputQueue.Dequeue() : "eqs";
@@ -76,8 +76,8 @@ public class WordServiceTests
     {
         _service.Anagram("TEST");
         
-        List<string> output = new();
-        Queue<string?> inputQueue = new(new[] { "eqs" });
+        List<string> output = [];
+        Queue<string?> inputQueue = new(["eqs"]);
         
         Action<string?> write = s => output.Add(s ?? string.Empty);
         Func<string?> read = () => inputQueue.Count > 0 ? inputQueue.Dequeue() : "eqs";

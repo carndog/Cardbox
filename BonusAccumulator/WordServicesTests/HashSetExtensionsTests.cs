@@ -9,7 +9,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_ValidIndex_ReturnsCorrectElement()
     {
-        HashSet<string> set = new HashSet<string> { "A", "B", "C", "D", "E" };
+        HashSet<string> set = ["A", "B", "C", "D", "E"];
 
         string result = set.GetNthElement(3);
 
@@ -19,7 +19,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_FirstIndex_ReturnsFirstElement()
     {
-        HashSet<int> set = new HashSet<int> { 10, 20, 30, 40, 50 };
+        HashSet<int> set = [10, 20, 30, 40, 50];
 
         int result = set.GetNthElement(1);
 
@@ -29,7 +29,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_LastIndex_ReturnsLastElement()
     {
-        HashSet<string> set = new HashSet<string> { "X", "Y", "Z" };
+        HashSet<string> set = ["X", "Y", "Z"];
 
         string result = set.GetNthElement(3);
 
@@ -39,7 +39,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_ZeroIndex_ThrowsArgumentOutOfRangeException()
     {
-        HashSet<string> set = new HashSet<string> { "A", "B", "C" };
+        HashSet<string> set = ["A", "B", "C"];
 
         Action act = () => set.GetNthElement(0);
 
@@ -50,7 +50,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_NegativeIndex_ThrowsArgumentOutOfRangeException()
     {
-        HashSet<int> set = new HashSet<int> { 1, 2, 3 };
+        HashSet<int> set = [1, 2, 3];
 
         Action act = () => set.GetNthElement(-1);
 
@@ -61,7 +61,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_IndexGreaterThanCount_ThrowsArgumentOutOfRangeException()
     {
-        HashSet<string> set = new HashSet<string> { "A", "B" };
+        HashSet<string> set = ["A", "B"];
 
         Action act = () => set.GetNthElement(5);
 
@@ -72,7 +72,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_IndexEqualsCount_ThrowsArgumentOutOfRangeException()
     {
-        HashSet<int> set = new HashSet<int> { 1, 2, 3 };
+        HashSet<int> set = [1, 2, 3];
 
         Action act = () => set.GetNthElement(4);
 
@@ -83,7 +83,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_SingleElementSet_ValidIndex_ReturnsElement()
     {
-        HashSet<string> set = new HashSet<string> { "ONLY" };
+        HashSet<string> set = ["ONLY"];
 
         string result = set.GetNthElement(1);
 
@@ -93,7 +93,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_SingleElementSet_InvalidIndex_ThrowsArgumentOutOfRangeException()
     {
-        HashSet<string> set = new HashSet<string> { "ONLY" };
+        HashSet<string> set = ["ONLY"];
 
         Action act = () => set.GetNthElement(2);
 
@@ -104,7 +104,7 @@ public class HashSetExtensionsTests
     [Test]
     public void GetNthElement_EmptySet_ThrowsArgumentOutOfRangeException()
     {
-        HashSet<int> set = new HashSet<int>();
+        HashSet<int> set = [];
 
         Action act = () => set.GetNthElement(1);
 

@@ -4,11 +4,11 @@ public class SessionState : ISessionState
 {
     private readonly ISettingsProvider _settingsProvider;
     
-    public HashSet<string> SessionWords { get; } = new();
+    public HashSet<string> SessionWords { get; } = [];
     
-    public HashSet<string> AddedWords { get; } = new();
+    public HashSet<string> AddedWords { get; } = [];
     
-    public List<string> LastResult { get; } = new();
+    public List<string> LastResult { get; } = [];
 
     public SessionState(ISettingsProvider settingsProvider)
     {
