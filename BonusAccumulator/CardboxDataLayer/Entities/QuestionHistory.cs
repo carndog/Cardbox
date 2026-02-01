@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CardboxDataLayer.Entities;
 
-public class QuestionHistory
+public record QuestionHistory
 {
     [Key]
-    public string QuestionText { get; set; } = string.Empty;
+    public string QuestionText { get; init; } = string.Empty;
     
-    public int? TimeStamp { get; set; }
+    public int? TimeStamp { get; init; }
 }

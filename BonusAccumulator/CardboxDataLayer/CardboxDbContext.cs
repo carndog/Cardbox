@@ -53,7 +53,7 @@ public class CardboxDbContext : DbContext
         modelBuilder.Entity<QuestionHistory>(entity =>
         {
             entity.ToTable("next_Added");
-            entity.HasKey(e => new { Question = e.QuestionText, e.TimeStamp });
+            entity.HasKey(e => new { e.QuestionText, e.TimeStamp });
             
             entity.Property(e => e.QuestionText)
                 .HasColumnName("question")

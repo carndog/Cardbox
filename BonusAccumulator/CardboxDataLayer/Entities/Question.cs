@@ -2,22 +2,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CardboxDataLayer.Entities;
 
-public class Question
+public record Question
 {
     [Key]
-    public string QuestionText { get; set; } = string.Empty;
+    public string QuestionText { get; init; } = string.Empty;
     
-    public int? Correct { get; set; }
+    public int? Correct { get; init; }
     
-    public int? Incorrect { get; set; }
+    public int? Incorrect { get; init; }
     
-    public int? Streak { get; set; }
+    public int? Streak { get; init; }
     
-    public int? LastCorrect { get; set; }
+    public int? LastCorrect { get; init; }
     
-    public int? Difficulty { get; set; }
+    public int? Difficulty { get; init; }
     
-    public int? Cardbox { get; set; }
+    public int? Cardbox { get; init; }
     
-    public int? NextScheduled { get; set; }
+    public int? NextScheduled { get; init; }
 }
