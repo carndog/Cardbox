@@ -5,19 +5,19 @@ namespace CardboxDataLayer.Entities;
 public class Question
 {
     [Key]
-    public string question { get; set; } = string.Empty;
+    public string QuestionText { get; set; } = string.Empty;
     
-    public int? correct { get; set; }
+    public int? Correct { get; set; }
     
-    public int? incorrect { get; set; }
+    public int? Incorrect { get; set; }
     
-    public int? streak { get; set; }
+    public int? Streak { get; set; }
     
-    public int? last_correct { get; set; }
+    public int? LastCorrect { get; set; }
     
-    public int? difficulty { get; set; }
+    public int? Difficulty { get; set; }
     
-    public int? cardbox { get; set; }
+    public int? Cardbox { get; set; }
     
-    public int? next_scheduled { get; set; }
+    public int? NextScheduled { get; set; }
 }

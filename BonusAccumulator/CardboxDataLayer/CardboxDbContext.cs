@@ -21,46 +21,46 @@ public class CardboxDbContext : DbContext
         modelBuilder.Entity<Question>(entity =>
         {
             entity.ToTable("questions");
-            entity.HasKey(e => e.question);
+            entity.HasKey(e => e.QuestionText);
             
-            entity.Property(e => e.question)
+            entity.Property(e => e.QuestionText)
                 .HasColumnName("question")
                 .HasColumnType("varchar(16)")
                 .HasMaxLength(16);
                 
-            entity.Property(e => e.correct)
+            entity.Property(e => e.Correct)
                 .HasColumnName("correct");
                 
-            entity.Property(e => e.incorrect)
+            entity.Property(e => e.Incorrect)
                 .HasColumnName("incorrect");
                 
-            entity.Property(e => e.streak)
+            entity.Property(e => e.Streak)
                 .HasColumnName("streak");
                 
-            entity.Property(e => e.last_correct)
+            entity.Property(e => e.LastCorrect)
                 .HasColumnName("last_correct");
                 
-            entity.Property(e => e.difficulty)
+            entity.Property(e => e.Difficulty)
                 .HasColumnName("difficulty");
                 
-            entity.Property(e => e.cardbox)
+            entity.Property(e => e.Cardbox)
                 .HasColumnName("cardbox");
                 
-            entity.Property(e => e.next_scheduled)
+            entity.Property(e => e.NextScheduled)
                 .HasColumnName("next_scheduled");
         });
 
         modelBuilder.Entity<QuestionHistory>(entity =>
         {
             entity.ToTable("next_Added");
-            entity.HasKey(e => new { e.question, e.timeStamp });
+            entity.HasKey(e => new { Question = e.QuestionText, e.TimeStamp });
             
-            entity.Property(e => e.question)
+            entity.Property(e => e.QuestionText)
                 .HasColumnName("question")
                 .HasColumnType("varchar(16)")
                 .HasMaxLength(16);
                 
-            entity.Property(e => e.timeStamp)
+            entity.Property(e => e.TimeStamp)
                 .HasColumnName("timeStamp");
         });
     }

@@ -196,7 +196,7 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
                 WriteLine($"Questions in cardbox {cardbox}: {questions.Count()}");
                 foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
                 {
-                    WriteLine($"  {question.question} - Correct: {question.correct ?? 0}, Incorrect: {question.incorrect ?? 0}, Streak: {question.streak ?? 0}");
+                    WriteLine($"  {question.QuestionText} - Correct: {question.Correct ?? 0}, Incorrect: {question.Incorrect ?? 0}, Streak: {question.Streak ?? 0}");
                 }
                 if (questions.Count() > 10)
                 {
@@ -217,7 +217,7 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
                 WriteLine($"Questions with {minIncorrect}+ incorrect answers: {questions.Count()}");
                 foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
                 {
-                    WriteLine($"  {question.question} - Incorrect: {question.incorrect}");
+                    WriteLine($"  {question.QuestionText} - Incorrect: {question.Incorrect}");
                 }
                 if (questions.Count() > 10)
                 {
@@ -236,7 +236,7 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
                 WriteLine($"Questions with difficulty {minDiff}-{maxDiff}: {questions.Count()}");
                 foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
                 {
-                    WriteLine($"  {question.question} - Difficulty: {question.difficulty}");
+                    WriteLine($"  {question.QuestionText} - Difficulty: {question.Difficulty}");
                 }
                 if (questions.Count() > 10)
                 {
@@ -253,7 +253,7 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
                 WriteLine($"Addition history for {questionInput}: {history.Count()} entries");
                 foreach (CardboxDataLayer.Entities.QuestionHistory entry in history)
                 {
-                    WriteLine($"  Added at: {entry.timeStamp}");
+                    WriteLine($"  Added at: {entry.TimeStamp}");
                 }
             }
             else

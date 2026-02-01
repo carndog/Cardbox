@@ -5,7 +5,7 @@ namespace CardboxDataLayer.Entities;
 public class QuestionHistory
 {
     [Key]
-    public string question { get; set; } = string.Empty;
+    public string QuestionText { get; set; } = string.Empty;
     
-    public int? timeStamp { get; set; }
+    public int? TimeStamp { get; set; }
 }

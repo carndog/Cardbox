@@ -16,65 +16,65 @@ public class QuestionRepository : IQuestionRepository
     public async Task<Question?> GetByQuestionAsync(string question)
     {
         return await _context.Questions
-            .FirstOrDefaultAsync(q => q.question == question);
+            .FirstOrDefaultAsync(q => q.QuestionText == question);
     }
 
     public async Task<IEnumerable<Question>> GetAllAsync()
     {
         return await _context.Questions
-            .OrderBy(q => q.question)
+            .OrderBy(q => q.QuestionText)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Question>> GetByCardboxAsync(int cardbox)
     {
         return await _context.Questions
-            .Where(q => q.cardbox == cardbox)
-            .OrderBy(q => q.question)
+            .Where(q => q.Cardbox == cardbox)
+            .OrderBy(q => q.QuestionText)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Question>> GetByDifficultyAsync(int difficulty)
     {
         return await _context.Questions
-            .Where(q => q.difficulty == difficulty)
-            .OrderBy(q => q.question)
+            .Where(q => q.Difficulty == difficulty)
+            .OrderBy(q => q.QuestionText)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Question>> GetByDifficultyRangeAsync(int minDifficulty, int maxDifficulty)
     {
         return await _context.Questions
-            .Where(q => q.difficulty >= minDifficulty && q.difficulty <= maxDifficulty)
-            .OrderBy(q => q.difficulty)
-            .ThenBy(q => q.question)
+            .Where(q => q.Difficulty >= minDifficulty && q.Difficulty <= maxDifficulty)
+            .OrderBy(q => q.Difficulty)
+            .ThenBy(q => q.QuestionText)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Question>> GetByStreakAsync(int minStreak)
     {
         return await _context.Questions
-            .Where(q => q.streak >= minStreak)
-            .OrderByDescending(q => q.streak)
-            .ThenBy(q => q.question)
+            .Where(q => q.Streak >= minStreak)
+            .OrderByDescending(q => q.Streak)
+            .ThenBy(q => q.QuestionText)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Question>> GetScheduledAsync(int maxNextScheduled)
     {
         return await _context.Questions
-            .Where(q => q.next_scheduled <= maxNextScheduled)
-            .OrderBy(q => q.next_scheduled)
-            .ThenBy(q => q.question)
+            .Where(q => q.NextScheduled <= maxNextScheduled)
+            .OrderBy(q => q.NextScheduled)
+            .ThenBy(q => q.QuestionText)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Question>> GetIncorrectAnswersAsync(int minIncorrect)
     {
         return await _context.Questions
-            .Where(q => q.incorrect >= minIncorrect)
-            .OrderByDescending(q => q.incorrect)
-            .ThenBy(q => q.question)
+            .Where(q => q.Incorrect >= minIncorrect)
+            .OrderByDescending(q => q.Incorrect)
+            .ThenBy(q => q.QuestionText)
             .ToListAsync();
     }
 
@@ -86,14 +86,14 @@ public class QuestionRepository : IQuestionRepository
     public async Task<int> GetCountByCardboxAsync(int cardbox)
     {
         return await _context.Questions
-            .CountAsync(q => q.cardbox == cardbox);
+            .CountAsync(q => q.Cardbox == cardbox);
     }
 
     public async Task<double> GetAverageDifficultyAsync()
     {
         return await _context.Questions
-            .Where(q => q.difficulty.HasValue)
-            .AverageAsync(q => q.difficulty.Value);
+            .Where(q => q.Difficulty.HasValue)
+            .AverageAsync(q => q.Difficulty.Value);
     }
 
     public async Task<IEnumerable<QuestionHistory>> GetQuestionHistoryAsync(string question)
@@ -101,8 +101,8 @@ public class QuestionRepository : IQuestionRepository
         try
         {
             return await _context.QuestionHistories
-                .Where(qh => qh.question == question)
-                .OrderBy(qh => qh.timeStamp)
+                .Where(qh => qh.QuestionText == question)
+                .OrderBy(qh => qh.TimeStamp)
                 .ToListAsync();
         }
         catch (SqliteException)

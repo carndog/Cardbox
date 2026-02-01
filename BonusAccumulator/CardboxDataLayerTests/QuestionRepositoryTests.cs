@@ -44,11 +44,11 @@ public class QuestionRepositoryTests
             return;
         }
 
-        Question? result = await _repository.GetByQuestionAsync(firstQuestion!.question);
+        Question? result = await _repository.GetByQuestionAsync(firstQuestion!.QuestionText);
 
         Assert.That(result, Is.Not.Null);
 
-        Assert.That(firstQuestion!.question, Is.EqualTo(result!.question));
+        Assert.That(firstQuestion!.QuestionText, Is.EqualTo(result!.QuestionText));
     }
 
     [Test]
@@ -67,7 +67,7 @@ public class QuestionRepositoryTests
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
         {
-            Assert.That(1, Is.EqualTo(question.cardbox));
+            Assert.That(1, Is.EqualTo(question.Cardbox));
         }
     }
 
@@ -79,7 +79,7 @@ public class QuestionRepositoryTests
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
         {
-            Assert.That(1, Is.EqualTo(question.difficulty));
+            Assert.That(1, Is.EqualTo(question.Difficulty));
         }
     }
 
@@ -91,7 +91,7 @@ public class QuestionRepositoryTests
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
         {
-            Assert.That(question.difficulty >= 1 && question.difficulty <= 3, Is.True);
+            Assert.That(question.Difficulty >= 1 && question.Difficulty <= 3, Is.True);
         }
     }
 
@@ -103,7 +103,7 @@ public class QuestionRepositoryTests
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
         {
-            Assert.That(question.streak >= 0, Is.True);
+            Assert.That(question.Streak >= 0, Is.True);
         }
     }
 
@@ -117,7 +117,7 @@ public class QuestionRepositoryTests
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
         {
-            Assert.That(question.next_scheduled <= maxScheduled, Is.True);
+            Assert.That(question.NextScheduled <= maxScheduled, Is.True);
         }
     }
 
@@ -129,7 +129,7 @@ public class QuestionRepositoryTests
         Assert.That(questions, Is.Not.Null);
         foreach (Question question in questions)
         {
-            Assert.That(question.incorrect >= 0, Is.True);
+            Assert.That(question.Incorrect >= 0, Is.True);
         }
     }
 
@@ -169,12 +169,12 @@ public class QuestionRepositoryTests
             return;
         }
 
-        List<QuestionHistory> history = (await _repository.GetQuestionHistoryAsync(firstQuestion!.question)).ToList();
+        List<QuestionHistory> history = (await _repository.GetQuestionHistoryAsync(firstQuestion!.QuestionText)).ToList();
 
         Assert.That(history, Is.Not.Null);
         foreach (QuestionHistory entry in history)
         {
-            Assert.That(firstQuestion.question, Is.EqualTo(entry.question));
+            Assert.That(firstQuestion.QuestionText, Is.EqualTo(entry.QuestionText));
         }
     }
 }
