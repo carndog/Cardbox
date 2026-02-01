@@ -38,10 +38,36 @@ public class WordService : IWordService
         };
     }
 
+    private Answer AnagramInternal(string question)
+    {
+        IList<string> words = _searcher.Query(question,
+            wordsAtTerminal => wordsAtTerminal.Where(x => x.Length == question.Length));
+        
+        return new Answer
+        {
+            Words = new ReadOnlyCollection<string>(words)
+        };
+    }
+
     public Answer Build(string question)
     {
         IList<string> words = _searcher.Query(question, x => x);
+        
+        _sessionState.Update(words);
 
+        return new Answer
+        {
+            Words = new ReadOnlyCollection<string>(words)
+        };
+    }
+
+    private Answer PatternInternal(string question)
+    {
+        Func<IEnumerable<string>, IEnumerable<string>> wordFilter =
+            filter => filter.Where(x => x.Length == question.Length && Regex.IsMatch(x, question.ToUpper()));
+        
+        IList<string> words = _searcher.Query(question, wordFilter);
+        
         return new Answer
         {
             Words = new ReadOnlyCollection<string>(words)
@@ -68,7 +94,7 @@ public class WordService : IWordService
         if (question == null)
             return new Answer();
 
-        Answer answer = RunWildCardCharacterQuestion(() => question, Pattern);
+        Answer answer = RunWildCardCharacterQuestion(() => question, PatternInternal);
         
         _sessionState.Update(answer.Words);
         
@@ -80,7 +106,7 @@ public class WordService : IWordService
         if (question == null)
             return new Answer();
 
-        Answer answer = RunWildCardCharacterQuestion(question.ToAlphagram, Anagram);
+        Answer answer = RunWildCardCharacterQuestion(question.ToAlphagram, AnagramInternal);
         
         _sessionState.Update(answer.Words);
         
@@ -96,8 +122,18 @@ public class WordService : IWordService
             _sessionState.Add(filtered);
     }
     
-    public void AddLastWords()
+    public void AddLastWords(Action<string> write)
     {
+        int wordsAdded = _sessionState.LastResult.Count;
+        if (wordsAdded == 0)
+        {
+            write("No words to add from last result.");
+            return;
+        }
+        
+        write($"Added {wordsAdded} words from last result:");
+        write(_wordOutputService.FormatWords(_sessionState.LastResult));
+        
         _sessionState.AddedWords.UnionWith(_sessionState.LastResult);
         _sessionState.LastResult.Clear();
     }
@@ -117,47 +153,93 @@ public class WordService : IWordService
     {
         HashSet<string> storedWords = options == QuizOptions.Session ? _sessionState.SessionWords : _sessionState.AddedWords;
 
-        if (storedWords.Count != 0)
+        if (storedWords.Count == 0)
         {
-            if (_unasked.Count == 0)
-            {
-                _unasked.UnionWith(storedWords);
-            }
-
-            string? s = null;
-            while (s != endQuizSessionCommand && _unasked.Any())
-            {
-                int next = Random.Next(1, storedWords.Count + 1);
-                string answer = storedWords.GetNthElement(next);
-                Answer sessionQuiz = Anagram(answer);
-                string question = answer.ToAlphagram();
-
-                if (_unasked.Contains(answer))
-                {
-                    write($"{question} {sessionQuiz.Words.Count}");
-                    string[] answers = read()?.ToUpper().Split(" ", StringSplitOptions.RemoveEmptyEntries) ?? [];
-                    List<string> list = answers.Union(sessionQuiz.Words).ToList();
-                    write(string.Empty);
-                    write(list.Count == sessionQuiz.Words.Count ? "Correct" : "Wrong");
-                    write(_wordOutputService.FormatWords(sessionQuiz.Words));
-                    write(string.Empty);
-                    _unasked.Remove(answer);
-                }
-            }
-
-            write("Quiz over");
+            write("No words available for quiz");
+            return;
         }
+
+        _unasked.Clear();
+        _unasked.UnionWith(storedWords);
+
+        foreach (string answer in _unasked.Shuffled(Random))
+        {
+            Answer sessionQuiz = AnagramInternal(answer);
+            string question = answer.ToAlphagram();
+
+            write($"Question: {question} ({sessionQuiz.Words.Count} answers)");
+            write($"Type your answers separated by spaces, or '{endQuizSessionCommand}' to exit quiz, or 'help' for help:");
+
+            string? input = read()?.Trim();
+            
+            if (input?.Equals(endQuizSessionCommand, StringComparison.OrdinalIgnoreCase) == true)
+            {
+                write("Quiz ended by user.");
+                break;
+            }
+            
+            if (input?.Equals("help", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                write($"Quiz Help:");
+                write($"  - Type all answers separated by spaces (e.g., 'CAT ACT')");
+                write($"  - Type '{endQuizSessionCommand}' to exit the quiz");
+                write($"  - Current question: {question} ({sessionQuiz.Words.Count} answers)");
+                write("Try again or type a command:");
+                continue;
+            }
+
+            string[] answers = input?.ToUpper()
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? [];
+
+            string[] typed = answers.Distinct().ToArray();
+            
+            bool isCorrect = typed.Length == sessionQuiz.Words.Count
+                           && typed.All(a => sessionQuiz.Words.Contains(a));
+
+            write(string.Empty);
+            write(isCorrect ? "✓ Correct!" : "✗ Wrong");
+            write($"Answers: {_wordOutputService.FormatWords(sessionQuiz.Words)}");
+            write(string.Empty);
+
+            _unasked.Remove(answer);
+        }
+
+        write("Quiz over");
     }
 
     public void RunChainQuiz(string endCommand, Action<string?> write, Func<string?> read)
     {
+        write($"Chain Quiz Started - Type words to find chains, or '{endCommand}' to exit, or 'help' for help:");
+        
         string? command = null;
         while (command != endCommand)
         {
-            command = read();
-            if (command == null)
+            write("Enter a word (or command):");
+            command = read()?.Trim();
+            
+            if (command?.Equals(endCommand, StringComparison.OrdinalIgnoreCase) == true)
+            {
+                write("Chain quiz ended.");
+                break;
+            }
+            
+            if (command?.Equals("help", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                write("Chain Quiz Help:");
+                write("  - Type any word to find its anagram chains");
+                write($"  - Type '{endCommand}' to exit the quiz");
+                write("  - The quiz will show all words that can be made from your letters");
+                write("  - Then shows possible next words using unused letters");
                 continue;
-            Answer chainAnswer = Anagram(command);
+            }
+            
+            if (string.IsNullOrEmpty(command))
+            {
+                write("Please enter a word or command.");
+                continue;
+            }
+            
+            Answer chainAnswer = AnagramInternal(command);
             bool noResults = chainAnswer.Words.Count == 0;
             write(noResults
                 ? "No chains found"

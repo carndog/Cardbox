@@ -40,7 +40,7 @@ public class QuestionRepositoryTests
         
         if (firstQuestion == null)
         {
-            Assert.Ignore("No questions found in test database");
+            Assert.Ignore();
             return;
         }
 
@@ -165,7 +165,7 @@ public class QuestionRepositoryTests
         
         if (firstQuestion == null)
         {
-            Assert.Ignore("No questions found in test database");
+            Assert.Ignore();
             return;
         }
 

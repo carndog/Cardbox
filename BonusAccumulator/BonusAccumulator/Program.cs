@@ -49,11 +49,11 @@ const string CommandsText = $"""
       {AlphagramDistanceCommand}  - Alphagram Distance: Find words by alphagram distance
     
     Quiz & Practice:
-      {QuizSessionCommand}  - Quiz Session: Start a quiz session
-      {QuizWordsCommand}  - Quiz Words: Quiz on added words
+      {QuizSessionCommand}  - Quiz Session: Start a quiz session (type 'eqs' or 'help' during quiz)
+      {QuizWordsCommand}  - Quiz Words: Quiz on added words (type 'eqs' or 'help' during quiz)
       {EndQuizSessionCommand} - End Quiz Session
-      {ChainsCommand}  - Chains: Run chain quiz
-      {EndChainsCommand} - End Chains
+      {ChainsCommand}  - Chains: Run chain quiz (type 'xch' to exit)
+      {EndChainsCommand} - End Chains (used during chains quiz)
     
     Word Management:
       {AddWordCommand} - Add Words: Add words to your list
@@ -157,7 +157,7 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             wordService.ConvertToAlphagrams(WriteLine, ReadLine);
             break;
         case AddLastWordsCommand:
-            wordService.AddLastWords();
+            wordService.AddLastWords(WriteLine);
             break;
         case CardboxAnalysisCommand:
             await RunCardboxAnalysis(questionRepository);

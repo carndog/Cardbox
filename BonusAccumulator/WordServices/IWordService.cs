@@ -18,7 +18,7 @@ public interface IWordService
 
     void AddWords(string[] words, Action<string> output);
 
-    void AddLastWords();
+    void AddLastWords(Action<string> output);
 
     string StoreAndClearAdded();
 

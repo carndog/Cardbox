@@ -21,7 +21,7 @@ public class WordServiceTests
     }
 
     [Test]
-    public void Anagram()
+    public void Anagram_WithValidInput_ShouldReturnAnagrams()
     {
         Answer answer = _service.Anagram("CAT");
 
@@ -30,7 +30,7 @@ public class WordServiceTests
     }
 
     [Test]
-    public void Build()
+    public void Build_WithValidInput_ShouldReturnBuildWords()
     {
         Answer answer = _service.Build("TACT");
 
@@ -51,7 +51,7 @@ public class WordServiceTests
 
         _service.RunQuiz(QuizOptions.Session, "eqs", write, read);
 
-        output.Should().Contain("Wrong", "because a partial answer (only ACT when both ACT and CAT are valid) should be marked wrong");
+        output.Should().Contain("✗ Wrong");
     }
 
     [Test]
@@ -68,7 +68,7 @@ public class WordServiceTests
 
         _service.RunQuiz(QuizOptions.Session, "eqs", write, read);
         
-        output.Should().Contain("Quiz over", "Quiz should end when no more questions available");
+        output.Should().Contain("Quiz over");
     }
 
     [Test]
