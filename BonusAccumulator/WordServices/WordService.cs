@@ -207,11 +207,13 @@ public class WordService : IWordService
         write("Quiz over");
     }
 
-    public void RunChainQuiz(string endCommand, Action<string?> write, Func<string?> read)
+    public void RunChainQuiz(string endCommand, Action<string> write, Func<string?> read)
     {
         write($"Chain Quiz Started - Type words to find chains, or '{endCommand}' to exit, or 'help' for help:");
         
         string? command = null;
+        string? previousWord = null;
+        
         while (command != endCommand)
         {
             write("Enter a word (or command):");
@@ -235,16 +237,31 @@ public class WordService : IWordService
             
             if (string.IsNullOrEmpty(command))
             {
-                write("Please enter a word or command.");
                 continue;
             }
             
+            if (previousWord != null && IsNewChain(command, previousWord))
+            {
+                write($"🔗 New chain starting from: {command.ToUpper()}");
+            }
+            else if (previousWord == null)
+            {
+                write($"🔗 Starting chain from: {command.ToUpper()}");
+            }
+            
+            previousWord = command;
+            
             Answer chainAnswer = AnagramInternal(command);
             bool noResults = chainAnswer.Words.Count == 0;
-            write(noResults
-                ? "No chains found"
-                : _wordOutputService.FormatWords(chainAnswer.Words) + " - " +
-                  string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
+            if (noResults)
+            {
+                write($"'{command.ToUpper()}' is not a valid word or has no anagrams");
+            }
+            else
+            {
+                write(_wordOutputService.FormatWords(chainAnswer.Words) + " - " +
+                      string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
+            }
             if (noResults is false)
             {
                 Answer chainAlphagramDistanceAnswers = AlphagramDistance(command);
@@ -284,6 +301,55 @@ public class WordService : IWordService
                 writeLine(group.Key + "- " + string.Join(", ", group));
             }
         }
+    }
+
+    private bool IsNewChain(string currentWord, string previousWord)
+    {
+        string previousAlphagram = previousWord.ToAlphagram();
+        string currentAlphagram = currentWord.ToAlphagram();
+        
+        if (string.Equals(previousAlphagram, currentAlphagram, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+        
+        int previousLength = previousAlphagram.Length;
+        int currentLength = currentAlphagram.Length;
+        int lengthDifference = Math.Abs(previousLength - currentLength);
+        
+        if (lengthDifference > 1)
+        {
+            return true;
+        }
+        
+        if (previousLength == currentLength)
+        {
+            return previousAlphagram.Except(currentAlphagram).Count() != 1;
+        }
+        
+        string shorter = previousLength < currentLength ? previousAlphagram : currentAlphagram;
+        string longer = previousLength < currentLength ? currentAlphagram : previousAlphagram;
+        
+        int shortIndex = 0, longIndex = 0, editCount = 0;
+        while (shortIndex < shorter.Length && longIndex < longer.Length)
+        {
+            if (shorter[shortIndex] == longer[longIndex])
+            {
+                shortIndex++;
+                longIndex++;
+            }
+            else
+            {
+                editCount++;
+                if (editCount > 1)
+                {
+                    return true;
+                }
+                longIndex++;
+            }
+        }
+        
+        return editCount + (longer.Length - longIndex) != 1;
     }
 
     private Answer RunWildCardCharacterQuestion(Func<string> getQuestion, Func<string, Answer> getAnswer)
