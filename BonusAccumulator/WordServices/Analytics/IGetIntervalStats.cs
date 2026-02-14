@@ -1,5 +1,3 @@
-using WordServices.Analytics;
-
 namespace WordServices.Analytics;
 
 public interface IGetIntervalStats

@@ -2,6 +2,7 @@ using BonusAccumulator;
 using WordServices;
 using WordServices.Output;
 using CardboxDataLayer;
+using CardboxDataLayer.Entities;
 using CardboxDataLayer.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -192,9 +193,9 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
             string? cardboxInput = ReadLine();
             if (int.TryParse(cardboxInput, out int cardbox))
             {
-                IEnumerable<CardboxDataLayer.Entities.Question> questions = await questionRepository.GetByCardboxAsync(cardbox);
+                IEnumerable<Question> questions = await questionRepository.GetByCardboxAsync(cardbox);
                 WriteLine($"Questions in cardbox {cardbox}: {questions.Count()}");
-                foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
+                foreach (Question question in questions.Take(10))
                 {
                     WriteLine($"  {question.QuestionText} - Correct: {question.Correct ?? 0}, Incorrect: {question.Incorrect ?? 0}, Streak: {question.Streak ?? 0}");
                 }
@@ -213,9 +214,9 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
             string? minIncorrectInput = ReadLine();
             if (int.TryParse(minIncorrectInput, out int minIncorrect))
             {
-                IEnumerable<CardboxDataLayer.Entities.Question> questions = await questionRepository.GetIncorrectAnswersAsync(minIncorrect);
+                IEnumerable<Question> questions = await questionRepository.GetIncorrectAnswersAsync(minIncorrect);
                 WriteLine($"Questions with {minIncorrect}+ incorrect answers: {questions.Count()}");
-                foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
+                foreach (Question question in questions.Take(10))
                 {
                     WriteLine($"  {question.QuestionText} - Incorrect: {question.Incorrect}");
                 }
@@ -232,9 +233,9 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
             string? maxDiffInput = ReadLine();
             if (int.TryParse(minDiffInput, out int minDiff) && int.TryParse(maxDiffInput, out int maxDiff))
             {
-                IEnumerable<CardboxDataLayer.Entities.Question> questions = await questionRepository.GetByDifficultyRangeAsync(minDiff, maxDiff);
+                IEnumerable<Question> questions = await questionRepository.GetByDifficultyRangeAsync(minDiff, maxDiff);
                 WriteLine($"Questions with difficulty {minDiff}-{maxDiff}: {questions.Count()}");
-                foreach (CardboxDataLayer.Entities.Question question in questions.Take(10))
+                foreach (Question question in questions.Take(10))
                 {
                     WriteLine($"  {question.QuestionText} - Difficulty: {question.Difficulty}");
                 }
@@ -249,9 +250,9 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
             string? questionInput = ReadLine();
             if (!string.IsNullOrEmpty(questionInput))
             {
-                IEnumerable<CardboxDataLayer.Entities.QuestionHistory> history = await questionRepository.GetQuestionHistoryAsync(questionInput);
+                IEnumerable<QuestionHistory> history = await questionRepository.GetQuestionHistoryAsync(questionInput);
                 WriteLine($"Addition history for {questionInput}: {history.Count()} entries");
-                foreach (CardboxDataLayer.Entities.QuestionHistory entry in history)
+                foreach (QuestionHistory entry in history)
                 {
                     WriteLine($"  Added at: {entry.TimeStamp}");
                 }
