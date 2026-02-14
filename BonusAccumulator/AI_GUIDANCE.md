@@ -124,6 +124,34 @@ Rationale:
 
 ---
 
+### 5) One file per type
+
+Each type (class, interface, record, enum) must be in its own file.
+
+✅ Good (one type per file)
+```
+/Project/
+  IGetDeckStatsByCardbox.cs     // Contains only IGetDeckStatsByCardbox interface
+  GetDeckStatsByCardbox.cs     // Contains only GetDeckStatsByCardbox class
+  CardboxStats.cs             // Contains only CardboxStats record
+```
+
+❌ Bad (multiple types in one file)
+```
+/Project/
+  AnalyticsQueries.cs         // Contains IHealthCheckQueries, IDueQueries, ILeechedQueries
+  ResultTypes.cs              // Contains CardboxStats, DueItem, ErrorRateStats
+```
+
+Rationale:
+- Follows Single Responsibility Principle
+- Easier to navigate and find specific types
+- Reduces merge conflicts
+- Cleaner file organization
+- Each file has a single, clear purpose
+
+---
+
 ## Testing standards
 
 ### Act-Assert pattern (no Arrange section)

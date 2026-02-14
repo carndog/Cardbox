@@ -1,0 +1,32 @@
+using Microsoft.EntityFrameworkCore;
+using WordServices.Analytics;
+
+namespace CardboxDataLayer.Analytics;
+
+public class GetBlindSpots : IGetBlindSpots
+{
+    private readonly CardboxDbContext _context;
+
+    public GetBlindSpots(CardboxDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<IEnumerable<BlindSpotStats>> ExecuteAsync()
+    {
+        const string sql = """
+            SELECT
+              difficulty,
+              LENGTH(question) AS Length,
+              COUNT(*) AS Items,
+              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PctCorrect,
+              SUM(correct + incorrect) AS Reviews
+            FROM questions
+            GROUP BY difficulty, Length
+            HAVING Reviews >= 30
+            ORDER BY PctCorrect ASC, Reviews DESC;
+            """;
+
+        return await _context.Database.SqlQueryRaw<BlindSpotStats>(sql).ToListAsync();
+    }
+}
