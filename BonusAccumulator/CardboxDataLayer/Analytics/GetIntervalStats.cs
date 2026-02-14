@@ -22,7 +22,7 @@ public class GetIntervalStats : IGetIntervalStats
               ROUND(MIN((next_scheduled - last_correct) / 86400.0), 2) AS MinIntervalDays,
               ROUND(MAX((next_scheduled - last_correct) / 86400.0), 2) AS MaxIntervalDays
             FROM questions
-            WHERE last_correct > 0 AND next_scheduled > 0
+            WHERE cardbox IS NOT NULL AND last_correct > 0 AND next_scheduled > 0
             GROUP BY cardbox
             ORDER BY cardbox;
             """;

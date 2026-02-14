@@ -37,4 +37,15 @@ public class GetDeckStatsByWordLengthTests
         Assert.That(firstLength.Items, Is.GreaterThan(0));
         Assert.That(firstLength.PctCorrect, Is.GreaterThanOrEqualTo(0.0));
     }
+
+    [Test]
+    public async Task ExecuteAsync_ShouldExcludeInactiveWords()
+    {
+        IEnumerable<WordLengthStats> result = await _query.ExecuteAsync();
+
+        int totalItemsInResults = result.Sum(stat => stat.Items);
+        int activeWords = _context.Questions.Count(q => q.Cardbox != null);
+
+        Assert.That(totalItemsInResults, Is.EqualTo(activeWords));
+    }
 }

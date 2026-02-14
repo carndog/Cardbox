@@ -38,4 +38,14 @@ public class GetDueNowTests
         Assert.That(firstDue.Difficulty, Is.GreaterThanOrEqualTo(0));
         Assert.That(firstDue.DueAt, Is.LessThanOrEqualTo(DateTime.UtcNow));
     }
+
+    [Test]
+    public async Task ExecuteAsync_ShouldExcludeInactiveWords()
+    {
+        IEnumerable<DueItem> result = await _query.ExecuteAsync(100);
+
+        bool hasInactiveWord = result.Any(item => item.Question.StartsWith("INACTIVE") || item.Question.StartsWith("REMOVED") || item.Question == "OLDWORD");
+
+        Assert.That(hasInactiveWord, Is.False);
+    }
 }

@@ -21,7 +21,7 @@ public class GetDueSoon : IGetDueSoon
               difficulty,
               datetime(next_scheduled, 'unixepoch') AS DueAt
             FROM questions
-            WHERE next_scheduled BETWEEN strftime('%s','now') AND strftime('%s','now') + 86400
+            WHERE cardbox IS NOT NULL AND next_scheduled BETWEEN strftime('%s','now') AND strftime('%s','now') + 86400
             ORDER BY next_scheduled ASC;
             """;
 

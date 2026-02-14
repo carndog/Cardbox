@@ -28,7 +28,8 @@ public class GetForgettingCurveStats : IGetForgettingCurveStats
                 correct,
                 incorrect
               FROM questions
-              WHERE (correct + incorrect) >= 5
+              WHERE cardbox IS NOT NULL
+                AND (correct + incorrect) >= 5
                 AND last_correct > 0
             )
             SELECT

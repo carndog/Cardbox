@@ -105,7 +105,14 @@ public static class AnalyticsTestDataSetup
                     ('WINDOW', 9, 1, 5, {currentTime - 86400}, 4, 4, {currentTime + 345600}),
                     ('COMPUTER', 12, 4, 3, {currentTime - 259200}, 4, 3, {currentTime + 259200}),
                     ('KEYBOARD', 10, 5, 2, {currentTime - 86400}, 3, 2, {currentTime + 172800}),
-                    ('MONITOR', 11, 3, 4, {currentTime - 172800}, 3, 3, {currentTime + 345600})";
+                    ('MONITOR', 11, 3, 4, {currentTime - 172800}, 3, 3, {currentTime + 345600}),
+                    
+                    -- Inactive words (removed from cardbox - NULL cardbox and next_scheduled)
+                    ('INACTIVE1', 15, 5, 0, {currentTime - 86400}, 3, NULL, NULL),
+                    ('INACTIVE2', 20, 10, 0, {currentTime - 172800}, 4, NULL, NULL),
+                    ('REMOVED1', 8, 12, 0, {currentTime - 259200}, 2, NULL, NULL),
+                    ('REMOVED2', 25, 3, 0, {currentTime - 604800}, 5, NULL, NULL),
+                    ('OLDWORD', 30, 15, 0, {currentTime - 1209600}, 3, NULL, NULL)";
 
             using DbCommand command = connection.CreateCommand();
             command.CommandText = insertQuestionsSql;

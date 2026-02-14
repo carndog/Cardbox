@@ -85,7 +85,44 @@ WordCandidate bestPlay = playFinder.FindBest(tiles);
 
 ---
 
-### 4) Interface definitions must have blank lines between methods
+### 4) Use private methods instead of local methods
+
+When extracting helper logic, prefer regular private methods over local methods (functions defined inside other methods).
+
+✅ Good (private method)
+```csharp
+public void ProcessData()
+{
+    string result = FormatOutput(data);
+    WriteLine(result);
+}
+
+private string FormatOutput(Data data)
+{
+    return $"{data.Id}: {data.Name}";
+}
+```
+
+❌ Bad (local method)
+```csharp
+public void ProcessData()
+{
+    string FormatOutput(Data data) => $"{data.Id}: {data.Name}";
+    
+    string result = FormatOutput(data);
+    WriteLine(result);
+}
+```
+
+Rationale:
+- Private methods are more discoverable and testable
+- Better for code organization and reusability
+- Easier to debug and step through
+- Consistent with traditional C# patterns
+
+---
+
+### 5) Interface definitions must have blank lines between methods
 
 When defining interfaces, include blank lines between each method declaration for readability.
 
@@ -124,7 +161,7 @@ Rationale:
 
 ---
 
-### 5) One file per type
+### 6) One file per type
 
 Each type (class, interface, record, enum) must be in its own file.
 

@@ -22,6 +22,7 @@ public class GetBlindSpots : IGetBlindSpots
               ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PctCorrect,
               SUM(correct + incorrect) AS Reviews
             FROM questions
+            WHERE cardbox IS NOT NULL
             GROUP BY difficulty, Length
             HAVING Reviews >= 30
             ORDER BY PctCorrect ASC, Reviews DESC;

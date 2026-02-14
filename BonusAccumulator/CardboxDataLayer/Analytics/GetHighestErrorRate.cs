@@ -25,7 +25,7 @@ public class GetHighestErrorRate : IGetHighestErrorRate
               cardbox,
               difficulty
             FROM questions
-            WHERE (correct + incorrect) >= 10
+            WHERE cardbox IS NOT NULL AND (correct + incorrect) >= 10
             ORDER BY ErrorRate DESC, incorrect DESC
             LIMIT {limit};
             """;

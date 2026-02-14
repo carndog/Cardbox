@@ -21,6 +21,7 @@ public class GetDeckStatsByCardbox : IGetDeckStatsByCardbox
               SUM(correct + incorrect)       AS TotalReviews,
               ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PctCorrect
             FROM questions
+            WHERE cardbox IS NOT NULL
             GROUP BY cardbox
             ORDER BY cardbox;
             """;

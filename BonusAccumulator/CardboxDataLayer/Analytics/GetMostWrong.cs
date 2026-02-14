@@ -24,6 +24,7 @@ public class GetMostWrong : IGetMostWrong
               cardbox,
               difficulty
             FROM questions
+            WHERE cardbox IS NOT NULL
             ORDER BY incorrect DESC, Attempts DESC
             LIMIT {limit};
             """;

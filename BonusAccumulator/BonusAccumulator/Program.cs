@@ -41,6 +41,7 @@ const string AlphagramConversionCommand = "ac";
 const string EndChainsCommand = "xch";
 const string CardboxAnalysisCommand = "ca";
 const string AnalyticsCommand = "an";
+const string AnalyticsShowCommand = "an show";
 const string HelpCommand = "help";
 const string CommandsText = $"""
     Available Commands:
@@ -67,6 +68,7 @@ const string CommandsText = $"""
     Cardbox Analysis:
       {CardboxAnalysisCommand} - Cardbox Analysis: Analyze cardbox data
       {AnalyticsCommand} - Analytics: Advanced analytics queries
+      {AnalyticsShowCommand} - Analytics with Anagrams: Show analytics with anagram solutions
     
     Utilities:
       {HelpCommand} - Help: Show this menu
@@ -168,12 +170,15 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             await RunCardboxAnalysis(questionRepository);
             break;
         case AnalyticsCommand:
-            await RunAnalytics(analyticsService);
+            await RunAnalytics(analyticsService, false);
+            break;
+        case AnalyticsShowCommand:
+            await RunAnalytics(analyticsService, true);
             break;
     }
 }
 
-async Task RunAnalytics(IAnalyticsService analyticsService)
+async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
 {
     WriteLine("Cardbox Analytics Options:");
     WriteLine("Word-based Queries:");
@@ -203,7 +208,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService)
             WriteLine($"Questions due now: {dueNow.Count()}");
             foreach (DueItem item in dueNow.Take(20))
             {
-                WriteLine($"  {item.Question} - Cardbox: {item.Cardbox}, Difficulty: {item.Difficulty}, Due: {item.DueAt:yyyy-MM-dd HH:mm}");
+                DisplayWordWithAnagrams(item.Question, $"Cardbox: {item.Cardbox}, Difficulty: {item.Difficulty}, Due: {item.DueAt:yyyy-MM-dd HH:mm}", showAnagrams);
             }
             if (dueNow.Count() > 20)
             {
@@ -216,7 +221,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService)
             WriteLine($"Priority items: {priorityItems.Count()}");
             foreach (PriorityItem item in priorityItems.Take(20))
             {
-                WriteLine($"  {item.Question} - Priority: {item.Priority:F2}, Cardbox: {item.Cardbox}, Difficulty: {item.Difficulty}");
+                DisplayWordWithAnagrams(item.Question, $"Priority: {item.Priority:F2}, Cardbox: {item.Cardbox}, Difficulty: {item.Difficulty}", showAnagrams);
             }
             if (priorityItems.Count() > 20)
             {
@@ -229,7 +234,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService)
             WriteLine($"Highest error rate questions: {highestErrorRate.Count()}");
             foreach (ErrorRateStats item in highestErrorRate.Take(20))
             {
-                WriteLine($"  {item.Question} - Error Rate: {item.ErrorRate:P2}, Attempts: {item.Attempts}, Cardbox: {item.Cardbox}");
+                DisplayWordWithAnagrams(item.Question, $"Error Rate: {item.ErrorRate:P2}, Attempts: {item.Attempts}, Cardbox: {item.Cardbox}", showAnagrams);
             }
             if (highestErrorRate.Count() > 20)
             {
@@ -242,7 +247,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService)
             WriteLine($"Most wrong questions: {mostWrong.Count()}");
             foreach (MostWrongStats item in mostWrong.Take(20))
             {
-                WriteLine($"  {item.Question} - Incorrect: {item.Incorrect}, Correct: {item.Correct}, Cardbox: {item.Cardbox}");
+                DisplayWordWithAnagrams(item.Question, $"Incorrect: {item.Incorrect}, Correct: {item.Correct}, Cardbox: {item.Cardbox}", showAnagrams);
             }
             if (mostWrong.Count() > 20)
             {
@@ -255,7 +260,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService)
             WriteLine($"Painful questions from recent memory: {painPerRecentMemory.Count()}");
             foreach (PainStats item in painPerRecentMemory.Take(20))
             {
-                WriteLine($"  {item.Question} - Incorrect: {item.Incorrect}, Correct: {item.Correct}, Cardbox: {item.Cardbox}");
+                DisplayWordWithAnagrams(item.Question, $"Incorrect: {item.Incorrect}, Correct: {item.Correct}, Cardbox: {item.Cardbox}", showAnagrams);
             }
             if (painPerRecentMemory.Count() > 20)
             {
@@ -268,7 +273,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService)
             WriteLine($"Regressed questions: {regressions.Count()}");
             foreach (RegressionStats item in regressions.Take(20))
             {
-                WriteLine($"  {item.Question} - Last Correct: {item.LastCorrectAt:yyyy-MM-dd}, Cardbox: {item.Cardbox}");
+                DisplayWordWithAnagrams(item.Question, $"Last Correct: {item.LastCorrectAt:yyyy-MM-dd}, Cardbox: {item.Cardbox}", showAnagrams);
             }
             if (regressions.Count() > 20)
             {
@@ -281,7 +286,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService)
             WriteLine($"Questions not seen for ages: {notSeenForAges.Count()}");
             foreach (NotSeenForAgesStats item in notSeenForAges.Take(20))
             {
-                WriteLine($"  {item.Question} - Days since last correct: {item.DaysSinceLastCorrect:F0}, Cardbox: {item.Cardbox}");
+                DisplayWordWithAnagrams(item.Question, $"Days since last correct: {item.DaysSinceLastCorrect:F0}, Cardbox: {item.Cardbox}", showAnagrams);
             }
             if (notSeenForAges.Count() > 20)
             {
@@ -439,5 +444,18 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
         default:
             WriteLine("Invalid choice.");
             break;
+    }
+}
+
+void DisplayWordWithAnagrams(string word, string additionalInfo, bool showAnagrams)
+{
+    WriteLine($"  {word} - {additionalInfo}");
+    if (showAnagrams)
+    {
+        Answer anagram = wordService.Anagram(word);
+        if (anagram.Words.Count > 0)
+        {
+            WriteLine($"    {wordOutputService.FormatWords(anagram.Words)}");
+        }
     }
 }

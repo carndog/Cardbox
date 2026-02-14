@@ -22,7 +22,7 @@ public class GetNotSeenForAges : IGetNotSeenForAges
               datetime(last_correct, 'unixepoch') AS LastCorrectAt,
               ROUND((strftime('%s','now') - last_correct) / 86400.0, 1) AS DaysSinceLastCorrect
             FROM questions
-            WHERE last_correct > 0
+            WHERE cardbox IS NOT NULL AND last_correct > 0
             ORDER BY DaysSinceLastCorrect DESC
             LIMIT {limit};
             """;

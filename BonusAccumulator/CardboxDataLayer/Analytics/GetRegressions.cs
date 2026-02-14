@@ -24,7 +24,8 @@ public class GetRegressions : IGetRegressions
               difficulty,
               datetime(last_correct, 'unixepoch') AS LastCorrectAt
             FROM questions
-            WHERE correct >= 20
+            WHERE cardbox IS NOT NULL
+              AND correct >= 20
               AND streak <= 2
             ORDER BY (incorrect * 1.0 / NULLIF(correct, 0)) DESC, incorrect DESC
             LIMIT {limit};

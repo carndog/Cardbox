@@ -38,4 +38,15 @@ public class GetDeckStatsByCardboxTests
         Assert.That(firstCardbox.TotalReviews, Is.GreaterThanOrEqualTo(0));
         Assert.That(firstCardbox.PctCorrect, Is.GreaterThanOrEqualTo(0.0));
     }
+
+    [Test]
+    public async Task ExecuteAsync_ShouldExcludeInactiveWords()
+    {
+        IEnumerable<CardboxStats> result = await _query.ExecuteAsync();
+
+        int totalItemsInResults = result.Sum(stat => stat.Items);
+        int activeWords = _context.Questions.Count(q => q.Cardbox != null);
+
+        Assert.That(totalItemsInResults, Is.EqualTo(activeWords));
+    }
 }

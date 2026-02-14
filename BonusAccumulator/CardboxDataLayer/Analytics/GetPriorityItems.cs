@@ -28,7 +28,7 @@ public class GetPriorityItems : IGetPriorityItems
                 (next_scheduled <= strftime('%s','now')) AS IsDue,
                 (1.0 * incorrect / NULLIF(correct + incorrect, 0)) AS ErrorRate
               FROM questions
-              WHERE (correct + incorrect) >= 5
+              WHERE cardbox IS NOT NULL AND (correct + incorrect) >= 5
             )
             SELECT
               question,

@@ -21,7 +21,7 @@ public class GetDueNow : IGetDueNow
               difficulty,
               datetime(next_scheduled, 'unixepoch') AS DueAt
             FROM questions
-            WHERE next_scheduled <= strftime('%s','now')
+            WHERE cardbox IS NOT NULL AND next_scheduled <= strftime('%s','now')
             ORDER BY next_scheduled ASC
             LIMIT {limit};
             """;

@@ -23,7 +23,8 @@ public class GetPainPerRecentMemory : IGetPainPerRecentMemory
               cardbox,
               difficulty
             FROM questions
-            WHERE incorrect >= 8
+            WHERE cardbox IS NOT NULL
+              AND incorrect >= 8
               AND streak <= 2
             ORDER BY incorrect DESC
             LIMIT {limit};
