@@ -181,21 +181,22 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
 async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
 {
     WriteLine("Cardbox Analytics Options:");
-    WriteLine("Word-based Queries:");
-    WriteLine("1. Due Now - Questions due for review now");
-    WriteLine("2. Priority Items - High priority questions for review");
-    WriteLine("3. Highest Error Rate - Questions with highest error rates");
-    WriteLine("4. Most Wrong - Questions with most incorrect answers");
-    WriteLine("5. Pain per Recent Memory - Painful questions from recent memory");
-    WriteLine("6. Regressions - Questions that have regressed in performance");
-    WriteLine("7. Not Seen for Ages - Questions not seen for a long time");
     WriteLine("");
-    WriteLine("Stats-based Queries:");
-    WriteLine("8. Deck Stats by Cardbox - Statistics by cardbox number");
-    WriteLine("9. Deck Stats by Word Length - Statistics by word length");
-    WriteLine("10. Interval Stats - Learning interval statistics");
-    WriteLine("11. Forgetting Curve Stats - Forgetting curve analysis");
-    WriteLine("12. Blind Spots - Areas of weakness by difficulty and length");
+    WriteLine("Word-based Queries (shows specific words needing attention):");
+    WriteLine("1. Due Now - Words scheduled for review right now");
+    WriteLine("2. Priority Items - Words calculated as high-priority based on error rate and cardbox");
+    WriteLine("3. Highest Error Rate - Words you get wrong most often (by percentage)");
+    WriteLine("4. Most Wrong - Words with the most incorrect answer attempts");
+    WriteLine("5. Pain per Recent Memory - Words causing trouble relative to how recently learned");
+    WriteLine("6. Regressions - Words that dropped to a lower cardbox (moved backward)");
+    WriteLine("7. Not Seen for Ages - Words overdue for review by the longest time");
+    WriteLine("");
+    WriteLine("Stats-based Queries (shows aggregate statistics):");
+    WriteLine("8. Deck Stats by Cardbox - Breakdown of items and accuracy per cardbox level");
+    WriteLine("9. Deck Stats by Word Length - Breakdown of items and accuracy by word length");
+    WriteLine("10. Interval Stats - Average learning intervals for each cardbox level");
+    WriteLine("11. Forgetting Curve Stats - Accuracy trends over time since last review");
+    WriteLine("12. Blind Spots - Difficulty/length combinations with lowest accuracy (30+ reviews)");
     WriteLine("Enter your choice (1-12): ");
     
     string? choice = ReadLine();
