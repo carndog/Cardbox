@@ -73,30 +73,4 @@ public class AnalyticsService : IAnalyticsService
     Task<IEnumerable<BlindSpotStats>> IGetBlindSpots.ExecuteAsync() => _getBlindSpots.ExecuteAsync();
 
     Task<IEnumerable<PriorityItem>> IGetPriorityItems.ExecuteAsync(int limit) => _getPriorityItems.ExecuteAsync(limit);
-
-    public Task<IEnumerable<CardboxStats>> GetDeckStatsByCardboxAsync() => _getDeckStatsByCardbox.ExecuteAsync();
-
-    public Task<IEnumerable<WordLengthStats>> GetDeckStatsByWordLengthAsync() => _getDeckStatsByWordLength.ExecuteAsync();
-
-    public Task<IEnumerable<DueItem>> GetDueNowAsync(int limit = 200) => _getDueNow.ExecuteAsync(limit);
-
-    public Task<IEnumerable<DueItem>> GetDueSoonAsync() => _getDueSoon.ExecuteAsync();
-
-    public Task<IEnumerable<ErrorRateStats>> GetHighestErrorRateAsync(int limit = 100) => _getHighestErrorRate.ExecuteAsync(limit);
-
-    public Task<IEnumerable<MostWrongStats>> GetMostWrongAsync(int limit = 100) => _getMostWrong.ExecuteAsync(limit);
-
-    public Task<IEnumerable<PainStats>> GetPainPerRecentMemoryAsync(int limit = 100) => _getPainPerRecentMemory.ExecuteAsync(limit);
-
-    public Task<IEnumerable<RegressionStats>> GetRegressionsAsync(int limit = 100) => _getRegressions.ExecuteAsync(limit);
-
-    public Task<IEnumerable<NotSeenForAgesStats>> GetNotSeenForAgesAsync(int limit = 200) => _getNotSeenForAges.ExecuteAsync(limit);
-
-    public Task<IEnumerable<IntervalStats>> GetIntervalStatsAsync() => _getIntervalStats.ExecuteAsync();
-
-    public Task<IEnumerable<ForgettingCurveStats>> GetForgettingCurveStatsAsync() => _getForgettingCurveStats.ExecuteAsync();
-
-    public Task<IEnumerable<BlindSpotStats>> GetBlindSpotsAsync() => _getBlindSpots.ExecuteAsync();
-
-    public Task<IEnumerable<PriorityItem>> GetPriorityItemsAsync(int limit = 200) => _getPriorityItems.ExecuteAsync(limit);
 }
