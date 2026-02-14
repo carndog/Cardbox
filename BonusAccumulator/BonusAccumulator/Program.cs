@@ -1,5 +1,6 @@
 using BonusAccumulator;
 using WordServices;
+using WordServices.Analytics;
 using WordServices.Output;
 using CardboxDataLayer;
 using CardboxDataLayer.Entities;
@@ -19,6 +20,7 @@ IHost host = Host.CreateDefaultBuilder()
 IWordService wordService = host.Services.GetRequiredService<IWordService>();
 IWordOutputService wordOutputService = host.Services.GetRequiredService<IWordOutputService>();
 IQuestionRepository questionRepository = host.Services.GetRequiredService<IQuestionRepository>();
+IAnalyticsService analyticsService = host.Services.GetRequiredService<IAnalyticsService>();
 
 string? command = string.Empty;
 
@@ -38,6 +40,7 @@ const string ChainsCommand = "ch";
 const string AlphagramConversionCommand = "ac";
 const string EndChainsCommand = "xch";
 const string CardboxAnalysisCommand = "ca";
+const string AnalyticsCommand = "an";
 const string HelpCommand = "help";
 const string CommandsText = $"""
     Available Commands:
@@ -63,6 +66,7 @@ const string CommandsText = $"""
     
     Cardbox Analysis:
       {CardboxAnalysisCommand} - Cardbox Analysis: Analyze cardbox data
+      {AnalyticsCommand} - Analytics: Advanced analytics queries
     
     Utilities:
       {HelpCommand} - Help: Show this menu
@@ -162,6 +166,176 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             break;
         case CardboxAnalysisCommand:
             await RunCardboxAnalysis(questionRepository);
+            break;
+        case AnalyticsCommand:
+            await RunAnalytics(analyticsService);
+            break;
+    }
+}
+
+async Task RunAnalytics(IAnalyticsService analyticsService)
+{
+    WriteLine("Cardbox Analytics Options:");
+    WriteLine("Word-based Queries:");
+    WriteLine("1. Due Now - Questions due for review now");
+    WriteLine("2. Priority Items - High priority questions for review");
+    WriteLine("3. Highest Error Rate - Questions with highest error rates");
+    WriteLine("4. Most Wrong - Questions with most incorrect answers");
+    WriteLine("5. Pain per Recent Memory - Painful questions from recent memory");
+    WriteLine("6. Regressions - Questions that have regressed in performance");
+    WriteLine("7. Not Seen for Ages - Questions not seen for a long time");
+    WriteLine("");
+    WriteLine("Stats-based Queries:");
+    WriteLine("8. Deck Stats by Cardbox - Statistics by cardbox number");
+    WriteLine("9. Deck Stats by Word Length - Statistics by word length");
+    WriteLine("10. Interval Stats - Learning interval statistics");
+    WriteLine("11. Forgetting Curve Stats - Forgetting curve analysis");
+    WriteLine("12. Blind Spots - Areas of weakness by difficulty and length");
+    WriteLine("Enter your choice (1-12): ");
+    
+    string? choice = ReadLine();
+    if (choice == null) return;
+    
+    switch (choice)
+    {
+        case "1":
+            IEnumerable<DueItem> dueNow = await ((IGetDueNow)analyticsService).ExecuteAsync(200);
+            WriteLine($"Questions due now: {dueNow.Count()}");
+            foreach (DueItem item in dueNow.Take(20))
+            {
+                WriteLine($"  {item.Question} - Cardbox: {item.Cardbox}, Difficulty: {item.Difficulty}, Due: {item.DueAt:yyyy-MM-dd HH:mm}");
+            }
+            if (dueNow.Count() > 20)
+            {
+                WriteLine($"  ... and {dueNow.Count() - 20} more");
+            }
+            break;
+            
+        case "2":
+            IEnumerable<PriorityItem> priorityItems = await ((IGetPriorityItems)analyticsService).ExecuteAsync(200);
+            WriteLine($"Priority items: {priorityItems.Count()}");
+            foreach (PriorityItem item in priorityItems.Take(20))
+            {
+                WriteLine($"  {item.Question} - Priority: {item.Priority:F2}, Cardbox: {item.Cardbox}, Difficulty: {item.Difficulty}");
+            }
+            if (priorityItems.Count() > 20)
+            {
+                WriteLine($"  ... and {priorityItems.Count() - 20} more");
+            }
+            break;
+            
+        case "3":
+            IEnumerable<ErrorRateStats> highestErrorRate = await ((IGetHighestErrorRate)analyticsService).ExecuteAsync(100);
+            WriteLine($"Highest error rate questions: {highestErrorRate.Count()}");
+            foreach (ErrorRateStats item in highestErrorRate.Take(20))
+            {
+                WriteLine($"  {item.Question} - Error Rate: {item.ErrorRate:P2}, Attempts: {item.Attempts}, Cardbox: {item.Cardbox}");
+            }
+            if (highestErrorRate.Count() > 20)
+            {
+                WriteLine($"  ... and {highestErrorRate.Count() - 20} more");
+            }
+            break;
+            
+        case "4":
+            IEnumerable<MostWrongStats> mostWrong = await ((IGetMostWrong)analyticsService).ExecuteAsync(100);
+            WriteLine($"Most wrong questions: {mostWrong.Count()}");
+            foreach (MostWrongStats item in mostWrong.Take(20))
+            {
+                WriteLine($"  {item.Question} - Incorrect: {item.Incorrect}, Correct: {item.Correct}, Cardbox: {item.Cardbox}");
+            }
+            if (mostWrong.Count() > 20)
+            {
+                WriteLine($"  ... and {mostWrong.Count() - 20} more");
+            }
+            break;
+            
+        case "5":
+            IEnumerable<PainStats> painPerRecentMemory = await ((IGetPainPerRecentMemory)analyticsService).ExecuteAsync(100);
+            WriteLine($"Painful questions from recent memory: {painPerRecentMemory.Count()}");
+            foreach (PainStats item in painPerRecentMemory.Take(20))
+            {
+                WriteLine($"  {item.Question} - Incorrect: {item.Incorrect}, Correct: {item.Correct}, Cardbox: {item.Cardbox}");
+            }
+            if (painPerRecentMemory.Count() > 20)
+            {
+                WriteLine($"  ... and {painPerRecentMemory.Count() - 20} more");
+            }
+            break;
+            
+        case "6":
+            IEnumerable<RegressionStats> regressions = await ((IGetRegressions)analyticsService).ExecuteAsync(100);
+            WriteLine($"Regressed questions: {regressions.Count()}");
+            foreach (RegressionStats item in regressions.Take(20))
+            {
+                WriteLine($"  {item.Question} - Last Correct: {item.LastCorrectAt:yyyy-MM-dd}, Cardbox: {item.Cardbox}");
+            }
+            if (regressions.Count() > 20)
+            {
+                WriteLine($"  ... and {regressions.Count() - 20} more");
+            }
+            break;
+            
+        case "7":
+            IEnumerable<NotSeenForAgesStats> notSeenForAges = await ((IGetNotSeenForAges)analyticsService).ExecuteAsync(200);
+            WriteLine($"Questions not seen for ages: {notSeenForAges.Count()}");
+            foreach (NotSeenForAgesStats item in notSeenForAges.Take(20))
+            {
+                WriteLine($"  {item.Question} - Days since last correct: {item.DaysSinceLastCorrect:F0}, Cardbox: {item.Cardbox}");
+            }
+            if (notSeenForAges.Count() > 20)
+            {
+                WriteLine($"  ... and {notSeenForAges.Count() - 20} more");
+            }
+            break;
+            
+        case "8":
+            IEnumerable<CardboxStats> deckStatsByCardbox = await ((IGetDeckStatsByCardbox)analyticsService).ExecuteAsync();
+            WriteLine($"Deck stats by cardbox:");
+            foreach (CardboxStats stat in deckStatsByCardbox)
+            {
+                WriteLine($"  Cardbox {stat.Cardbox}: {stat.Items} items, {stat.PctCorrect:P1} correct");
+            }
+            break;
+            
+        case "9":
+            IEnumerable<WordLengthStats> deckStatsByWordLength = await ((IGetDeckStatsByWordLength)analyticsService).ExecuteAsync();
+            WriteLine($"Deck stats by word length:");
+            foreach (WordLengthStats stat in deckStatsByWordLength.OrderBy(s => s.Length))
+            {
+                WriteLine($"  Length {stat.Length}: {stat.Items} items, {stat.PctCorrect:P1} correct");
+            }
+            break;
+            
+        case "10":
+            IEnumerable<IntervalStats> intervalStats = await ((IGetIntervalStats)analyticsService).ExecuteAsync();
+            WriteLine($"Learning interval statistics:");
+            foreach (IntervalStats stat in intervalStats)
+            {
+                WriteLine($"  Cardbox {stat.Cardbox}: {stat.Items} items, Avg Interval: {stat.AvgIntervalDays:F1} days");
+            }
+            break;
+            
+        case "11":
+            IEnumerable<ForgettingCurveStats> forgettingCurveStats = await ((IGetForgettingCurveStats)analyticsService).ExecuteAsync();
+            WriteLine($"Forgetting curve statistics:");
+            foreach (ForgettingCurveStats stat in forgettingCurveStats)
+            {
+                WriteLine($"  {stat.AgeBucket}: {stat.Items} items, {stat.PctCorrect:P1} correct");
+            }
+            break;
+            
+        case "12":
+            IEnumerable<BlindSpotStats> blindSpots = await ((IGetBlindSpots)analyticsService).ExecuteAsync();
+            WriteLine($"Blind spots (areas of weakness):");
+            foreach (BlindSpotStats spot in blindSpots.OrderBy(s => s.Difficulty).ThenBy(s => s.Length))
+            {
+                WriteLine($"  Difficulty {spot.Difficulty}, Length {spot.Length}: {spot.Items} items, {spot.PctCorrect:P1} correct, {spot.Reviews} reviews");
+            }
+            break;
+            
+        default:
+            WriteLine("Invalid choice.");
             break;
     }
 }
