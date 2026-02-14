@@ -19,7 +19,7 @@ public class GetBlindSpots : IGetBlindSpots
               difficulty,
               LENGTH(question) AS Length,
               COUNT(*) AS Items,
-              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PercentCorrect,
+              ROUND(1.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 3) AS PercentCorrect,
               SUM(correct + incorrect) AS Reviews
             FROM questions
             WHERE cardbox IS NOT NULL

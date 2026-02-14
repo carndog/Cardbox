@@ -35,7 +35,7 @@ public class GetForgettingCurveStats : IGetForgettingCurveStats
             SELECT
               AgeBucket,
               COUNT(*) AS Items,
-              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PercentCorrect
+              ROUND(1.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 3) AS PercentCorrect
             FROM buckets
             GROUP BY AgeBucket
             ORDER BY
