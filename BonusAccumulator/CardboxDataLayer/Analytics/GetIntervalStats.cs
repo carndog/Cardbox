@@ -18,9 +18,9 @@ public class GetIntervalStats : IGetIntervalStats
             SELECT
               cardbox,
               COUNT(*) AS Items,
-              ROUND(AVG((next_scheduled - last_correct) / 86400.0), 2) AS AvgIntervalDays,
-              ROUND(MIN((next_scheduled - last_correct) / 86400.0), 2) AS MinIntervalDays,
-              ROUND(MAX((next_scheduled - last_correct) / 86400.0), 2) AS MaxIntervalDays
+              ROUND(AVG((next_scheduled - last_correct) / 86400.0), 2) AS AverageIntervalDays,
+              ROUND(MIN((next_scheduled - last_correct) / 86400.0), 2) AS MinimumIntervalDays,
+              ROUND(MAX((next_scheduled - last_correct) / 86400.0), 2) AS MaximumIntervalDays
             FROM questions
             WHERE cardbox IS NOT NULL AND last_correct > 0 AND next_scheduled > 0
             GROUP BY cardbox

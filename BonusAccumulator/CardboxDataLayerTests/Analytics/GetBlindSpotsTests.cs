@@ -36,7 +36,7 @@ public class GetBlindSpotsTests
         Assert.That(firstSpot.Difficulty, Is.GreaterThanOrEqualTo(0));
         Assert.That(firstSpot.Length, Is.GreaterThan(0));
         Assert.That(firstSpot.Items, Is.GreaterThan(0));
-        Assert.That(firstSpot.PctCorrect, Is.GreaterThanOrEqualTo(0.0));
+        Assert.That(firstSpot.PercentCorrect, Is.GreaterThanOrEqualTo(0.0));
         Assert.That(firstSpot.Reviews, Is.GreaterThanOrEqualTo(30));
     }
 }

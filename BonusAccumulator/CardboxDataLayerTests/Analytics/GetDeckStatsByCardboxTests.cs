@@ -36,7 +36,7 @@ public class GetDeckStatsByCardboxTests
         Assert.That(firstCardbox.Cardbox, Is.GreaterThanOrEqualTo(0));
         Assert.That(firstCardbox.Items, Is.GreaterThan(0));
         Assert.That(firstCardbox.TotalReviews, Is.GreaterThanOrEqualTo(0));
-        Assert.That(firstCardbox.PctCorrect, Is.GreaterThanOrEqualTo(0.0));
+        Assert.That(firstCardbox.PercentCorrect, Is.GreaterThanOrEqualTo(0.0));
     }
 
     [Test]

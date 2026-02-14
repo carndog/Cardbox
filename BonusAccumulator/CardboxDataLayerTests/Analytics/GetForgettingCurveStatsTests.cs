@@ -35,6 +35,6 @@ public class GetForgettingCurveStatsTests
         ForgettingCurveStats firstBucket = result.First();
         Assert.That(firstBucket.AgeBucket, Is.Not.Null.And.Not.Empty);
         Assert.That(firstBucket.Items, Is.GreaterThan(0));
-        Assert.That(firstBucket.PctCorrect, Is.GreaterThanOrEqualTo(0.0));
+        Assert.That(firstBucket.PercentCorrect, Is.GreaterThanOrEqualTo(0.0));
     }
 }

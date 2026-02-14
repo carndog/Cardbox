@@ -4,5 +4,5 @@ public record CardboxStats(
     int Cardbox,
     int Items,
     int TotalReviews,
-    double PctCorrect
+    double PercentCorrect
 );

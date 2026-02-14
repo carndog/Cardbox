@@ -19,13 +19,13 @@ public class GetBlindSpots : IGetBlindSpots
               difficulty,
               LENGTH(question) AS Length,
               COUNT(*) AS Items,
-              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PctCorrect,
+              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PercentCorrect,
               SUM(correct + incorrect) AS Reviews
             FROM questions
             WHERE cardbox IS NOT NULL
             GROUP BY difficulty, Length
             HAVING Reviews >= 30
-            ORDER BY PctCorrect ASC, Reviews DESC;
+            ORDER BY PercentCorrect ASC, Reviews DESC;
             """;
 
         return await _context.Database.SqlQueryRaw<BlindSpotStats>(sql).ToListAsync();

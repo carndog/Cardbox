@@ -3,5 +3,5 @@ namespace WordServices.Analytics;
 public record ForgettingCurveStats(
     string AgeBucket,
     int Items,
-    double PctCorrect
+    double PercentCorrect
 );

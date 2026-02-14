@@ -35,7 +35,7 @@ public class GetDeckStatsByWordLengthTests
         WordLengthStats firstLength = result.First();
         Assert.That(firstLength.Length, Is.GreaterThan(0));
         Assert.That(firstLength.Items, Is.GreaterThan(0));
-        Assert.That(firstLength.PctCorrect, Is.GreaterThanOrEqualTo(0.0));
+        Assert.That(firstLength.PercentCorrect, Is.GreaterThanOrEqualTo(0.0));
     }
 
     [Test]

@@ -35,8 +35,8 @@ public class GetIntervalStatsTests
         IntervalStats firstInterval = result.First();
         Assert.That(firstInterval.Cardbox, Is.GreaterThanOrEqualTo(0));
         Assert.That(firstInterval.Items, Is.GreaterThan(0));
-        Assert.That(firstInterval.AvgIntervalDays, Is.GreaterThanOrEqualTo(0.0));
-        Assert.That(firstInterval.MinIntervalDays, Is.GreaterThanOrEqualTo(0.0));
-        Assert.That(firstInterval.MaxIntervalDays, Is.GreaterThanOrEqualTo(0.0));
+        Assert.That(firstInterval.AverageIntervalDays, Is.GreaterThanOrEqualTo(0.0));
+        Assert.That(firstInterval.MinimumIntervalDays, Is.GreaterThanOrEqualTo(0.0));
+        Assert.That(firstInterval.MaximumIntervalDays, Is.GreaterThanOrEqualTo(0.0));
     }
 }

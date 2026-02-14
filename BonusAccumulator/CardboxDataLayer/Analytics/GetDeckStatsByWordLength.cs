@@ -18,7 +18,7 @@ public class GetDeckStatsByWordLength : IGetDeckStatsByWordLength
             SELECT
               LENGTH(question) AS Length,
               COUNT(*)         AS Items,
-              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PctCorrect
+              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PercentCorrect
             FROM questions
             WHERE cardbox IS NOT NULL
             GROUP BY Length

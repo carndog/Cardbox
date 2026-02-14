@@ -19,7 +19,7 @@ public class GetDeckStatsByCardbox : IGetDeckStatsByCardbox
               cardbox,
               COUNT(*)                       AS Items,
               SUM(correct + incorrect)       AS TotalReviews,
-              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PctCorrect
+              ROUND(100.0 * SUM(correct) / NULLIF(SUM(correct + incorrect), 0), 1) AS PercentCorrect
             FROM questions
             WHERE cardbox IS NOT NULL
             GROUP BY cardbox

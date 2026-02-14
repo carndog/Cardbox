@@ -299,7 +299,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             WriteLine($"Deck stats by cardbox:");
             foreach (CardboxStats stat in deckStatsByCardbox)
             {
-                WriteLine($"  Cardbox {stat.Cardbox}: {stat.Items} items, {stat.PctCorrect:P1} correct");
+                WriteLine($"  Cardbox {stat.Cardbox}: {stat.Items} items, {stat.PercentCorrect:P1} correct");
             }
             break;
             
@@ -308,7 +308,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             WriteLine($"Deck stats by word length:");
             foreach (WordLengthStats stat in deckStatsByWordLength.OrderBy(s => s.Length))
             {
-                WriteLine($"  Length {stat.Length}: {stat.Items} items, {stat.PctCorrect:P1} correct");
+                WriteLine($"  Length {stat.Length}: {stat.Items} items, {stat.PercentCorrect:P1} correct");
             }
             break;
             
@@ -317,7 +317,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             WriteLine($"Learning interval statistics:");
             foreach (IntervalStats stat in intervalStats)
             {
-                WriteLine($"  Cardbox {stat.Cardbox}: {stat.Items} items, Avg Interval: {stat.AvgIntervalDays:F1} days");
+                WriteLine($"  Cardbox {stat.Cardbox}: {stat.Items} items, Avg Interval: {stat.AverageIntervalDays:F1} days");
             }
             break;
             
@@ -326,7 +326,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             WriteLine($"Forgetting curve statistics:");
             foreach (ForgettingCurveStats stat in forgettingCurveStats)
             {
-                WriteLine($"  {stat.AgeBucket}: {stat.Items} items, {stat.PctCorrect:P1} correct");
+                WriteLine($"  {stat.AgeBucket}: {stat.Items} items, {stat.PercentCorrect:P1} correct");
             }
             break;
             
@@ -335,7 +335,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             WriteLine($"Blind spots (areas of weakness):");
             foreach (BlindSpotStats spot in blindSpots.OrderBy(s => s.Difficulty).ThenBy(s => s.Length))
             {
-                WriteLine($"  Difficulty {spot.Difficulty}, Length {spot.Length}: {spot.Items} items, {spot.PctCorrect:P1} correct, {spot.Reviews} reviews");
+                WriteLine($"  Difficulty {spot.Difficulty}, Length {spot.Length}: {spot.Items} items, {spot.PercentCorrect:P1} correct, {spot.Reviews} reviews");
             }
             break;
             
