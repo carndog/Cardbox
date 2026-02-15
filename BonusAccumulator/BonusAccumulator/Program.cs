@@ -71,6 +71,7 @@ const string CommandsText = $"""
       {AnalyticsShowCommand} - Analytics with Anagrams: Show analytics with anagram solutions
     
     Utilities:
+      {AlphagramConversionCommand}  - Alphagram Conversion: Convert words to alphagrams
       {HelpCommand} - Help: Show this menu
       {ExitCommand}   - Exit: Quit the program
     -------------------

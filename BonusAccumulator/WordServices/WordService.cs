@@ -252,13 +252,14 @@ public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWo
             }
             if (noResults is false)
             {
-                Answer chainAlphagramDistanceAnswers = AlphagramDistance(command);
+                string currentCommand = command;
+                Answer chainAlphagramDistanceAnswers = AlphagramDistance(currentCommand);
                 string next = string.Join(" , ", chainAlphagramDistanceAnswers.Words.Select(x => x.ToAlphagram())
                     .Distinct().Select(x =>
                     {
                         foreach (char c in x)
                         {
-                            if (command.Contains(c, StringComparison.OrdinalIgnoreCase) is false)
+                            if (currentCommand.Contains(c, StringComparison.OrdinalIgnoreCase) is false)
                             {
                                 return c.ToString();
                             }
@@ -273,21 +274,58 @@ public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWo
 
     public void ConvertToAlphagrams(Action<string> writeLine, Func<string?> readLine)
     {
-        string? line = readLine();
-        if (line != null)
-        {
-            ILookup<string, string> lookup = line.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                .ToLookup(x => x.ToAlphagram(), x => x);
-            foreach (IGrouping<string, string> group in lookup)
-            {
-                writeLine(group.Count() != 1 ? $"{group.Key}-{group.Count()}" : $"{group.Key}");
-            }
+        writeLine("Enter alphagrams (one per line, empty line to finish):");
+        
+        List<string> allLines = [];
 
-            writeLine("Answers");
-            foreach (IGrouping<string, string> group in lookup)
+        while (readLine() is { } line && line.Trim() != string.Empty)
+        {
+            allLines.Add(line.Trim());
+        }
+        
+        if (allLines.Count == 0)
+        {
+            writeLine("No input provided.");
+            return;
+        }
+        List<string> validWords = [];
+        List<string> alphagramInputs = [];
+        
+        foreach (string line in allLines.Where(line => line.Length > 0))
+        {
+            Answer anagramResult = AnagramInternal(line);
+            if (anagramResult.Words.Count > 0)
             {
-                writeLine(group.Key + "- " + string.Join(", ", group));
+                validWords.AddRange(anagramResult.Words);
             }
+            else
+            {
+                alphagramInputs.Add(line);
+            }
+        }
+        
+        List<string> allValidWords = validWords.Distinct().ToList();
+        List<string> allAlphagrams = alphagramInputs.Select(x => x.ToAlphagram()).Distinct().ToList();
+        
+        List<string> combinedItems = allValidWords.Concat(allAlphagrams).ToList();
+        
+        ILookup<string, string> lookup = combinedItems
+            .ToLookup(x => x.ToAlphagram(), x => x);
+            
+        List<IGrouping<string, string>> sortedGroups = lookup
+            .OrderByDescending(g => g.Key.Length)
+            .ThenBy(g => g.Key)
+            .ToList();
+            
+        foreach (IGrouping<string, string> group in sortedGroups)
+        {
+            writeLine($"{group.Key}-{group.Count()}");
+        }
+
+        writeLine("Answers");
+        foreach (IGrouping<string, string> group in sortedGroups)
+        {
+            writeLine(group.Key + "- " + string.Join(", ", group.OrderBy(x => x)));
         }
     }
 

@@ -215,4 +215,88 @@ public class WordServiceTests
         
         act.Should().NotThrow();
     }
+
+    [Test]
+    public void ConvertToAlphagrams_WithMixedInput_ShouldHandleWordsAndAlphagrams()
+    {
+        List<string> output = [];
+        Queue<string?> inputQueue = new(["CAT", "EEINNRTT", "BDNOORU", "", "xch"]);
+        
+        Action<string> write = s => output.Add(s);
+        Func<string?> read = () => inputQueue.Count > 0 ? inputQueue.Dequeue() : null;
+
+        _service.ConvertToAlphagrams(write, read);
+
+        output.Should().Contain("Enter alphagrams (one per line, empty line to finish):");
+        output.Should().Contain("EEINNRTT-1");
+        output.Should().Contain("BDNOORU-1");
+        output.Should().Contain("ACT-2");
+        output.Should().Contain("Answers");
+        output.Should().Contain("EEINNRTT- EEINNRTT");
+        output.Should().Contain("BDNOORU- BDNOORU");
+        output.Should().Contain("ACT- ACT, CAT");
+    }
+
+    [Test]
+    public void ConvertToAlphagrams_WithEmptyInput_ShouldShowNoInputMessage()
+    {
+        List<string> output = [];
+        Queue<string?> inputQueue = new([""]);
+        
+        Action<string> write = s => output.Add(s);
+        Func<string?> read = () => inputQueue.Count > 0 ? inputQueue.Dequeue() : null;
+
+        _service.ConvertToAlphagrams(write, read);
+
+        output.Should().Contain("Enter alphagrams (one per line, empty line to finish):");
+        output.Should().Contain("No input provided.");
+    }
+
+    [Test]
+    public void ConvertToAlphagrams_WithValidWords_ShouldFindAllAnagrams()
+    {
+        List<string> output = [];
+        Queue<string?> inputQueue = new(["cat", "act", "tac", "", "xch"]);
+        
+        Action<string> write = s => output.Add(s);
+        Func<string?> read = () => inputQueue.Count > 0 ? inputQueue.Dequeue() : null;
+
+        _service.ConvertToAlphagrams(write, read);
+
+        output.Should().Contain("ACT-3");
+        output.Should().Contain("Answers");
+        output.Should().Contain("ACT- ACT, CAT, TAC");
+    }
+
+    [Test]
+    public void ConvertToAlphagrams_WithInvalidWords_ShouldTreatAsAlphagrams()
+    {
+        List<string> output = [];
+        Queue<string?> inputQueue = new(["XYZ123", "EEINNRTT", "", "xch"]);
+        
+        Action<string> write = s => output.Add(s);
+        Func<string?> read = () => inputQueue.Count > 0 ? inputQueue.Dequeue() : null;
+
+        _service.ConvertToAlphagrams(write, read);
+
+        output.Should().Contain("EEINNRTT-1");
+        output.Should().Contain("Answers");
+        output.Should().Contain("EEINNRTT- EEINNRTT");
+    }
+
+    [Test]
+    public void ConvertToAlphagrams_WithDuplicateInput_ShouldRemoveDuplicates()
+    {
+        List<string> output = [];
+        Queue<string?> inputQueue = new(["CAT", "cat", "ACT", "act", "", "xch"]);
+        
+        Action<string> write = s => output.Add(s);
+        Func<string?> read = () => inputQueue.Count > 0 ? inputQueue.Dequeue() : null;
+
+        _service.ConvertToAlphagrams(write, read);
+
+        output.Should().Contain("ACT-2");
+        output.Should().Contain("Answers");
+        output.Should().Contain("ACT- ACT, CAT");
+    }
 }

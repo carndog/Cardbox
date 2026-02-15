@@ -39,7 +39,7 @@ public static class StringExtensions
         if (word == null)
             return string.Empty;
 
-        char[] chars = word.ToCharArray();
+        char[] chars = word.ToUpper().ToCharArray();
         Array.Sort(chars);
 
         return new string(chars);
