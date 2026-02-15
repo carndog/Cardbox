@@ -13,10 +13,10 @@ public class AnalyticsServiceTests
     {
         ServiceCollection services = new ServiceCollection();
         IConfiguration configuration = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>
+            .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["ConnectionStrings:CardboxDatabase"] = "Data Source=C:\\AnagramsTestArea\\Anagrams.db"
-            })
+            }!)
             .Build();
 
         services.AddSingleton(configuration);

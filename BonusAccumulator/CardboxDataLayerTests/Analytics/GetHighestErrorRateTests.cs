@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetHighestErrorRateTests
 {
-    private CardboxDbContext _context;
-    private GetHighestErrorRate _query;
+    private CardboxDbContext _context = null!;
+    private GetHighestErrorRate _query = null!;
 
     [SetUp]
     public void Setup()

@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetBlindSpotsTests
 {
-    private CardboxDbContext _context;
-    private GetBlindSpots _query;
+    private CardboxDbContext _context = null!;
+    private GetBlindSpots _query = null!;
 
     [SetUp]
     public void Setup()

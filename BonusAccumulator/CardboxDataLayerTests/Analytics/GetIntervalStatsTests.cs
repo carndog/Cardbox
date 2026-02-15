@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetIntervalStatsTests
 {
-    private CardboxDbContext _context;
-    private GetIntervalStats _query;
+    private CardboxDbContext _context = null!;
+    private GetIntervalStats _query = null!;
 
     [SetUp]
     public void Setup()

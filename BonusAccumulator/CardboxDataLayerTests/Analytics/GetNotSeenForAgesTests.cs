@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetNotSeenForAgesTests
 {
-    private CardboxDbContext _context;
-    private GetNotSeenForAges _query;
+    private CardboxDbContext _context = null!;
+    private GetNotSeenForAges _query = null!;
 
     [SetUp]
     public void Setup()

@@ -5,7 +5,7 @@ namespace WordServicesTests;
 
 public class TestSettingsProvider : ISettingsProvider
 {
-    private readonly string _sessionOutputPath;
+    private readonly string? _sessionOutputPath;
     private readonly string? _configPath;
 
     public TestSettingsProvider(string sessionOutputPath)
@@ -15,7 +15,7 @@ public class TestSettingsProvider : ISettingsProvider
 
     public TestSettingsProvider(string configPath, bool useConfigFile)
     {
-        if (!string.IsNullOrEmpty(configPath) && !File.Exists(configPath))
+        if (!string.IsNullOrEmpty(configPath) && File.Exists(configPath) is false)
         {
             throw new FileNotFoundException($"Configuration file not found: {configPath}");
         }
@@ -24,10 +24,7 @@ public class TestSettingsProvider : ISettingsProvider
 
     public string? GetSetting(string key)
     {
-        if (key == null)
-        {
-            throw new ArgumentNullException(nameof(key));
-        }
+        ArgumentNullException.ThrowIfNull(key);
 
         if (!string.IsNullOrEmpty(_configPath) && File.Exists(_configPath))
         {

@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetForgettingCurveStatsTests
 {
-    private CardboxDbContext _context;
-    private GetForgettingCurveStats _query;
+    private CardboxDbContext _context = null!;
+    private GetForgettingCurveStats _query = null!;
 
     [SetUp]
     public void Setup()

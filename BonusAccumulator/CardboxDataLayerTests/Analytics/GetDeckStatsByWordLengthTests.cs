@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetDeckStatsByWordLengthTests
 {
-    private CardboxDbContext _context;
-    private GetDeckStatsByWordLength _query;
+    private CardboxDbContext _context = null!;
+    private GetDeckStatsByWordLength _query = null!;
 
     [SetUp]
     public void Setup()

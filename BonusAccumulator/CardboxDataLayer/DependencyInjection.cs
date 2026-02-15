@@ -18,7 +18,7 @@ public static class DependencyInjection
         
         if (string.IsNullOrEmpty(connectionString))
         {
-            connectionString = "Data Source=C:\\AnagramsTestArea\\Anagrams.db";
+            connectionString = "Data Source=C:\\Users\\jason\\Dropbox\\Apps\\Zyzzyva\\quiz\\data\\CSW24\\Anagrams.db";
         }
 
         services.AddDbContext<CardboxDbContext>(options =>

@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetPriorityItemsTests
 {
-    private CardboxDbContext _context;
-    private GetPriorityItems _query;
+    private CardboxDbContext _context = null!;
+    private GetPriorityItems _query = null!;
 
     [SetUp]
     public void Setup()

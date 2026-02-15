@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetDueSoonTests
 {
-    private CardboxDbContext _context;
-    private GetDueSoon _query;
+    private CardboxDbContext _context = null!;
+    private GetDueSoon _query = null!;
 
     [SetUp]
     public void Setup()

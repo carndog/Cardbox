@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetDeckStatsByCardboxTests
 {
-    private CardboxDbContext _context;
-    private GetDeckStatsByCardbox _query;
+    private CardboxDbContext _context = null!;
+    private GetDeckStatsByCardbox _query = null!;
 
     [SetUp]
     public void Setup()

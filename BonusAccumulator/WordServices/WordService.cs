@@ -296,6 +296,7 @@ public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWo
             Answer anagramResult = AnagramInternal(line);
             if (anagramResult.Words.Count > 0)
             {
+                validWords.Add(line.ToUpper());
                 validWords.AddRange(anagramResult.Words);
             }
             else

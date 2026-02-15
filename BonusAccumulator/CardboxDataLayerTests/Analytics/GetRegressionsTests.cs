@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetRegressionsTests
 {
-    private CardboxDbContext _context;
-    private GetRegressions _query;
+    private CardboxDbContext _context = null!;
+    private GetRegressions _query = null!;
 
     [SetUp]
     public void Setup()

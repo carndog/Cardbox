@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetMostWrongTests
 {
-    private CardboxDbContext _context;
-    private GetMostWrong _query;
+    private CardboxDbContext _context = null!;
+    private GetMostWrong _query = null!;
 
     [SetUp]
     public void Setup()

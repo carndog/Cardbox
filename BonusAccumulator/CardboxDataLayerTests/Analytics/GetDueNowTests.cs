@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetDueNowTests
 {
-    private CardboxDbContext _context;
-    private GetDueNow _query;
+    private CardboxDbContext _context = null!;
+    private GetDueNow _query = null!;
 
     [SetUp]
     public void Setup()

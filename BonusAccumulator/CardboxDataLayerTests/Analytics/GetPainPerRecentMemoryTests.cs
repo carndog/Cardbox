@@ -7,8 +7,8 @@ namespace CardboxDataLayerTests.Analytics;
 [TestFixture]
 public class GetPainPerRecentMemoryTests
 {
-    private CardboxDbContext _context;
-    private GetPainPerRecentMemory _query;
+    private CardboxDbContext _context = null!;
+    private GetPainPerRecentMemory _query = null!;
 
     [SetUp]
     public void Setup()
