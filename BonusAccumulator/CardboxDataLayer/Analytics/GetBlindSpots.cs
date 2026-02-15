@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetBlindSpots : IGetBlindSpots
+public class GetBlindSpots(CardboxDbContext context) : IGetBlindSpots
 {
-    private readonly CardboxDbContext _context;
-
-    public GetBlindSpots(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<BlindSpotStats>> ExecuteAsync()
     {
         const string Sql = """
@@ -28,6 +21,6 @@ public class GetBlindSpots : IGetBlindSpots
             ORDER BY PercentCorrect ASC, Reviews DESC;
             """;
 
-        return await _context.Database.SqlQueryRaw<BlindSpotStats>(Sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<BlindSpotStats>(Sql).ToListAsync();
     }
 }

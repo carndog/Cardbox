@@ -1,13 +1,8 @@
 namespace WordServices.TrieLoading;
 
-public class LazyLoadingTrie : ILazyLoadingTrie
+public class LazyLoadingTrie(IAnagramTrieBuilder anagramTrieBuilder) : ILazyLoadingTrie
 {
-    public LazyLoadingTrie(IAnagramTrieBuilder anagramTrieBuilder)
-    {
-        LazyLexicon = new Lazy<TrieNode?>(anagramTrieBuilder.LoadLines);
-    }
-
-    private Lazy<TrieNode?> LazyLexicon { get; }
+    private Lazy<TrieNode?> LazyLexicon { get; } = new(anagramTrieBuilder.LoadLines);
 
     public TrieNode? Lexicon => LazyLexicon.Value;
 }

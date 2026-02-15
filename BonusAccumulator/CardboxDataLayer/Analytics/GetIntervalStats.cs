@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetIntervalStats : IGetIntervalStats
+public class GetIntervalStats(CardboxDbContext context) : IGetIntervalStats
 {
-    private readonly CardboxDbContext _context;
-
-    public GetIntervalStats(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<IntervalStats>> ExecuteAsync()
     {
         const string sql = """
@@ -27,6 +20,6 @@ public class GetIntervalStats : IGetIntervalStats
             ORDER BY cardbox;
             """;
 
-        return await _context.Database.SqlQueryRaw<IntervalStats>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<IntervalStats>(sql).ToListAsync();
     }
 }

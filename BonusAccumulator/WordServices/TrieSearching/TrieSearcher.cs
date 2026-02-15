@@ -4,21 +4,15 @@ using static WordServices.Constants;
 
 namespace WordServices.TrieSearching;
 
-public class TrieSearcher : ITrieSearcher
+public class TrieSearcher(ILazyLoadingTrie lazyTrie) : ITrieSearcher
 {
     private const int DefaultResultsCapacity = 20;
-    private readonly ILazyLoadingTrie _lazyTrie;
-
-    public TrieSearcher(ILazyLoadingTrie lazyTrie)
-    {
-        _lazyTrie = lazyTrie;
-    }
 
     public IList<string> Query(string searchTerm, Func<IEnumerable<string>, IEnumerable<string>> wordFilter)
     {
         List<string> resultsList = new(DefaultResultsCapacity);
 
-        QueryLexicon(searchTerm, _lazyTrie.Lexicon, wordFilter, resultsList);
+        QueryLexicon(searchTerm, lazyTrie.Lexicon, wordFilter, resultsList);
 
         return resultsList.OrderByDescending(x => x.Length).ToList();
     }

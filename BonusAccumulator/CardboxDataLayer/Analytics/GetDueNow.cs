@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetDueNow : IGetDueNow
+public class GetDueNow(CardboxDbContext context) : IGetDueNow
 {
-    private readonly CardboxDbContext _context;
-
-    public GetDueNow(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<DueItem>> ExecuteAsync(int limit = 200)
     {
         string sql = $"""
@@ -26,6 +19,6 @@ public class GetDueNow : IGetDueNow
             LIMIT {limit};
             """;
 
-        return await _context.Database.SqlQueryRaw<DueItem>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<DueItem>(sql).ToListAsync();
     }
 }

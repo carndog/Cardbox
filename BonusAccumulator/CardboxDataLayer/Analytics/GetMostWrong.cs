@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetMostWrong : IGetMostWrong
+public class GetMostWrong(CardboxDbContext context) : IGetMostWrong
 {
-    private readonly CardboxDbContext _context;
-
-    public GetMostWrong(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<MostWrongStats>> ExecuteAsync(int limit = 100)
     {
         string sql = $"""
@@ -29,6 +22,6 @@ public class GetMostWrong : IGetMostWrong
             LIMIT {limit};
             """;
 
-        return await _context.Database.SqlQueryRaw<MostWrongStats>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<MostWrongStats>(sql).ToListAsync();
     }
 }

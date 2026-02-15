@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetNotSeenForAges : IGetNotSeenForAges
+public class GetNotSeenForAges(CardboxDbContext context) : IGetNotSeenForAges
 {
-    private readonly CardboxDbContext _context;
-
-    public GetNotSeenForAges(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<NotSeenForAgesStats>> ExecuteAsync(int limit = 200)
     {
         string sql = $"""
@@ -27,6 +20,6 @@ public class GetNotSeenForAges : IGetNotSeenForAges
             LIMIT {limit};
             """;
 
-        return await _context.Database.SqlQueryRaw<NotSeenForAgesStats>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<NotSeenForAgesStats>(sql).ToListAsync();
     }
 }

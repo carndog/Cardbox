@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetDueSoon : IGetDueSoon
+public class GetDueSoon(CardboxDbContext context) : IGetDueSoon
 {
-    private readonly CardboxDbContext _context;
-
-    public GetDueSoon(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<DueItem>> ExecuteAsync()
     {
         const string sql = """
@@ -25,6 +18,6 @@ public class GetDueSoon : IGetDueSoon
             ORDER BY next_scheduled ASC;
             """;
 
-        return await _context.Database.SqlQueryRaw<DueItem>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<DueItem>(sql).ToListAsync();
     }
 }

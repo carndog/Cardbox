@@ -2,32 +2,23 @@ using WordServices.Extensions;
 
 namespace WordServices.TrieLoading;
 
-public class AnagramTrieBuilder : IAnagramTrieBuilder
+public class AnagramTrieBuilder(string? filePath, TrieNode? item) : IAnagramTrieBuilder
 {
-    private readonly TrieNode? _item;
-    private readonly string? _path;
-    
-    public AnagramTrieBuilder(string? filePath, TrieNode? item)
-    {
-        _path = filePath;
-        _item = item;
-    }
-
     public TrieNode? LoadLines()
     {
-        if (!File.Exists(_path))
+        if (!File.Exists(filePath))
         {
-            throw new FileNotFoundException("Dictionary file not found.", _path);
+            throw new FileNotFoundException("Dictionary file not found.", filePath);
         }
 
-        using FileStream fileStream = new(_path, FileMode.Open);
+        using FileStream fileStream = new(filePath, FileMode.Open);
         using StreamReader reader = new(fileStream);
         while (reader.ReadLine() is { } line)
         {
-            LoadLine(_item, line);
+            LoadLine(item, line);
         }
 
-        return _item;
+        return item;
     }
 
     private void LoadLine(TrieNode? root, string? line)

@@ -3,14 +3,9 @@ using WordServices;
 
 namespace BonusAccumulator;
 
-public class ConfigurationSettingsProvider : ISettingsProvider
+public class ConfigurationSettingsProvider(IConfiguration configuration) : ISettingsProvider
 {
-    private readonly IConfiguration _configuration;
-
-    public ConfigurationSettingsProvider(IConfiguration configuration)
-    {
-        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-    }
+    private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
     public string GetSetting(string key)
     {

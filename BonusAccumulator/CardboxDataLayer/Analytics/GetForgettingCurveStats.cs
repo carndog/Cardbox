@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetForgettingCurveStats : IGetForgettingCurveStats
+public class GetForgettingCurveStats(CardboxDbContext context) : IGetForgettingCurveStats
 {
-    private readonly CardboxDbContext _context;
-
-    public GetForgettingCurveStats(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<ForgettingCurveStats>> ExecuteAsync()
     {
         const string sql = """
@@ -49,6 +42,6 @@ public class GetForgettingCurveStats : IGetForgettingCurveStats
               END;
             """;
 
-        return await _context.Database.SqlQueryRaw<ForgettingCurveStats>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<ForgettingCurveStats>(sql).ToListAsync();
     }
 }

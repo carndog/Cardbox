@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetHighestErrorRate : IGetHighestErrorRate
+public class GetHighestErrorRate(CardboxDbContext context) : IGetHighestErrorRate
 {
-    private readonly CardboxDbContext _context;
-
-    public GetHighestErrorRate(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<ErrorRateStats>> ExecuteAsync(int limit = 100)
     {
         string sql = $"""
@@ -30,6 +23,6 @@ public class GetHighestErrorRate : IGetHighestErrorRate
             LIMIT {limit};
             """;
 
-        return await _context.Database.SqlQueryRaw<ErrorRateStats>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<ErrorRateStats>(sql).ToListAsync();
     }
 }

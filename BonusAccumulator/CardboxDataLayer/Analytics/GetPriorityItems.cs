@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetPriorityItems : IGetPriorityItems
+public class GetPriorityItems(CardboxDbContext context) : IGetPriorityItems
 {
-    private readonly CardboxDbContext _context;
-
-    public GetPriorityItems(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<PriorityItem>> ExecuteAsync(int limit = 200)
     {
         string sql = $"""
@@ -48,6 +41,6 @@ public class GetPriorityItems : IGetPriorityItems
             LIMIT {limit};
             """;
 
-        return await _context.Database.SqlQueryRaw<PriorityItem>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<PriorityItem>(sql).ToListAsync();
     }
 }

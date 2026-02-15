@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetRegressions : IGetRegressions
+public class GetRegressions(CardboxDbContext context) : IGetRegressions
 {
-    private readonly CardboxDbContext _context;
-
-    public GetRegressions(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<RegressionStats>> ExecuteAsync(int limit = 100)
     {
         string sql = $"""
@@ -31,6 +24,6 @@ public class GetRegressions : IGetRegressions
             LIMIT {limit};
             """;
 
-        return await _context.Database.SqlQueryRaw<RegressionStats>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<RegressionStats>(sql).ToListAsync();
     }
 }

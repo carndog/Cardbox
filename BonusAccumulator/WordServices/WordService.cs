@@ -6,31 +6,19 @@ using WordServices.TrieSearching;
 
 namespace WordServices;
 
-public class WordService : IWordService
+public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWordOutputService wordOutputService)
+    : IWordService
 {
     private static readonly Random Random = Random.Shared;
-    
-    private readonly ITrieSearcher _searcher;
-    
-    private readonly ISessionState _sessionState;
-
-    private readonly IWordOutputService _wordOutputService;
 
     private readonly HashSet<string> _unasked = [];
 
-    public WordService(ITrieSearcher searcher, ISessionState sessionState, IWordOutputService wordOutputService)
-    {
-        _searcher = searcher;
-        _sessionState = sessionState;
-        _wordOutputService = wordOutputService;
-    }
-
     public Answer Anagram(string question)
     {
-        IList<string> words = _searcher.Query(question,
+        IList<string> words = searcher.Query(question,
             wordsAtTerminal => wordsAtTerminal.Where(x => x.Length == question.Length));
 
-        _sessionState.Update(words);
+        sessionState.Update(words);
         
         return new Answer
         {
@@ -40,7 +28,7 @@ public class WordService : IWordService
 
     private Answer AnagramInternal(string question)
     {
-        IList<string> words = _searcher.Query(question,
+        IList<string> words = searcher.Query(question,
             wordsAtTerminal => wordsAtTerminal.Where(x => x.Length == question.Length));
         
         return new Answer
@@ -51,9 +39,9 @@ public class WordService : IWordService
 
     public Answer Build(string question)
     {
-        IList<string> words = _searcher.Query(question, x => x);
+        IList<string> words = searcher.Query(question, x => x);
         
-        _sessionState.Update(words);
+        sessionState.Update(words);
 
         return new Answer
         {
@@ -66,7 +54,7 @@ public class WordService : IWordService
         Func<IEnumerable<string>, IEnumerable<string>> wordFilter =
             filter => filter.Where(x => x.Length == question.Length && Regex.IsMatch(x, question.ToUpper()));
         
-        IList<string> words = _searcher.Query(question, wordFilter);
+        IList<string> words = searcher.Query(question, wordFilter);
         
         return new Answer
         {
@@ -79,9 +67,9 @@ public class WordService : IWordService
         Func<IEnumerable<string>, IEnumerable<string>> wordFilter =
             filter => filter.Where(x => x.Length == question.Length && Regex.IsMatch(x, question.ToUpper()));
         
-        IList<string> words = _searcher.Query(question, wordFilter);
+        IList<string> words = searcher.Query(question, wordFilter);
         
-        _sessionState.Update(words);
+        sessionState.Update(words);
 
         return new Answer
         {
@@ -96,7 +84,7 @@ public class WordService : IWordService
 
         Answer answer = RunWildCardCharacterQuestion(() => question, PatternInternal);
         
-        _sessionState.Update(answer.Words);
+        sessionState.Update(answer.Words);
         
         return answer;
     }
@@ -108,7 +96,7 @@ public class WordService : IWordService
 
         Answer answer = RunWildCardCharacterQuestion(question.ToAlphagram, AnagramInternal);
         
-        _sessionState.Update(answer.Words);
+        sessionState.Update(answer.Words);
         
         return answer;
     }
@@ -119,12 +107,12 @@ public class WordService : IWordService
         if (filtered.Count == 0)
             write("No valid words to add");
         else
-            _sessionState.Add(filtered);
+            sessionState.Add(filtered);
     }
     
     public void AddLastWords(Action<string> write)
     {
-        int wordsAdded = _sessionState.LastResult.Count;
+        int wordsAdded = sessionState.LastResult.Count;
         if (wordsAdded == 0)
         {
             write("No words to add from last result.");
@@ -132,16 +120,16 @@ public class WordService : IWordService
         }
         
         write($"Added {wordsAdded} words from last result:");
-        write(_wordOutputService.FormatWords(_sessionState.LastResult));
+        write(wordOutputService.FormatWords(sessionState.LastResult));
         
-        _sessionState.AddedWords.UnionWith(_sessionState.LastResult);
-        _sessionState.LastResult.Clear();
+        sessionState.AddedWords.UnionWith(sessionState.LastResult);
+        sessionState.LastResult.Clear();
     }
 
     public string StoreAndClearAdded()
     {
-        string filePath = _sessionState.SaveAdded();
-        _sessionState.AddedWords.Clear();
+        string filePath = sessionState.SaveAdded();
+        sessionState.AddedWords.Clear();
         return filePath;
     }
 
@@ -151,7 +139,7 @@ public class WordService : IWordService
         Action<string> write,
         Func<string?> read)
     {
-        HashSet<string> storedWords = options == QuizOptions.Session ? _sessionState.SessionWords : _sessionState.AddedWords;
+        HashSet<string> storedWords = options == QuizOptions.Session ? sessionState.SessionWords : sessionState.AddedWords;
 
         if (storedWords.Count == 0)
         {
@@ -198,7 +186,7 @@ public class WordService : IWordService
 
             write(string.Empty);
             write(isCorrect ? "✓ Correct!" : "✗ Wrong");
-            write($"Answers: {_wordOutputService.FormatWords(sessionQuiz.Words)}");
+            write($"Answers: {wordOutputService.FormatWords(sessionQuiz.Words)}");
             write(string.Empty);
 
             _unasked.Remove(answer);
@@ -259,7 +247,7 @@ public class WordService : IWordService
             }
             else
             {
-                write(_wordOutputService.FormatWords(chainAnswer.Words) + " - " +
+                write(wordOutputService.FormatWords(chainAnswer.Words) + " - " +
                       string.Join(",", chainAnswer.Words.Select(x => x.ToAlphagram())));
             }
             if (noResults is false)

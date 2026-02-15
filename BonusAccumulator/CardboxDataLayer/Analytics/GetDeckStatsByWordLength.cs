@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetDeckStatsByWordLength : IGetDeckStatsByWordLength
+public class GetDeckStatsByWordLength(CardboxDbContext context) : IGetDeckStatsByWordLength
 {
-    private readonly CardboxDbContext _context;
-
-    public GetDeckStatsByWordLength(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<WordLengthStats>> ExecuteAsync()
     {
         const string sql = """
@@ -25,6 +18,6 @@ public class GetDeckStatsByWordLength : IGetDeckStatsByWordLength
             ORDER BY Length;
             """;
 
-        return await _context.Database.SqlQueryRaw<WordLengthStats>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<WordLengthStats>(sql).ToListAsync();
     }
 }

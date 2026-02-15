@@ -1,19 +1,12 @@
 namespace WordServices;
 
-public class SessionState : ISessionState
+public class SessionState(ISettingsProvider settingsProvider) : ISessionState
 {
-    private readonly ISettingsProvider _settingsProvider;
-    
     public HashSet<string> SessionWords { get; } = [];
     
     public HashSet<string> AddedWords { get; } = [];
     
     public List<string> LastResult { get; } = [];
-
-    public SessionState(ISettingsProvider settingsProvider)
-    {
-        _settingsProvider = settingsProvider;
-    }
 
     public void Update(IList<string> words)
     {
@@ -30,7 +23,7 @@ public class SessionState : ISessionState
     public string SaveAdded()
     {
         string name = DateTime.Now.ToString("s").Replace(":", "");
-        string? outputPath = _settingsProvider.GetSetting("SessionOutputPath");
+        string? outputPath = settingsProvider.GetSetting("SessionOutputPath");
         if (string.IsNullOrEmpty(outputPath))
         {
             throw new InvalidOperationException("SessionOutputPath setting is not configured.");

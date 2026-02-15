@@ -3,15 +3,8 @@ using WordServices.Analytics;
 
 namespace CardboxDataLayer.Analytics;
 
-public class GetPainPerRecentMemory : IGetPainPerRecentMemory
+public class GetPainPerRecentMemory(CardboxDbContext context) : IGetPainPerRecentMemory
 {
-    private readonly CardboxDbContext _context;
-
-    public GetPainPerRecentMemory(CardboxDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<PainStats>> ExecuteAsync(int limit = 100)
     {
         string sql = $"""
@@ -30,6 +23,6 @@ public class GetPainPerRecentMemory : IGetPainPerRecentMemory
             LIMIT {limit};
             """;
 
-        return await _context.Database.SqlQueryRaw<PainStats>(sql).ToListAsync();
+        return await context.Database.SqlQueryRaw<PainStats>(sql).ToListAsync();
     }
 }
