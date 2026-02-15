@@ -170,15 +170,15 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             await RunCardboxAnalysis(questionRepository);
             break;
         case AnalyticsCommand:
-            await RunAnalytics(analyticsService, wordService, false);
+            await RunAnalytics(analyticsService, false);
             break;
         case AnalyticsShowCommand:
-            await RunAnalytics(analyticsService, wordService, true);
+            await RunAnalytics(analyticsService, true);
             break;
     }
 }
 
-async Task RunAnalytics(IAnalyticsService analyticsService, IWordService wordService, bool showAnagrams)
+async Task RunAnalytics(IAnalyticsService analytics, bool showAnagrams)
 {
     WriteLine("Cardbox Analytics Options:");
     WriteLine("");
@@ -205,105 +205,105 @@ async Task RunAnalytics(IAnalyticsService analyticsService, IWordService wordSer
     switch (choice)
     {
         case "1":
-            IEnumerable<DueItem> dueNow = await ((IGetDueNow)analyticsService).ExecuteAsync(200);
-            WriteLine($"Questions due now: {dueNow.Count()}");
+            IReadOnlyList<DueItem> dueNow = (await ((IGetDueNow)analytics).ExecuteAsync()).ToList();
+            WriteLine($"Questions due now: {dueNow.Count}");
             foreach (DueItem item in dueNow.Take(20))
             {
                 DisplayWordWithAnagrams(item.Question, $"Cardbox: {item.Cardbox}, Difficulty: {item.Difficulty}, Due: {item.DueAt:yyyy-MM-dd HH:mm}", showAnagrams);
             }
-            if (dueNow.Count() > 20)
+            if (dueNow.Count > 20)
             {
-                WriteLine($"  ... and {dueNow.Count() - 20} more");
+                WriteLine($"  ... and {dueNow.Count - 20} more");
             }
-            PromptQuizOnWords(wordService, dueNow.Select(w => w.Question).ToList());
+            PromptQuizOnWords(dueNow.Select(w => w.Question).ToList());
             break;
             
         case "2":
-            IEnumerable<PriorityItem> priorityItems = await ((IGetPriorityItems)analyticsService).ExecuteAsync(200);
-            WriteLine($"Priority items: {priorityItems.Count()}");
+            IReadOnlyList<PriorityItem> priorityItems = (await ((IGetPriorityItems)analytics).ExecuteAsync()).ToList();
+            WriteLine($"Priority items: {priorityItems.Count}");
             foreach (PriorityItem item in priorityItems.Take(20))
             {
                 DisplayWordWithAnagrams(item.Question, $"Priority: {item.Priority:F2}, Cardbox: {item.Cardbox}, Difficulty: {item.Difficulty}", showAnagrams);
             }
-            if (priorityItems.Count() > 20)
+            if (priorityItems.Count > 20)
             {
-                WriteLine($"  ... and {priorityItems.Count() - 20} more");
+                WriteLine($"  ... and {priorityItems.Count - 20} more");
             }
-            PromptQuizOnWords(wordService, priorityItems.Select(w => w.Question).ToList());
+            PromptQuizOnWords(priorityItems.Select(w => w.Question).ToList());
             break;
             
         case "3":
-            IEnumerable<ErrorRateStats> highestErrorRate = await ((IGetHighestErrorRate)analyticsService).ExecuteAsync(100);
-            WriteLine($"Highest error rate questions: {highestErrorRate.Count()}");
+            IReadOnlyList<ErrorRateStats> highestErrorRate = (await ((IGetHighestErrorRate)analytics).ExecuteAsync()).ToList();
+            WriteLine($"Highest error rate questions: {highestErrorRate.Count}");
             foreach (ErrorRateStats item in highestErrorRate.Take(20))
             {
                 DisplayWordWithAnagrams(item.Question, $"Error Rate: {item.ErrorRate:P2}, Attempts: {item.Attempts}, Cardbox: {item.Cardbox}", showAnagrams);
             }
-            if (highestErrorRate.Count() > 20)
+            if (highestErrorRate.Count > 20)
             {
-                WriteLine($"  ... and {highestErrorRate.Count() - 20} more");
+                WriteLine($"  ... and {highestErrorRate.Count - 20} more");
             }
-            PromptQuizOnWords(wordService, highestErrorRate.Select(w => w.Question).ToList());
+            PromptQuizOnWords(highestErrorRate.Select(w => w.Question).ToList());
             break;
             
         case "4":
-            IEnumerable<MostWrongStats> mostWrong = await ((IGetMostWrong)analyticsService).ExecuteAsync(100);
-            WriteLine($"Most wrong questions: {mostWrong.Count()}");
+            IReadOnlyList<MostWrongStats> mostWrong = (await ((IGetMostWrong)analytics).ExecuteAsync()).ToList();
+            WriteLine($"Most wrong questions: {mostWrong.Count}");
             foreach (MostWrongStats item in mostWrong.Take(20))
             {
                 DisplayWordWithAnagrams(item.Question, $"Incorrect: {item.Incorrect}, Correct: {item.Correct}, Cardbox: {item.Cardbox}", showAnagrams);
             }
-            if (mostWrong.Count() > 20)
+            if (mostWrong.Count > 20)
             {
-                WriteLine($"  ... and {mostWrong.Count() - 20} more");
+                WriteLine($"  ... and {mostWrong.Count - 20} more");
             }
-            PromptQuizOnWords(wordService, mostWrong.Select(w => w.Question).ToList());
+            PromptQuizOnWords(mostWrong.Select(w => w.Question).ToList());
             break;
             
         case "5":
-            IEnumerable<PainStats> painPerRecentMemory = await ((IGetPainPerRecentMemory)analyticsService).ExecuteAsync(100);
-            WriteLine($"Painful questions from recent memory: {painPerRecentMemory.Count()}");
+            IReadOnlyList<PainStats> painPerRecentMemory = (await ((IGetPainPerRecentMemory)analytics).ExecuteAsync()).ToList();
+            WriteLine($"Painful questions from recent memory: {painPerRecentMemory.Count}");
             foreach (PainStats item in painPerRecentMemory.Take(20))
             {
                 DisplayWordWithAnagrams(item.Question, $"Incorrect: {item.Incorrect}, Correct: {item.Correct}, Cardbox: {item.Cardbox}", showAnagrams);
             }
-            if (painPerRecentMemory.Count() > 20)
+            if (painPerRecentMemory.Count > 20)
             {
-                WriteLine($"  ... and {painPerRecentMemory.Count() - 20} more");
+                WriteLine($"  ... and {painPerRecentMemory.Count - 20} more");
             }
-            PromptQuizOnWords(wordService, painPerRecentMemory.Select(w => w.Question).ToList());
+            PromptQuizOnWords(painPerRecentMemory.Select(w => w.Question).ToList());
             break;
             
         case "6":
-            IEnumerable<RegressionStats> regressions = await ((IGetRegressions)analyticsService).ExecuteAsync(100);
-            WriteLine($"Regressed questions: {regressions.Count()}");
+            IReadOnlyList<RegressionStats> regressions = (await ((IGetRegressions)analytics).ExecuteAsync()).ToList();
+            WriteLine($"Regressed questions: {regressions.Count}");
             foreach (RegressionStats item in regressions.Take(20))
             {
                 DisplayWordWithAnagrams(item.Question, $"Last Correct: {item.LastCorrectAt:yyyy-MM-dd}, Cardbox: {item.Cardbox}", showAnagrams);
             }
-            if (regressions.Count() > 20)
+            if (regressions.Count > 20)
             {
-                WriteLine($"  ... and {regressions.Count() - 20} more");
+                WriteLine($"  ... and {regressions.Count - 20} more");
             }
-            PromptQuizOnWords(wordService, regressions.Select(w => w.Question).ToList());
+            PromptQuizOnWords(regressions.Select(w => w.Question).ToList());
             break;
             
         case "7":
-            IEnumerable<NotSeenForAgesStats> notSeenForAges = await ((IGetNotSeenForAges)analyticsService).ExecuteAsync(200);
-            WriteLine($"Questions not seen for ages: {notSeenForAges.Count()}");
+            IReadOnlyList<NotSeenForAgesStats> notSeenForAges = (await ((IGetNotSeenForAges)analytics).ExecuteAsync()).ToList();
+            WriteLine($"Questions not seen for ages: {notSeenForAges.Count}");
             foreach (NotSeenForAgesStats item in notSeenForAges.Take(20))
             {
                 DisplayWordWithAnagrams(item.Question, $"Days since last correct: {item.DaysSinceLastCorrect:F0}, Cardbox: {item.Cardbox}", showAnagrams);
             }
-            if (notSeenForAges.Count() > 20)
+            if (notSeenForAges.Count > 20)
             {
-                WriteLine($"  ... and {notSeenForAges.Count() - 20} more");
+                WriteLine($"  ... and {notSeenForAges.Count - 20} more");
             }
-            PromptQuizOnWords(wordService, notSeenForAges.Select(w => w.Question).ToList());
+            PromptQuizOnWords(notSeenForAges.Select(w => w.Question).ToList());
             break;
             
         case "8":
-            IEnumerable<CardboxStats> deckStatsByCardbox = await ((IGetDeckStatsByCardbox)analyticsService).ExecuteAsync();
+            IReadOnlyList<CardboxStats> deckStatsByCardbox = (await ((IGetDeckStatsByCardbox)analytics).ExecuteAsync()).ToList();
             WriteLine($"Deck stats by cardbox:");
             foreach (CardboxStats stat in deckStatsByCardbox)
             {
@@ -312,7 +312,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, IWordService wordSer
             break;
             
         case "9":
-            IEnumerable<WordLengthStats> deckStatsByWordLength = await ((IGetDeckStatsByWordLength)analyticsService).ExecuteAsync();
+            IReadOnlyList<WordLengthStats> deckStatsByWordLength = (await ((IGetDeckStatsByWordLength)analytics).ExecuteAsync()).ToList();
             WriteLine($"Deck stats by word length:");
             foreach (WordLengthStats stat in deckStatsByWordLength.OrderBy(s => s.Length))
             {
@@ -321,7 +321,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, IWordService wordSer
             break;
             
         case "10":
-            IEnumerable<IntervalStats> intervalStats = await ((IGetIntervalStats)analyticsService).ExecuteAsync();
+            IReadOnlyList<IntervalStats> intervalStats = (await ((IGetIntervalStats)analytics).ExecuteAsync()).ToList();
             WriteLine($"Learning interval statistics:");
             foreach (IntervalStats stat in intervalStats)
             {
@@ -330,7 +330,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, IWordService wordSer
             break;
             
         case "11":
-            IEnumerable<ForgettingCurveStats> forgettingCurveStats = await ((IGetForgettingCurveStats)analyticsService).ExecuteAsync();
+            IReadOnlyList<ForgettingCurveStats> forgettingCurveStats = (await ((IGetForgettingCurveStats)analytics).ExecuteAsync()).ToList();
             WriteLine($"Forgetting curve statistics:");
             foreach (ForgettingCurveStats stat in forgettingCurveStats)
             {
@@ -339,7 +339,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, IWordService wordSer
             break;
             
         case "12":
-            IEnumerable<BlindSpotStats> blindSpots = await ((IGetBlindSpots)analyticsService).ExecuteAsync();
+            IReadOnlyList<BlindSpotStats> blindSpots = (await ((IGetBlindSpots)analytics).ExecuteAsync()).ToList();
             WriteLine($"Blind spots (areas of weakness):");
             foreach (BlindSpotStats spot in blindSpots.OrderBy(s => s.Difficulty).ThenBy(s => s.Length))
             {
@@ -355,7 +355,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, IWordService wordSer
 
 WriteLine("Goodbye!");
 
-async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
+async Task RunCardboxAnalysis(IQuestionRepository repo)
 {
     WriteLine("Cardbox Analysis Options:");
     WriteLine("1. Total questions count");
@@ -372,7 +372,7 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
     switch (choice)
     {
         case "1":
-            int totalCount = await questionRepository.GetTotalCountAsync();
+            int totalCount = await repo.GetTotalCountAsync();
             WriteLine($"Total questions: {totalCount}");
             break;
         case "2":
@@ -380,20 +380,20 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
             string? cardboxInput = ReadLine();
             if (int.TryParse(cardboxInput, out int cardbox))
             {
-                IEnumerable<Question> questions = await questionRepository.GetByCardboxAsync(cardbox);
-                WriteLine($"Questions in cardbox {cardbox}: {questions.Count()}");
+                IReadOnlyList<Question> questions = (await repo.GetByCardboxAsync(cardbox)).ToList();
+                WriteLine($"Questions in cardbox {cardbox}: {questions.Count}");
                 foreach (Question question in questions.Take(10))
                 {
                     WriteLine($"  {question.QuestionText} - Correct: {question.Correct ?? 0}, Incorrect: {question.Incorrect ?? 0}, Streak: {question.Streak ?? 0}");
                 }
-                if (questions.Count() > 10)
+                if (questions.Count > 10)
                 {
-                    WriteLine($"  ... and {questions.Count() - 10} more");
+                    WriteLine($"  ... and {questions.Count - 10} more");
                 }
             }
             break;
         case "3":
-            double avgDifficulty = await questionRepository.GetAverageDifficultyAsync();
+            double avgDifficulty = await repo.GetAverageDifficultyAsync();
             WriteLine($"Average difficulty: {avgDifficulty:F2}");
             break;
         case "4":
@@ -401,15 +401,15 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
             string? minIncorrectInput = ReadLine();
             if (int.TryParse(minIncorrectInput, out int minIncorrect))
             {
-                IEnumerable<Question> questions = await questionRepository.GetIncorrectAnswersAsync(minIncorrect);
-                WriteLine($"Questions with {minIncorrect}+ incorrect answers: {questions.Count()}");
+                IReadOnlyList<Question> questions = (await repo.GetIncorrectAnswersAsync(minIncorrect)).ToList();
+                WriteLine($"Questions with {minIncorrect}+ incorrect answers: {questions.Count}");
                 foreach (Question question in questions.Take(10))
                 {
                     WriteLine($"  {question.QuestionText} - Incorrect: {question.Incorrect}");
                 }
-                if (questions.Count() > 10)
+                if (questions.Count > 10)
                 {
-                    WriteLine($"  ... and {questions.Count() - 10} more");
+                    WriteLine($"  ... and {questions.Count - 10} more");
                 }
             }
             break;
@@ -420,15 +420,15 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
             string? maxDiffInput = ReadLine();
             if (int.TryParse(minDiffInput, out int minDiff) && int.TryParse(maxDiffInput, out int maxDiff))
             {
-                IEnumerable<Question> questions = await questionRepository.GetByDifficultyRangeAsync(minDiff, maxDiff);
-                WriteLine($"Questions with difficulty {minDiff}-{maxDiff}: {questions.Count()}");
+                IReadOnlyList<Question> questions = (await repo.GetByDifficultyRangeAsync(minDiff, maxDiff)).ToList();
+                WriteLine($"Questions with difficulty {minDiff}-{maxDiff}: {questions.Count}");
                 foreach (Question question in questions.Take(10))
                 {
                     WriteLine($"  {question.QuestionText} - Difficulty: {question.Difficulty}");
                 }
-                if (questions.Count() > 10)
+                if (questions.Count > 10)
                 {
-                    WriteLine($"  ... and {questions.Count() - 10} more");
+                    WriteLine($"  ... and {questions.Count - 10} more");
                 }
             }
             break;
@@ -437,8 +437,8 @@ async Task RunCardboxAnalysis(IQuestionRepository questionRepository)
             string? questionInput = ReadLine();
             if (!string.IsNullOrEmpty(questionInput))
             {
-                IEnumerable<QuestionHistory> history = await questionRepository.GetQuestionHistoryAsync(questionInput);
-                WriteLine($"Addition history for {questionInput}: {history.Count()} entries");
+                IReadOnlyList<QuestionHistory> history = (await repo.GetQuestionHistoryAsync(questionInput)).ToList();
+                WriteLine($"Addition history for {questionInput}: {history.Count} entries");
                 foreach (QuestionHistory entry in history)
                 {
                     WriteLine($"  Added at: {entry.TimeStamp}");
@@ -468,39 +468,39 @@ void DisplayWordWithAnagrams(string word, string additionalInfo, bool showAnagra
     }
 }
 
-void PromptQuizOnWords(IWordService wordService, List<string> words)
+void PromptQuizOnWords(List<string> quizWords)
 {
-    if (words.Count == 0)
+    if (quizWords.Count == 0)
     {
         return;
     }
     
     WriteLine("");
-    Write($"Quiz on these {words.Count} words? (y/n): ");
+    Write($"Quiz on these {quizWords.Count} words? (y/n): ");
     string? quizResponse = ReadLine();
     
     if (quizResponse?.Equals("y", StringComparison.OrdinalIgnoreCase) == true)
     {
         ISessionState sessionState = host.Services.GetRequiredService<ISessionState>();
-        sessionState.AddedWords.UnionWith(words);
+        sessionState.AddedWords.UnionWith(quizWords);
         
-        WriteLine($"Added {words.Count} words to quiz pool. Starting quiz...");
+        WriteLine($"Added {quizWords.Count} words to quiz pool. Starting quiz...");
         WriteLine("");
         
         wordService.RunQuiz(QuizOptions.Added, EndQuizSessionCommand, WriteLine, ReadLine);
         
         WriteLine("");
-        Write($"Clear these {words.Count} words from your added words list? (y/n): ");
+        Write($"Clear these {quizWords.Count} words from your added words list? (y/n): ");
         string? clearResponse = ReadLine();
         
         if (clearResponse?.Equals("y", StringComparison.OrdinalIgnoreCase) == true)
         {
-            sessionState.AddedWords.ExceptWith(words);
-            WriteLine($"Cleared {words.Count} words from added words list.");
+            sessionState.AddedWords.ExceptWith(quizWords);
+            WriteLine($"Cleared {quizWords.Count} words from added words list.");
         }
         else
         {
-            WriteLine($"Kept {words.Count} words in added words list. Use 'qw' to quiz again or 'sca' to save.");
+            WriteLine($"Kept {quizWords.Count} words in added words list. Use 'qw' to quiz again or 'sca' to save.");
         }
     }
 }

@@ -14,7 +14,7 @@ public class GetBlindSpots : IGetBlindSpots
 
     public async Task<IEnumerable<BlindSpotStats>> ExecuteAsync()
     {
-        const string sql = """
+        const string Sql = """
             SELECT
               difficulty,
               LENGTH(question) AS Length,
@@ -28,6 +28,6 @@ public class GetBlindSpots : IGetBlindSpots
             ORDER BY PercentCorrect ASC, Reviews DESC;
             """;
 
-        return await _context.Database.SqlQueryRaw<BlindSpotStats>(sql).ToListAsync();
+        return await _context.Database.SqlQueryRaw<BlindSpotStats>(Sql).ToListAsync();
     }
 }

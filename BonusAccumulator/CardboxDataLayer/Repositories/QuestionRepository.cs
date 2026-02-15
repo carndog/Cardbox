@@ -93,7 +93,7 @@ public class QuestionRepository : IQuestionRepository
     {
         return await _context.Questions
             .Where(q => q.Difficulty.HasValue)
-            .AverageAsync(q => q.Difficulty.Value);
+            .AverageAsync(q => q.Difficulty!.Value);
     }
 
     public async Task<IEnumerable<QuestionHistory>> GetQuestionHistoryAsync(string question)
