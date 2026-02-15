@@ -170,15 +170,15 @@ while (command == null || !command.Equals(ExitCommand, StringComparison.CurrentC
             await RunCardboxAnalysis(questionRepository);
             break;
         case AnalyticsCommand:
-            await RunAnalytics(analyticsService, false);
+            await RunAnalytics(analyticsService, wordService, false);
             break;
         case AnalyticsShowCommand:
-            await RunAnalytics(analyticsService, true);
+            await RunAnalytics(analyticsService, wordService, true);
             break;
     }
 }
 
-async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
+async Task RunAnalytics(IAnalyticsService analyticsService, IWordService wordService, bool showAnagrams)
 {
     WriteLine("Cardbox Analytics Options:");
     WriteLine("");
@@ -215,6 +215,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             {
                 WriteLine($"  ... and {dueNow.Count() - 20} more");
             }
+            PromptQuizOnWords(wordService, dueNow.Select(w => w.Question).ToList());
             break;
             
         case "2":
@@ -228,6 +229,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             {
                 WriteLine($"  ... and {priorityItems.Count() - 20} more");
             }
+            PromptQuizOnWords(wordService, priorityItems.Select(w => w.Question).ToList());
             break;
             
         case "3":
@@ -241,6 +243,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             {
                 WriteLine($"  ... and {highestErrorRate.Count() - 20} more");
             }
+            PromptQuizOnWords(wordService, highestErrorRate.Select(w => w.Question).ToList());
             break;
             
         case "4":
@@ -254,6 +257,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             {
                 WriteLine($"  ... and {mostWrong.Count() - 20} more");
             }
+            PromptQuizOnWords(wordService, mostWrong.Select(w => w.Question).ToList());
             break;
             
         case "5":
@@ -267,6 +271,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             {
                 WriteLine($"  ... and {painPerRecentMemory.Count() - 20} more");
             }
+            PromptQuizOnWords(wordService, painPerRecentMemory.Select(w => w.Question).ToList());
             break;
             
         case "6":
@@ -280,6 +285,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             {
                 WriteLine($"  ... and {regressions.Count() - 20} more");
             }
+            PromptQuizOnWords(wordService, regressions.Select(w => w.Question).ToList());
             break;
             
         case "7":
@@ -293,6 +299,7 @@ async Task RunAnalytics(IAnalyticsService analyticsService, bool showAnagrams)
             {
                 WriteLine($"  ... and {notSeenForAges.Count() - 20} more");
             }
+            PromptQuizOnWords(wordService, notSeenForAges.Select(w => w.Question).ToList());
             break;
             
         case "8":
@@ -457,6 +464,43 @@ void DisplayWordWithAnagrams(string word, string additionalInfo, bool showAnagra
         if (anagram.Words.Count > 0)
         {
             WriteLine($"    {wordOutputService.FormatWords(anagram.Words)}");
+        }
+    }
+}
+
+void PromptQuizOnWords(IWordService wordService, List<string> words)
+{
+    if (words.Count == 0)
+    {
+        return;
+    }
+    
+    WriteLine("");
+    Write($"Quiz on these {words.Count} words? (y/n): ");
+    string? quizResponse = ReadLine();
+    
+    if (quizResponse?.Equals("y", StringComparison.OrdinalIgnoreCase) == true)
+    {
+        ISessionState sessionState = host.Services.GetRequiredService<ISessionState>();
+        sessionState.AddedWords.UnionWith(words);
+        
+        WriteLine($"Added {words.Count} words to quiz pool. Starting quiz...");
+        WriteLine("");
+        
+        wordService.RunQuiz(QuizOptions.Added, EndQuizSessionCommand, WriteLine, ReadLine);
+        
+        WriteLine("");
+        Write($"Clear these {words.Count} words from your added words list? (y/n): ");
+        string? clearResponse = ReadLine();
+        
+        if (clearResponse?.Equals("y", StringComparison.OrdinalIgnoreCase) == true)
+        {
+            sessionState.AddedWords.ExceptWith(words);
+            WriteLine($"Cleared {words.Count} words from added words list.");
+        }
+        else
+        {
+            WriteLine($"Kept {words.Count} words in added words list. Use 'qw' to quiz again or 'sca' to save.");
         }
     }
 }
