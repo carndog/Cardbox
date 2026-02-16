@@ -143,7 +143,7 @@ public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWo
 
         if (storedWords.Count == 0)
         {
-            write("No words available for quiz");
+            write(ConsoleColors.ColorText("No words available for quiz", ConsoleColors.Yellow));
             return;
         }
 
@@ -185,14 +185,21 @@ public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWo
                            && typed.All(a => sessionQuiz.Words.Contains(a));
 
             write(string.Empty);
-            write(isCorrect ? "✓ Correct!" : "✗ Wrong");
+            if (isCorrect)
+            {
+                write(ConsoleColors.ColorText("✓ Correct!", ConsoleColors.Green));
+            }
+            else
+            {
+                write(ConsoleColors.ColorText("✗ Wrong", ConsoleColors.Red));
+            }
             write($"Answers: {wordOutputService.FormatWords(sessionQuiz.Words)}");
             write(string.Empty);
 
             _unasked.Remove(answer);
         }
 
-        write("Quiz over");
+        write(ConsoleColors.ColorText("Quiz over", ConsoleColors.Yellow));
     }
 
     public void RunChainQuiz(string endCommand, Action<string> write, Func<string?> read)
@@ -209,7 +216,7 @@ public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWo
             
             if (command?.Equals(endCommand, StringComparison.OrdinalIgnoreCase) == true)
             {
-                write("Chain quiz ended.");
+                write(ConsoleColors.ColorText("Chain quiz ended.", ConsoleColors.Yellow));
                 break;
             }
             
@@ -230,11 +237,11 @@ public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWo
             
             if (previousWord != null && IsNewChain(command, previousWord))
             {
-                write($"🔗 New chain starting from: {command.ToUpper()}");
+                write(ConsoleColors.ColorText($"🔗 New chain starting from: {command.ToUpper()}", ConsoleColors.Cyan));
             }
             else if (previousWord == null)
             {
-                write($"🔗 Starting chain from: {command.ToUpper()}");
+                write(ConsoleColors.ColorText($"🔗 Starting chain from: {command.ToUpper()}", ConsoleColors.Cyan));
             }
             
             previousWord = command;
@@ -243,7 +250,7 @@ public class WordService(ITrieSearcher searcher, ISessionState sessionState, IWo
             bool noResults = chainAnswer.Words.Count == 0;
             if (noResults)
             {
-                write($"'{command.ToUpper()}' is not a valid word or has no anagrams");
+                write(ConsoleColors.ColorText($"'{command.ToUpper()}' is not a valid word or has no anagrams", ConsoleColors.Red));
             }
             else
             {

@@ -354,7 +354,7 @@ async Task RunAnalytics(IAnalyticsService analytics, bool showAnagrams)
     }
 }
 
-WriteLine("Goodbye!");
+WriteLine(ConsoleColors.ColorText("Goodbye!", ConsoleColors.Yellow));
 
 async Task RunCardboxAnalysis(IQuestionRepository repo)
 {

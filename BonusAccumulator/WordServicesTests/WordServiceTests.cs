@@ -12,6 +12,11 @@ public class WordServiceTests
 {
     private WordService _service = null!;
 
+    private static string ColorText(string text, string color)
+    {
+        return $"{color}{text}\x1b[0m";
+    }
+
     [SetUp]
     public void SetUp()
     {
@@ -51,7 +56,7 @@ public class WordServiceTests
 
         _service.RunQuiz(QuizOptions.Session, "eqs", write, read);
 
-        output.Should().Contain("✗ Wrong");
+        output.Should().Contain(ColorText("✗ Wrong", "\x1b[31m"));
     }
 
     [Test]
@@ -68,7 +73,7 @@ public class WordServiceTests
 
         _service.RunQuiz(QuizOptions.Session, "eqs", write, read);
         
-        output.Should().Contain("Quiz over");
+        output.Should().Contain(ColorText("Quiz over", "\x1b[33m"));
     }
 
     [Test]
@@ -82,7 +87,7 @@ public class WordServiceTests
 
         _service.RunChainQuiz("xch", write, read);
 
-        output.Should().Contain("🔗 Starting chain from: CAT");
+        output.Should().Contain(ColorText("🔗 Starting chain from: CAT", "\x1b[36m"));
         output.Should().NotContain("🔗 New chain starting from: CAR");
     }
 
@@ -97,7 +102,7 @@ public class WordServiceTests
 
         _service.RunChainQuiz("xch", write, read);
 
-        output.Should().Contain("🔗 Starting chain from: CAT");
+        output.Should().Contain(ColorText("🔗 Starting chain from: CAT", "\x1b[36m"));
         output.Should().NotContain("🔗 New chain starting from: CART");
     }
 
@@ -112,7 +117,7 @@ public class WordServiceTests
 
         _service.RunChainQuiz("xch", write, read);
 
-        output.Should().Contain("🔗 Starting chain from: CART");
+        output.Should().Contain(ColorText("🔗 Starting chain from: CART", "\x1b[36m"));
         output.Should().NotContain("🔗 New chain starting from: CAT");
     }
 
@@ -127,8 +132,8 @@ public class WordServiceTests
 
         _service.RunChainQuiz("xch", write, read);
 
-        output.Should().Contain("🔗 Starting chain from: CAT");
-        output.Should().Contain("🔗 New chain starting from: DOG");
+        output.Should().Contain(ColorText("🔗 Starting chain from: CAT", "\x1b[36m"));
+        output.Should().Contain(ColorText("🔗 New chain starting from: DOG", "\x1b[36m"));
     }
 
     [Test]
@@ -142,8 +147,8 @@ public class WordServiceTests
 
         _service.RunChainQuiz("xch", write, read);
 
-        output.Should().Contain("🔗 Starting chain from: CAT");
-        output.Should().Contain("🔗 New chain starting from: CARTS");
+        output.Should().Contain(ColorText("🔗 Starting chain from: CAT", "\x1b[36m"));
+        output.Should().Contain(ColorText("🔗 New chain starting from: CARTS", "\x1b[36m"));
     }
 
     [Test]
@@ -157,7 +162,7 @@ public class WordServiceTests
 
         _service.RunChainQuiz("xch", write, read);
 
-        output.Should().Contain("🔗 Starting chain from: CAT");
+        output.Should().Contain(ColorText("🔗 Starting chain from: CAT", "\x1b[36m"));
         output.Should().NotContain("🔗 New chain starting from: ACT");
     }
 
@@ -172,7 +177,7 @@ public class WordServiceTests
 
         _service.RunChainQuiz("xch", write, read);
 
-        output.Should().Contain("'XYZ123' is not a valid word or has no anagrams");
+        output.Should().Contain(ColorText("'XYZ123' is not a valid word or has no anagrams", "\x1b[31m"));
     }
 
     [Test]
