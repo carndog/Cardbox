@@ -365,7 +365,8 @@ async Task RunCardboxAnalysis(IQuestionRepository repo)
     WriteLine("4. Questions with incorrect answers");
     WriteLine("5. Questions by difficulty range");
     WriteLine("6. Recent additions (next_Added table)");
-    WriteLine("Enter your choice (1-6): ");
+    WriteLine("7. Questions by alphagram length");
+    WriteLine("Enter your choice (1-7): ");
     
     string? choice = ReadLine();
     if (choice == null) return;
@@ -448,6 +449,14 @@ async Task RunCardboxAnalysis(IQuestionRepository repo)
             else
             {
                 WriteLine("Enter a specific question to see its addition history.");
+            }
+            break;
+        case "7":
+            IReadOnlyList<AlphagramLengthStats> alphagramLengthStats = (await repo.GetQuestionsByAlphagramLengthAsync()).ToList();
+            WriteLine($"Questions by alphagram length:");
+            foreach (AlphagramLengthStats stat in alphagramLengthStats)
+            {
+                WriteLine($"  Length {stat.AlphagramLength}: {stat.Questions} questions");
             }
             break;
         default:

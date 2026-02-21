@@ -1,4 +1,5 @@
 using CardboxDataLayer.Entities;
+using WordServices.Analytics;
 
 namespace CardboxDataLayer.Repositories;
 
@@ -27,4 +28,6 @@ public interface IQuestionRepository
     Task<double> GetAverageDifficultyAsync();
 
     Task<IEnumerable<QuestionHistory>> GetQuestionHistoryAsync(string question);
+
+    Task<IEnumerable<AlphagramLengthStats>> GetQuestionsByAlphagramLengthAsync();
 }

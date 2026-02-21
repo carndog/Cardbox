@@ -13,7 +13,7 @@ public class GetDueSoonTests
     [SetUp]
     public void Setup()
     {
-        _context = AnalyticsTestDataSetup.CreateAnalyticsTestContext();
+        _context = GetDueSoonTestDataSetup.CreateTestContext();
         _query = new GetDueSoon(_context);
     }
 
@@ -21,7 +21,7 @@ public class GetDueSoonTests
     public void TearDown()
     {
         _context.Dispose();
-        AnalyticsTestDataSetup.CleanupAnalyticsTestDatabase();
+        GetDueSoonTestDataSetup.CleanupTestDatabase();
     }
 
     [Test]
@@ -37,5 +37,12 @@ public class GetDueSoonTests
         Assert.That(firstDue.Cardbox, Is.GreaterThanOrEqualTo(0));
         Assert.That(firstDue.Difficulty, Is.GreaterThanOrEqualTo(0));
         Assert.That(firstDue.DueAt, Is.LessThanOrEqualTo(DateTime.UtcNow.AddHours(24)));
+        
+        List<string> dueQuestions = result.Select(item => item.Question).ToList();
+        Assert.That(dueQuestions, Does.Contain("DUESOON1"));
+        Assert.That(dueQuestions, Does.Contain("DUESOON2"));
+        Assert.That(dueQuestions, Does.Contain("DUESOON3"));
+        Assert.That(dueQuestions, Does.Not.Contain("OVERDUE1"));
+        Assert.That(dueQuestions, Does.Not.Contain("FUTURE1"));
     }
 }

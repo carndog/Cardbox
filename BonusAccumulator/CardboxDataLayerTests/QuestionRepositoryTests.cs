@@ -1,6 +1,8 @@
 using CardboxDataLayer;
 using CardboxDataLayer.Entities;
 using CardboxDataLayer.Repositories;
+using WordServices.Analytics;
+using CardboxDataLayerTests.TestHelpers;
 
 namespace CardboxDataLayerTests;
 
@@ -175,6 +177,58 @@ public class QuestionRepositoryTests
         foreach (QuestionHistory entry in history)
         {
             Assert.That(firstQuestion.QuestionText, Is.EqualTo(entry.QuestionText));
+        }
+    }
+
+    [Test]
+    public async Task GetQuestionsByAlphagramLengthAsync_ShouldReturnStatsGroupedByLength()
+    {
+        List<AlphagramLengthStats> result = (await _repository.GetQuestionsByAlphagramLengthAsync()).ToList();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Count, Is.GreaterThan(0));
+        
+        for (int i = 1; i < result.Count; i++)
+        {
+            Assert.That(result[i].AlphagramLength, Is.GreaterThanOrEqualTo(result[i - 1].AlphagramLength));
+        }
+        
+        foreach (AlphagramLengthStats stat in result)
+        {
+            Assert.That(stat.AlphagramLength, Is.GreaterThan(0));
+            Assert.That(stat.Questions, Is.GreaterThan(0));
+        }
+    }
+
+    [Test]
+    public async Task GetQuestionsByAlphagramLengthAsync_ShouldMatchTotalQuestions()
+    {
+        List<AlphagramLengthStats> alphagramStats = (await _repository.GetQuestionsByAlphagramLengthAsync()).ToList();
+        int totalQuestions = await _repository.GetTotalCountAsync();
+
+        int questionsInStats = alphagramStats.Sum(stat => stat.Questions);
+
+        Assert.That(questionsInStats, Is.EqualTo(totalQuestions));
+    }
+
+    [Test]
+    public async Task GetQuestionsByAlphagramLengthAsync_ShouldGroupCorrectly()
+    {
+        List<Question> allQuestions = (await _repository.GetAllAsync()).ToList();
+        List<AlphagramLengthStats> result = (await _repository.GetQuestionsByAlphagramLengthAsync()).ToList();
+
+        List<ManualGroupingResult> manualGrouping = allQuestions
+            .GroupBy(q => q.QuestionText.Length)
+            .OrderBy(g => g.Key)
+            .Select(g => new ManualGroupingResult(g.Key, g.Count()))
+            .ToList();
+
+        Assert.That(result.Count, Is.EqualTo(manualGrouping.Count));
+
+        for (int i = 0; i < result.Count; i++)
+        {
+            Assert.That(result[i].AlphagramLength, Is.EqualTo(manualGrouping[i].Length));
+            Assert.That(result[i].Questions, Is.EqualTo(manualGrouping[i].Count));
         }
     }
 }

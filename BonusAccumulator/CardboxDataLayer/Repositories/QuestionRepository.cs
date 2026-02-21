@@ -1,6 +1,7 @@
 using CardboxDataLayer.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using WordServices.Analytics;
 
 namespace CardboxDataLayer.Repositories;
 
@@ -102,5 +103,20 @@ public class QuestionRepository(CardboxDbContext context) : IQuestionRepository
         {
             return [];
         }
+    }
+
+    public async Task<IEnumerable<AlphagramLengthStats>> GetQuestionsByAlphagramLengthAsync()
+    {
+        List<IGrouping<int, Question>> groupedData = await context.Questions
+            .GroupBy(q => q.QuestionText.Length)
+            .ToListAsync();
+        
+        return groupedData
+            .Select(g => new AlphagramLengthStats(
+                g.Key,
+                g.Count()
+            ))
+            .OrderBy(s => s.AlphagramLength)
+            .ToList();
     }
 }
