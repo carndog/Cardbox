@@ -6,7 +6,7 @@ using WordServices.Api.Middleware;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen();
 
 builder.Services.AddWordServicesForWeb(builder.Configuration);
 builder.Services.AddCardboxDataLayer(builder.Configuration);
@@ -27,11 +27,11 @@ builder.Services.AddCors(options =>
 
 WebApplication app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
 
 app.UseCors("WebFrontend");
 app.UseMiddleware<GlobalExceptionMiddleware>();
