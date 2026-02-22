@@ -1,0 +1,101 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_VERSION: '10.0.x'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore
+      run: dotnet restore BonusAccumulator.sln
+
+    - name: Build
+      run: dotnet build BonusAccumulator.sln --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test BonusAccumulator.sln --configuration Release --no-build --verbosity normal
+
+  publish-host:
+    runs-on: windows-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Publish WordServices.Host
+      run: dotnet publish WordServices.Host/WordServices.Host.csproj --configuration Release --output ./publish/host
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: wordservices-host
+        path: ./publish/host
+
+  publish-api:
+    runs-on: windows-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Publish WordServices.Api
+      run: dotnet publish WordServices.Api/WordServices.Api.csproj --configuration Release --output ./publish/api
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: wordservices-api
+        path: ./publish/api
+
+  publish-web:
+    runs-on: windows-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Publish WordServices.Web
+      run: dotnet publish WordServices.Web/WordServices.Web.csproj --configuration Release --output ./publish/web
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: wordservices-web
+        path: ./publish/web

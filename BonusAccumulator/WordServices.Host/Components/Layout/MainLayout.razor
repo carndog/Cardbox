@@ -1,0 +1,22 @@
+@inherits LayoutComponentBase
+
+<div class="page">
+    <header class="top-bar">
+        <div class="top-bar-brand">
+            <a href="/">WordServices</a>
+        </div>
+        <nav class="top-bar-nav">
+            <a href="/">Search</a>
+            <a href="/stats">Stats</a>
+            <a href="/swagger" target="_blank">API Docs</a>
+        </nav>
+    </header>
+
+    <main class="content">
+        @Body
+    </main>
+
+    <footer class="bottom-bar">
+        <span>WordServices &copy; @DateTime.UtcNow.Year</span>
+    </footer>
+</div>

@@ -1,0 +1,52 @@
+### Health check
+GET https://localhost:7200/api/health
+
+### Health detail
+GET https://localhost:7200/api/health/detail
+
+### Anagram search
+POST https://localhost:7200/api/anagrams/search
+Content-Type: application/json
+
+{
+  "rack": "SATIRE",
+  "mode": "Anagram"
+}
+
+### Build search
+POST https://localhost:7200/api/anagrams/search
+Content-Type: application/json
+
+{
+  "rack": "SATIRE",
+  "mode": "Build"
+}
+
+### Pattern search
+POST https://localhost:7200/api/anagrams/search
+Content-Type: application/json
+
+{
+  "rack": "S.T.RE",
+  "mode": "Pattern"
+}
+
+### Quiz start (stubbed)
+POST https://localhost:7200/api/quiz/start
+Content-Type: application/json
+
+{
+  "mode": "Session"
+}
+
+### Quiz answer (stubbed)
+POST https://localhost:7200/api/quiz/answer
+Content-Type: application/json
+
+{
+  "sessionId": "replace-with-session-id",
+  "answer": "SATIRE"
+}
+
+### Cardbox stats
+GET https://localhost:7200/api/cardbox/stats

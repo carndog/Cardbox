@@ -1,0 +1,80 @@
+@page "/stats"
+@inject HttpClient Http
+
+<PageTitle>Cardbox Stats</PageTitle>
+
+<div class="stats-container">
+    <h1>Cardbox Statistics</h1>
+
+    @if (IsLoading)
+    {
+        <div class="loading">Loading statistics...</div>
+    }
+    else if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="error-box">
+            <strong>Error:</strong> @ErrorMessage
+        </div>
+    }
+    else if (StatsResponse is not null)
+    {
+        <div class="stats-summary">
+            <div class="stat-card">
+                <span class="stat-value">@StatsResponse.TotalQuestions</span>
+                <span class="stat-label">Total Questions</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">@StatsResponse.AverageDifficulty.ToString("F1")</span>
+                <span class="stat-label">Avg Difficulty</span>
+            </div>
+        </div>
+
+        @if (StatsResponse.Buckets.Count > 0)
+        {
+            <h2>By Cardbox</h2>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Cardbox</th>
+                        <th>Items</th>
+                        <th>Total Reviews</th>
+                        <th>% Correct</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (CardboxBucketDto bucket in StatsResponse.Buckets)
+                    {
+                        <tr>
+                            <td>@bucket.Cardbox</td>
+                            <td>@bucket.Items</td>
+                            <td>@bucket.TotalReviews</td>
+                            <td>@bucket.PercentCorrect.ToString("F1")%</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+</div>
+
+@code {
+    private CardboxStatsResponse? StatsResponse { get; set; }
+    private string? ErrorMessage { get; set; }
+    private bool IsLoading { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            StatsResponse = await Http.GetFromJsonAsync<CardboxStatsResponse>("/api/cardbox/stats");
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+}

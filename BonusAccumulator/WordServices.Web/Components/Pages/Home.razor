@@ -1,0 +1,105 @@
+@page "/"
+@inject HttpClient Http
+
+<PageTitle>Anagram Search</PageTitle>
+
+<div class="search-container">
+    <h1>Anagram Search</h1>
+
+    <EditForm Model="SearchModel" OnValidSubmit="ExecuteSearch" FormName="anagramSearch">
+        <DataAnnotationsValidator />
+
+        <div class="form-group">
+            <label for="rack">Rack (letters)</label>
+            <InputText id="rack" @bind-Value="SearchModel.Rack" class="form-input"
+                       placeholder="e.g. SATIRE" maxlength="15" />
+            <ValidationMessage For="() => SearchModel.Rack" />
+        </div>
+
+        <div class="form-group">
+            <label for="mode">Search Mode</label>
+            <InputSelect id="mode" @bind-Value="SearchModel.Mode" class="form-input">
+                <option value="@SearchMode.Anagram">Anagram</option>
+                <option value="@SearchMode.Build">Build</option>
+                <option value="@SearchMode.Pattern">Pattern</option>
+            </InputSelect>
+        </div>
+
+        <button type="submit" class="btn-primary" disabled="@IsSearching">
+            @(IsSearching ? "Searching..." : "Search")
+        </button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="error-box">
+            <strong>Error:</strong> @ErrorMessage
+        </div>
+    }
+
+    @if (SearchResult is not null)
+    {
+        <div class="results-container">
+            <div class="results-header">
+                <span class="results-count">@SearchResult.Count words found</span>
+                <span class="results-rack">for <strong>@SearchResult.Rack</strong> (@SearchResult.Mode)</span>
+            </div>
+
+            @if (SearchResult.Count > 0)
+            {
+                <div class="results-formatted">
+                    @SearchResult.FormattedResult
+                </div>
+
+                <div class="results-list">
+                    <ul>
+                        @foreach (string word in SearchResult.Words)
+                        {
+                            <li>@word</li>
+                        }
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="results-empty">No words found for this rack and mode.</div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private AnagramSearchRequest SearchModel { get; set; } = new();
+    private AnagramSearchResponse? SearchResult { get; set; }
+    private string? ErrorMessage { get; set; }
+    private bool IsSearching { get; set; }
+
+    private async Task ExecuteSearch()
+    {
+        IsSearching = true;
+        ErrorMessage = null;
+        SearchResult = null;
+
+        try
+        {
+            HttpResponseMessage httpResponse = await Http.PostAsJsonAsync("/api/anagrams/search", SearchModel);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                SearchResult = await httpResponse.Content.ReadFromJsonAsync<AnagramSearchResponse>();
+            }
+            else
+            {
+                ErrorMessage = $"API returned {httpResponse.StatusCode}";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsSearching = false;
+        }
+    }
+}
