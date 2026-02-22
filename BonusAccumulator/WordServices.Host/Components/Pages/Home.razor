@@ -13,7 +13,7 @@
         <div class="form-group">
             <label for="rack">Rack (letters)</label>
             <InputText id="rack" @bind-Value="SearchModel.Rack" class="form-input"
-                       placeholder="e.g. SATIRE" maxlength="15" />
+                       placeholder="e.g. SATIRE or S.T.RE" maxlength="15" />
             <ValidationMessage For="() => SearchModel.Rack" />
         </div>
 
@@ -116,7 +116,7 @@
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.MinLength(2)]
         [System.ComponentModel.DataAnnotations.MaxLength(15)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[A-Za-z?]+$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[A-Za-z?.]+$")]
         public string Rack { get; set; } = string.Empty;
 
         public SearchMode Mode { get; set; } = SearchMode.Anagram;
